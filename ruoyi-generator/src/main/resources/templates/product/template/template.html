@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('生产数据监测列表')" />
+</head>
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>流号：</label>
+                                <input type="text" name="streamNo"/>
+                            </li>
+                            <li>
+                                <label>钢种：</label>
+                                <input type="text" name="steelGrade"/>
+                            </li>
+                            <li>
+                                <label>宽度：</label>
+                                <input type="text" name="width"/>
+                            </li>
+                            <li>
+                                <label>高度：</label>
+                                <input type="text" name="height"/>
+                            </li>
+                            <li>
+                                <label>理论重量：</label>
+                                <input type="text" name="theoreticalWeight"/>
+                            </li>
+                            <li>
+                                <label>实际重量：</label>
+                                <input type="text" name="actualWeight"/>
+                            </li>
+                            <li>
+                                <label>重差：</label>
+                                <input type="text" name="weightGap"/>
+                            </li>
+                            <li>
+                                <label>单位重量：</label>
+                                <input type="text" name="unitWeight"/>
+                            </li>
+                            <li>
+                                <label>标定时间：</label>
+                                <input type="text" name="time"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+                <div class="ibox-content">
+                    <div class="echarts" id="echarts-line-chart"></div>
+                </div>
+            </div>
+            <!--<div class="col-sm-12">-->
+            <!--</div>-->
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="product:template:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="product:template:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="product:template:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="product:template:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: echarts-js" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('product:template:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('product:template:remove')}]];
+        var prefix = ctx + "product/template";
+
+        $(function () {
+            var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
+            var lineoption = {
+                title : {
+                    text: '实际重量监测折线图'
+                },
+                tooltip : {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data:['最高气温','最低气温']
+                },
+                grid:{
+                    x:40,
+                    x2:40,
+                    y2:24
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        boundaryGap : false,
+                        data : ['周一','周二','周三','周四','周五','周六','周日']
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value',
+                        axisLabel : {
+                            formatter: '{value} 千克(kg)'
+                        }
+                    }
+                ],
+                series : [
+                    {
+                        name:'理论重量',
+                        type:'line',
+                        data:[11, 11, 15, 13, 12, 13, 10],
+                        // markPoint : {
+                        //     data : [
+                        //         {type : 'max', name: '最大值'},
+                        //         {type : 'min', name: '最小值'}
+                        //     ]
+                        // },
+                        // markLine : {
+                        //     data : [
+                        //         {type : 'average', name: '平均理论重量'}
+                        //     ]
+                        // }
+                    },
+                    {
+                        name:'实际重量',
+                        type:'line',
+                        data:[1, -2, 2, 5, 3, 2, 0],
+                        markPoint : {
+                            data : [
+                                // {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
+                                {type : 'max', name: '最大值'},
+                                {type : 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name : '平均值'}
+                            ]
+                        }
+                    }
+                ]
+            };
+            lineChart.setOption(lineoption);
+            $(window).resize(lineChart.resize);
+        });
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "生产数据监测",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'productId',
+                    title: '序号',
+                    visible: false
+                },
+                {
+                    field: 'streamNo',
+                    title: '流号'
+                },
+                {
+                    field: 'steelGrade',
+                    title: '钢种'
+                },
+                {
+                    field: 'width',
+                    title: '宽度'
+                },
+                {
+                    field: 'height',
+                    title: '高度'
+                },
+                {
+                    field: 'theoreticalWeight',
+                    title: '理论重量'
+                },
+                {
+                    field: 'actualWeight',
+                    title: '实际重量'
+                },
+                {
+                    field: 'weightGap',
+                    title: '重差'
+                },
+                {
+                    field: 'unitWeight',
+                    title: '单位重量'
+                },
+                {
+                    field: 'time',
+                    title: '标定时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.productId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.productId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

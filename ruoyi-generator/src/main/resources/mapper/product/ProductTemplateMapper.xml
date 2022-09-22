@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.product.mapper.ProductTemplateMapper">
+    
+    <resultMap type="ProductTemplate" id="ProductTemplateResult">
+        <result property="productId"    column="product_id"    />
+        <result property="streamNo"    column="stream_no"    />
+        <result property="steelGrade"    column="steel_grade"    />
+        <result property="width"    column="width"    />
+        <result property="height"    column="height"    />
+        <result property="theoreticalWeight"    column="theoretical_weight"    />
+        <result property="actualWeight"    column="actual_weight"    />
+        <result property="weightGap"    column="weight_gap"    />
+        <result property="unitWeight"    column="unit_weight"    />
+        <result property="time"    column="time"    />
+    </resultMap>
+
+    <sql id="selectProductTemplateVo">
+        select product_id, stream_no, steel_grade, width, height, theoretical_weight, actual_weight, weight_gap, unit_weight, time from product_template
+    </sql>
+
+    <select id="selectProductTemplateList" parameterType="ProductTemplate" resultMap="ProductTemplateResult">
+        <include refid="selectProductTemplateVo"/>
+        <where>  
+            <if test="streamNo != null "> and stream_no = #{streamNo}</if>
+            <if test="steelGrade != null  and steelGrade != ''"> and steel_grade = #{steelGrade}</if>
+            <if test="width != null "> and width = #{width}</if>
+            <if test="height != null "> and height = #{height}</if>
+            <if test="theoreticalWeight != null "> and theoretical_weight = #{theoreticalWeight}</if>
+            <if test="actualWeight != null "> and actual_weight = #{actualWeight}</if>
+            <if test="weightGap != null "> and weight_gap = #{weightGap}</if>
+            <if test="unitWeight != null "> and unit_weight = #{unitWeight}</if>
+            <if test="time != null  and time != ''"> and time = #{time}</if>
+        </where>
+    </select>
+    
+    <select id="selectProductTemplateByProductId" parameterType="Long" resultMap="ProductTemplateResult">
+        <include refid="selectProductTemplateVo"/>
+        where product_id = #{productId}
+    </select>
+        
+    <insert id="insertProductTemplate" parameterType="ProductTemplate">
+        insert into product_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productId != null">product_id,</if>
+            <if test="streamNo != null">stream_no,</if>
+            <if test="steelGrade != null">steel_grade,</if>
+            <if test="width != null">width,</if>
+            <if test="height != null">height,</if>
+            <if test="theoreticalWeight != null">theoretical_weight,</if>
+            <if test="actualWeight != null">actual_weight,</if>
+            <if test="weightGap != null">weight_gap,</if>
+            <if test="unitWeight != null">unit_weight,</if>
+            <if test="time != null">time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productId != null">#{productId},</if>
+            <if test="streamNo != null">#{streamNo},</if>
+            <if test="steelGrade != null">#{steelGrade},</if>
+            <if test="width != null">#{width},</if>
+            <if test="height != null">#{height},</if>
+            <if test="theoreticalWeight != null">#{theoreticalWeight},</if>
+            <if test="actualWeight != null">#{actualWeight},</if>
+            <if test="weightGap != null">#{weightGap},</if>
+            <if test="unitWeight != null">#{unitWeight},</if>
+            <if test="time != null">#{time},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductTemplate" parameterType="ProductTemplate">
+        update product_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="streamNo != null">stream_no = #{streamNo},</if>
+            <if test="steelGrade != null">steel_grade = #{steelGrade},</if>
+            <if test="width != null">width = #{width},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="theoreticalWeight != null">theoretical_weight = #{theoreticalWeight},</if>
+            <if test="actualWeight != null">actual_weight = #{actualWeight},</if>
+            <if test="weightGap != null">weight_gap = #{weightGap},</if>
+            <if test="unitWeight != null">unit_weight = #{unitWeight},</if>
+            <if test="time != null">time = #{time},</if>
+        </trim>
+        where product_id = #{productId}
+    </update>
+
+    <delete id="deleteProductTemplateByProductId" parameterType="Long">
+        delete from product_template where product_id = #{productId}
+    </delete>
+
+    <delete id="deleteProductTemplateByProductIds" parameterType="String">
+        delete from product_template where product_id in 
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
+
+</mapper>
