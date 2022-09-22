@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.task.mapper.TaskReportMapper">
+    
+    <resultMap type="TaskReport" id="TaskReportResult">
+        <result property="reportId"    column="report_id"    />
+        <result property="reportName"    column="report_name"    />
+        <result property="date"    column="date"    />
+        <result property="title"    column="title"    />
+        <result property="type"    column="type"    />
+        <result property="content"    column="content"    />
+    </resultMap>
+
+    <sql id="selectTaskReportVo">
+        select report_id, report_name, date, title, type, content from task_report
+    </sql>
+
+    <select id="selectTaskReportList" parameterType="TaskReport" resultMap="TaskReportResult">
+        <include refid="selectTaskReportVo"/>
+        <where>  
+            <if test="reportName != null  and reportName != ''"> and report_name = #{reportName}</if>
+            <if test="date != null "> and date = #{date}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTaskReportByReportId" parameterType="Long" resultMap="TaskReportResult">
+        <include refid="selectTaskReportVo"/>
+        where report_id = #{reportId}
+    </select>
+        
+    <insert id="insertTaskReport" parameterType="TaskReport" useGeneratedKeys="true" keyProperty="reportId">
+        insert into task_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="reportName != null and reportName != ''">report_name,</if>
+            <if test="date != null">date,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="content != null and content != ''">content,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="reportName != null and reportName != ''">#{reportName},</if>
+            <if test="date != null">#{date},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="content != null and content != ''">#{content},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTaskReport" parameterType="TaskReport">
+        update task_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reportName != null and reportName != ''">report_name = #{reportName},</if>
+            <if test="date != null">date = #{date},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+        </trim>
+        where report_id = #{reportId}
+    </update>
+
+    <delete id="deleteTaskReportByReportId" parameterType="Long">
+        delete from task_report where report_id = #{reportId}
+    </delete>
+
+    <delete id="deleteTaskReportByReportIds" parameterType="String">
+        delete from task_report where report_id in 
+        <foreach item="reportId" collection="array" open="(" separator="," close=")">
+            #{reportId}
+        </foreach>
+    </delete>
+
+</mapper>
