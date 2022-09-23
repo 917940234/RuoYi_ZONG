@@ -1,66 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('修改生产数据监测')" />
+    <th:block th:include="include :: header('修改生产数据监控')" />
 </head>
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-template-edit" th:object="${productTemplate}">
             <input name="productId" th:field="*{productId}" type="hidden">
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">流号：</label>
-                <div class="col-sm-8">
-                    <input name="streamNo" th:field="*{streamNo}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">钢种：</label>
-                <div class="col-sm-8">
-                    <input name="steelGrade" th:field="*{steelGrade}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">宽度：</label>
-                <div class="col-sm-8">
-                    <input name="width" th:field="*{width}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">高度：</label>
-                <div class="col-sm-8">
-                    <input name="height" th:field="*{height}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">理论重量：</label>
-                <div class="col-sm-8">
-                    <input name="theoreticalWeight" th:field="*{theoreticalWeight}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">实际重量：</label>
-                <div class="col-sm-8">
-                    <input name="actualWeight" th:field="*{actualWeight}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">重差：</label>
-                <div class="col-sm-8">
-                    <input name="weightGap" th:field="*{weightGap}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">单位重量：</label>
-                <div class="col-sm-8">
-                    <input name="unitWeight" th:field="*{unitWeight}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">    
-                <label class="col-sm-3 control-label">标定时间：</label>
-                <div class="col-sm-8">
-                    <input name="time" th:field="*{time}" class="form-control" type="text">
-                </div>
-            </div>
         </form>
     </div>
     <th:block th:include="include :: footer" />

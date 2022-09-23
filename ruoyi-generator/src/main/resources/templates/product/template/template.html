@@ -77,15 +77,15 @@
         </div>
     </div>
     <th:block th:include="include :: footer" />
-    <th:block th:include="include :: echarts-js" />
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('product:template:edit')}]];
         var removeFlag = [[${@permission.hasPermi('product:template:remove')}]];
         var prefix = ctx + "product/template";
 
-        $(function () {
+        $(function() {
             var lineChart = echarts.init(document.getElementById("echarts-line-chart"));
             var lineoption = {
+
                 title : {
                     text: '实际重量监测折线图'
                 },
@@ -93,23 +93,25 @@
                     trigger: 'axis'
                 },
                 legend: {
-                    data:['最高气温','最低气温']
+                    data:['理论重量','实际重量']
                 },
                 grid:{
                     x:40,
                     x2:40,
-                    y2:24
+                    y2:48
                 },
                 calculable : true,
                 xAxis : [
                     {
                         type : 'category',
                         boundaryGap : true,
-                        data : ['周一','周二','周三','周四','周五','周六','周日']
+                        //修改点
+                        data: []
                     }
                 ],
                 yAxis : [
                     {
+                        scale : true,
                         type : 'value',
                         axisLabel : {
                             formatter: '{value} kg'
@@ -118,9 +120,10 @@
                 ],
                 series : [
                     {
-                        name:'理论重量',
-                        type:'line',
-                        data:[11, 11, 15, 13, 12, 13, 10],
+                        name : '理论重量',
+                        type : 'line',
+                        //修改点
+                        data : [],
                         label: {
                             show: false,
                             position: 'bottom',
@@ -130,9 +133,10 @@
                         }
                     },
                     {
-                        name:'实际重量',
-                        type:'line',
-                        data:[1, -2, 2, 5, 3, 2, 0],
+                        name : '实际重量',
+                        type : 'line',
+                        //修改点
+                        data : [],
                         markPoint : {
                             data : [
                                 {type : 'max', name: '最大值'},
@@ -144,7 +148,7 @@
                                 {type : 'average', name : '平均值'}
                             ]
                         },
-                        label: {
+                        label : {
                             show: false,
                             position: 'bottom',
                             textStyle: {
@@ -154,8 +158,56 @@
                     }
                 ]
             };
+
             lineChart.setOption(lineoption);
+            lineChart.showLoading();
             $(window).resize(lineChart.resize);
+
+            var productId = []; //序号数组（实际用来盛放X轴坐标值）
+            var theoreticalWeight = []; //理论重量数组（实际用来盛放Y1坐标值）
+            var actualWeight = []; //实际重量数组（实际用来盛放Y2坐标值）
+
+            $.ajax({
+                type : "post",
+                async : true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url : prefix + "/listEcharts", //请求发送到Controller处，路径我上面写好了的，直接拼的，你自己按照你的写
+                data : {},
+                dataType : "json", //返回数据形式为json
+                success : function(result) {
+                    //请求成功时执行该函数内容，result即为服务器返回的json对象
+                    if (result) {
+                        for (var i = 0; i < result.length; i++) {
+                            productId.push(result[i].productId); //挨个取出序号并填入序号数组
+                        }
+                        for (var i = 0; i < result.length; i++) {
+                            theoreticalWeight.push(result[i].theoreticalWeight); //挨个取出理论重量并填入理论重量数组
+                        }
+                        for (var i = 0; i < result.length; i++) {
+                            actualWeight.push(result[i].actualWeight); //挨个取出实际重量并填入实际重量数组
+                        }
+                        lineChart.hideLoading(); //隐藏加载动画
+                        lineChart.setOption({ //加载数据图表
+                            xAxis : {
+                                data : productId
+                            },
+                            series : [ {
+                                // 根据名字对应到相应的系列
+                                name : '理论重量',
+                                data : theoreticalWeight,
+                            }, {
+                                name : '实际重量',
+                                data : actualWeight
+                                }
+                            ]
+                        });
+                    }
+                },
+                error : function(errorMsg) {
+                    //请求失败时执行该函数
+                    alert("图表请求数据失败!");
+                    lineChart.hideLoading();
+                }
+            })
         });
 
         $(function() {
@@ -169,60 +221,61 @@
                 columns: [{
                     checkbox: true
                 },
-                {
-                    field: 'productId',
-                    title: '序号',
-                    visible: false
-                },
-                {
-                    field: 'streamNo',
-                    title: '流号'
-                },
-                {
-                    field: 'steelGrade',
-                    title: '钢种'
-                },
-                {
-                    field: 'width',
-                    title: '宽度'
-                },
-                {
-                    field: 'height',
-                    title: '高度'
-                },
-                {
-                    field: 'theoreticalWeight',
-                    title: '理论重量'
-                },
-                {
-                    field: 'actualWeight',
-                    title: '实际重量'
-                },
-                {
-                    field: 'weightGap',
-                    title: '重差'
-                },
-                {
-                    field: 'unitWeight',
-                    title: '单位重量'
-                },
-                {
-                    field: 'time',
-                    title: '标定时间'
-                },
-                {
-                    title: '操作',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        var actions = [];
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.productId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.productId + '\')"><i class="fa fa-remove"></i>删除</a>');
-                        return actions.join('');
-                    }
-                }]
+                    {
+                        field: 'productId',
+                        title: '序号',
+                        visible: false
+                    },
+                    {
+                        field: 'streamNo',
+                        title: '流号'
+                    },
+                    {
+                        field: 'steelGrade',
+                        title: '钢种'
+                    },
+                    {
+                        field: 'width',
+                        title: '宽度'
+                    },
+                    {
+                        field: 'height',
+                        title: '高度'
+                    },
+                    {
+                        field: 'theoreticalWeight',
+                        title: '理论重量'
+                    },
+                    {
+                        field: 'actualWeight',
+                        title: '实际重量'
+                    },
+                    {
+                        field: 'weightGap',
+                        title: '重差'
+                    },
+                    {
+                        field: 'unitWeight',
+                        title: '单位重量'
+                    },
+                    {
+                        field: 'time',
+                        title: '标定时间'
+                    },
+                    {
+                        title: '操作',
+                        align: 'center',
+                        formatter: function(value, row, index) {
+                            var actions = [];
+                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.productId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                            actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.productId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                            return actions.join('');
+                        }
+                    }]
             };
             $.table.init(options);
         });
     </script>
+    <th:block th:include="include :: echarts-js" />
 </body>
 </html>

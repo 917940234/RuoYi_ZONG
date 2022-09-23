@@ -6,10 +6,10 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 生产数据监测对象 product_template
+ * 生产数据监控对象 product_template
  * 
  * @author zongyoucheng
- * @date 2022-09-22
+ * @date 2022-09-23
  */
 public class ProductTemplate extends BaseEntity
 {

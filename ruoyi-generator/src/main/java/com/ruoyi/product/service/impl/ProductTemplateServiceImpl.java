@@ -9,10 +9,10 @@ import com.ruoyi.product.service.IProductTemplateService;
 import com.ruoyi.common.core.text.Convert;
 
 /**
- * 生产数据监测Service业务层处理
+ * 生产数据监控Service业务层处理
  * 
  * @author zongyoucheng
- * @date 2022-09-22
+ * @date 2022-09-23
  */
 @Service
 public class ProductTemplateServiceImpl implements IProductTemplateService 
@@ -21,10 +21,10 @@ public class ProductTemplateServiceImpl implements IProductTemplateService
     private ProductTemplateMapper productTemplateMapper;
 
     /**
-     * 查询生产数据监测
+     * 查询生产数据监控
      * 
-     * @param productId 生产数据监测主键
-     * @return 生产数据监测
+     * @param productId 生产数据监控主键
+     * @return 生产数据监控
      */
     @Override
     public ProductTemplate selectProductTemplateByProductId(Long productId)
@@ -33,10 +33,10 @@ public class ProductTemplateServiceImpl implements IProductTemplateService
     }
 
     /**
-     * 查询生产数据监测列表
+     * 查询生产数据监控列表
      * 
-     * @param productTemplate 生产数据监测
-     * @return 生产数据监测
+     * @param productTemplate 生产数据监控
+     * @return 生产数据监控
      */
     @Override
     public List<ProductTemplate> selectProductTemplateList(ProductTemplate productTemplate)
@@ -45,9 +45,9 @@ public class ProductTemplateServiceImpl implements IProductTemplateService
     }
 
     /**
-     * 新增生产数据监测
+     * 新增生产数据监控
      * 
-     * @param productTemplate 生产数据监测
+     * @param productTemplate 生产数据监控
      * @return 结果
      */
     @Override
@@ -57,9 +57,9 @@ public class ProductTemplateServiceImpl implements IProductTemplateService
     }
 
     /**
-     * 修改生产数据监测
+     * 修改生产数据监控
      * 
-     * @param productTemplate 生产数据监测
+     * @param productTemplate 生产数据监控
      * @return 结果
      */
     @Override
@@ -69,9 +69,9 @@ public class ProductTemplateServiceImpl implements IProductTemplateService
     }
 
     /**
-     * 批量删除生产数据监测
+     * 批量删除生产数据监控
      * 
-     * @param productIds 需要删除的生产数据监测主键
+     * @param productIds 需要删除的生产数据监控主键
      * @return 结果
      */
     @Override
@@ -81,9 +81,9 @@ public class ProductTemplateServiceImpl implements IProductTemplateService
     }
 
     /**
-     * 删除生产数据监测信息
+     * 删除生产数据监控信息
      * 
-     * @param productId 生产数据监测主键
+     * @param productId 生产数据监控主键
      * @return 结果
      */
     @Override
