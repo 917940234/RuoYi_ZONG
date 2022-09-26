@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "echarts-liquidfill": "^2.0.5"
+  }
+}

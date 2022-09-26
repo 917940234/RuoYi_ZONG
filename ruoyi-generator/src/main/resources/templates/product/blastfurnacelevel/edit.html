@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改高炉液位数据监控')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-blastfurnacelevel-edit" th:object="${productBlastFurnaceLevel}">
+            <input name="blastFurnaceLevelId" th:field="*{blastFurnaceLevelId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">日期：</label>
+                <div class="col-sm-8">
+                    <input name="dateExisted" th:field="*{dateExisted}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">时间：</label>
+                <div class="col-sm-8">
+                    <input name="timeExisted" th:field="*{timeExisted}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">1号高炉液位：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA1" th:field="*{equipmentA1}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">2号高炉液位：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA2" th:field="*{equipmentA2}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">3号高炉液位：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA3" th:field="*{equipmentA3}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">6号高炉液位：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA6" th:field="*{equipmentA6}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">7号高炉液位：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA7" th:field="*{equipmentA7}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">8号高炉液位：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA8" th:field="*{equipmentA8}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "product/blastfurnacelevel";
+        $("#form-blastfurnacelevel-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-blastfurnacelevel-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>
