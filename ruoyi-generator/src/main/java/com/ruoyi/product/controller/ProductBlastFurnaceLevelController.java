@@ -49,7 +49,7 @@ public class ProductBlastFurnaceLevelController extends BaseController
     }
 
     /**
-     * product:template:view返回到echarts页面(权限决定是否读取到该方法，return决定跳转到何页面，getmapping不能重复，会报错)
+     * product:blastfurnacelevel:echarts返回到echarts页面(权限决定是否读取到该方法，return决定跳转到何页面，getmapping不能重复，会报错)
      * @return
      */
     @RequiresPermissions("product:blastfurnacelevel:echarts")
@@ -57,6 +57,17 @@ public class ProductBlastFurnaceLevelController extends BaseController
     public String echarts()
     {
         return prefix + "/echarts.html";
+    }
+
+    /**
+     * product:blastfurnacelevel:realtimeecharts返回到echarts页面(权限决定是否读取到该方法，return决定跳转到何页面，getmapping不能重复，会报错)
+     * @return
+     */
+    @RequiresPermissions("product:blastfurnacelevel:realtimeecharts")
+    @GetMapping("/realtimeecharts")
+    public String realtimeecharts()
+    {
+        return prefix + "/realtimeecharts.html";
     }
 
     /**

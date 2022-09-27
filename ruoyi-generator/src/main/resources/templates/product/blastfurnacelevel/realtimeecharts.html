@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('高炉液位实时监控')" />
+</head>
+<style type="text/css">
+    #backImg{
+        background: url("/iron_ladle.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+</style>
+<body class="gray-bg">
+    <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <h1>液位实时监控界面</h1>
+                <div class="col-sm-4 text-center">
+                    <h2>西出铁口</h2>
+                    <div class="col-sm-4 text-center">
+                        <h3>铁水罐位1</h3>
+                        <div id="backImg">
+                            <div class="echarts" id="echarts-realtime-chart1">铁水罐位1</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 text-center">
+                        <h3>铁水罐位2</h3>
+                        <div id="backImg">
+                            <div class="echarts" id="echarts-realtime-chart2">铁水罐位2</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 text-center">
+                        <h3>铁水罐位3</h3>
+                        <div id="backImg">
+                            <div class="echarts" id="echarts-realtime-chart3">铁水罐位3</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <h2>高炉出铁</h2>
+                    <img src="/iron_molten.png" width="160" height="110">
+                    <video width="320" height="240" controls>
+                        <source src="/iron_molten.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <h2>东出铁口</h2>
+                    <div class="col-sm-4 text-center">
+                        <h3>铁水罐位6</h3>
+                        <div id="backImg">
+                            <div class="echarts" id="echarts-realtime-chart6">铁水罐位6</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 text-center">
+                        <h3>铁水罐位7</h3>
+                        <div id="backImg">
+                            <div class="echarts" id="echarts-realtime-chart7">铁水罐位7</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 text-center">
+                        <h3>铁水罐位8</h3>
+                        <div id="backImg">
+                            <div class="echarts" id="echarts-realtime-chart8">铁水罐位8</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+
+        var prefix = ctx + "product/blastfurnacelevel";
+
+        //高炉液位实时显示
+        $(function() {
+            var realtimeChart1 = echarts.init(document.getElementById("echarts-realtime-chart1"));
+
+            var realtimeoption1 = {
+                renderAsImage:"/iron_image.jpg",
+                series: [{
+                    type: 'liquidFill',
+                    data: [0.6, 0.55, 0.4, 0.25],
+                    color: ['#F99E4F'],
+                    radius: '60%',
+                    outline: {
+                        show: false
+                    },
+                    backgroundStyle: {
+                        borderColor: '#636363',
+                        borderWidth: 0,
+                        shadowColor: '#636363',
+                        shadowBlur: 20,
+                        color: '#636363',
+                        colorolor: 20
+                    },
+                    shape: 'path://m719.20755,166.445c0,37.92355 -57.75528,68.66667 -129.00003,68.66667m129.00003,-68.66667l0,0c0,37.92355 -57.75528,68.66667 -129.00003,68.66667c-71.24472,0 -128.99998,-30.74306 -128.99998,-68.66667m0,0l0,0c0,-37.92351 57.75526,-68.66665 128.99998,-68.66665c71.24475,0 129.00003,30.74314 129.00003,68.66665l0,274.6668c0,37.92351 -57.75528,68.66655 -129.00003,68.66655c-71.24472,0 -128.99998,-30.74304 -128.99998,-68.66655l0,-274.6668z',
+                    label: {
+                        position: ['50%', '50%'],
+                        // formatter: function() {
+                        //     return '1号\n高炉';
+                        // },
+                        fontSize: 18,
+                        color: '#00ffff'
+                    }
+                }]
+            };
+
+            realtimeChart1.setOption(realtimeoption1);
+            realtimeChart1.showLoading();
+            $(window).resize(realtimeChart1.resize);
+
+            var equipmentA1 = [];//1号高炉液位数组
+            var equipmentA1Data;//1号高炉液位单独数据
+
+            $.ajax({
+                type : "post",
+                async : true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url : prefix + "/listEcharts", //请求发送到Controller处的实时数据图读取实时液位
+                data : {},
+                dataType : "json", //返回数据形式为json
+                success : function(result) {
+                    //请求成功时执行该函数内容，result即为服务器返回的json对象
+                    if (result) {
+                        equipmentA1.push(result[0].equipmentA1); //挨个取出时间（已存在）并填入时间（已存在）数组
+                        equipmentA1Data = equipmentA1[0];
+                        equipmentA1Data = equipmentA1Data/30000;
+                        realtimeChart1.hideLoading(); //隐藏加载动画
+                        realtimeChart1.setOption({ //加载数据图表
+                            series: [{
+                                data : [equipmentA1Data,equipmentA1Data-0.02,equipmentA1Data-0.05,equipmentA1Data-0.1]
+                            }]
+                        });
+                    }
+                },
+                error : function(errorMsg) {
+                    //请求失败时执行该函数
+                    alert("图表请求数据失败!");
+                    realtimeoption1.hideLoading();
+                }
+            })
+        });
+        $(function() {
+            var realtimeChart2 = echarts.init(document.getElementById("echarts-realtime-chart2"));
+
+            var realtimeoption2 = {
+                series: [{
+                    type: 'liquidFill',
+                    data: [0.6, 0.55, 0.4, 0.25],
+                    color: ['#F99E4F'],
+                    radius: '60%',
+                    outline: {
+                        show: false
+                    },
+                    backgroundStyle: {
+                        borderColor: '#636363',
+                        borderWidth: 0,
+                        shadowColor: '#636363',
+                        shadowBlur: 20,
+                        color: '#636363',
+                        colorolor: 20
+                    },
+                    shape: 'path://m719.20755,166.445c0,37.92355 -57.75528,68.66667 -129.00003,68.66667m129.00003,-68.66667l0,0c0,37.92355 -57.75528,68.66667 -129.00003,68.66667c-71.24472,0 -128.99998,-30.74306 -128.99998,-68.66667m0,0l0,0c0,-37.92351 57.75526,-68.66665 128.99998,-68.66665c71.24475,0 129.00003,30.74314 129.00003,68.66665l0,274.6668c0,37.92351 -57.75528,68.66655 -129.00003,68.66655c-71.24472,0 -128.99998,-30.74304 -128.99998,-68.66655l0,-274.6668z',
+                    label: {
+                        position: ['50%', '50%'],
+                        // formatter: function() {
+                        //     return '2号\n高炉';
+                        // },
+                        fontSize: 18,
+                        color: '#00ffff'
+                    }
+                }]
+            };
+
+            realtimeChart2.setOption(realtimeoption2);
+            realtimeChart2.showLoading();
+            $(window).resize(realtimeChart2.resize);
+
+            var equipmentA2 = [];//1号高炉液位数组
+            var equipmentA2Data;//1号高炉液位单独数据
+
+            $.ajax({
+                type : "post",
+                async : true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url : prefix + "/listEcharts", //请求发送到Controller处的实时数据图读取实时液位
+                data : {},
+                dataType : "json", //返回数据形式为json
+                success : function(result) {
+                    //请求成功时执行该函数内容，result即为服务器返回的json对象
+                    if (result) {
+                        equipmentA2.push(result[0].equipmentA2); //挨个取出时间（已存在）并填入时间（已存在）数组
+                        equipmentA2Data = equipmentA2[0];
+                        equipmentA2Data = equipmentA2Data/30000;
+                        realtimeChart2.hideLoading(); //隐藏加载动画
+                        realtimeChart2.setOption({ //加载数据图表
+                            series: [{
+                                data : [equipmentA2Data,equipmentA2Data-0.02,equipmentA2Data-0.05,equipmentA2Data-0.1]
+                            }]
+                        });
+                    }
+                },
+                error : function(errorMsg) {
+                    //请求失败时执行该函数
+                    alert("图表请求数据失败!");
+                    realtimeoption2.hideLoading();
+                }
+            })
+        });
+        $(function() {
+            var realtimeChart3 = echarts.init(document.getElementById("echarts-realtime-chart3"));
+
+            var realtimeoption3 = {
+                series: [{
+                    type: 'liquidFill',
+                    data: [0.6, 0.55, 0.4, 0.25],
+                    color: ['#F99E4F'],
+                    radius: '60%',
+                    outline: {
+                        show: false
+                    },
+                    backgroundStyle: {
+                        borderColor: '#636363',
+                        borderWidth: 0,
+                        shadowColor: '#636363',
+                        shadowBlur: 20,
+                        color: '#636363',
+                        colorolor: 20
+                    },
+                    shape: 'path://m719.20755,166.445c0,37.92355 -57.75528,68.66667 -129.00003,68.66667m129.00003,-68.66667l0,0c0,37.92355 -57.75528,68.66667 -129.00003,68.66667c-71.24472,0 -128.99998,-30.74306 -128.99998,-68.66667m0,0l0,0c0,-37.92351 57.75526,-68.66665 128.99998,-68.66665c71.24475,0 129.00003,30.74314 129.00003,68.66665l0,274.6668c0,37.92351 -57.75528,68.66655 -129.00003,68.66655c-71.24472,0 -128.99998,-30.74304 -128.99998,-68.66655l0,-274.6668z',
+                    label: {
+                        position: ['50%', '50%'],
+                        // formatter: function() {
+                        //     return '3号\n高炉';
+                        // },
+                        fontSize: 18,
+                        color: '#00ffff'
+                    }
+                }]
+            };
+
+            realtimeChart3.setOption(realtimeoption3);
+            realtimeChart3.showLoading();
+            $(window).resize(realtimeChart3.resize);
+
+            var equipmentA3 = [];//1号高炉液位数组
+            var equipmentA3Data;//1号高炉液位单独数据
+
+            $.ajax({
+                type : "post",
+                async : true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url : prefix + "/listEcharts", //请求发送到Controller处的实时数据图读取实时液位
+                data : {},
+                dataType : "json", //返回数据形式为json
+                success : function(result) {
+                    //请求成功时执行该函数内容，result即为服务器返回的json对象
+                    if (result) {
+                        equipmentA3.push(result[0].equipmentA3); //挨个取出时间（已存在）并填入时间（已存在）数组
+                        equipmentA3Data = equipmentA3[0];
+                        equipmentA3Data = equipmentA3Data/30000;
+                        realtimeChart3.hideLoading(); //隐藏加载动画
+                        realtimeChart3.setOption({ //加载数据图表
+                            series: [{
+                                data : [equipmentA3Data,equipmentA3Data-0.02,equipmentA3Data-0.05,equipmentA3Data-0.1]
+                            }]
+                        });
+                    }
+                },
+                error : function(errorMsg) {
+                    //请求失败时执行该函数
+                    alert("图表请求数据失败!");
+                    realtimeoption3.hideLoading();
+                }
+            })
+        });
+        $(function() {
+            var realtimeChart6 = echarts.init(document.getElementById("echarts-realtime-chart6"));
+
+            var realtimeoption6 = {
+                series: [{
+                    type: 'liquidFill',
+                    data: [0.6, 0.55, 0.4, 0.25],
+                    color: ['#F99E4F'],
+                    radius: '60%',
+                    outline: {
+                        show: false
+                    },
+                    backgroundStyle: {
+                        borderColor: '#636363',
+                        borderWidth: 0,
+                        shadowColor: '#636363',
+                        shadowBlur: 20,
+                        color: '#636363',
+                        colorolor: 20
+                    },
+                    shape: 'path://m719.20755,166.445c0,37.92355 -57.75528,68.66667 -129.00003,68.66667m129.00003,-68.66667l0,0c0,37.92355 -57.75528,68.66667 -129.00003,68.66667c-71.24472,0 -128.99998,-30.74306 -128.99998,-68.66667m0,0l0,0c0,-37.92351 57.75526,-68.66665 128.99998,-68.66665c71.24475,0 129.00003,30.74314 129.00003,68.66665l0,274.6668c0,37.92351 -57.75528,68.66655 -129.00003,68.66655c-71.24472,0 -128.99998,-30.74304 -128.99998,-68.66655l0,-274.6668z',
+                    label: {
+                        position: ['50%', '50%'],
+                        // formatter: function() {
+                        //     return '6号\n高炉';
+                        // },
+                        fontSize: 18,
+                        color: '#00ffff'
+                    }
+                }]
+            };
+
+            realtimeChart6.setOption(realtimeoption6);
+            realtimeChart6.showLoading();
+            $(window).resize(realtimeChart6.resize);
+
+            var equipmentA6 = [];//1号高炉液位数组
+            var equipmentA6Data;//1号高炉液位单独数据
+
+            $.ajax({
+                type : "post",
+                async : true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url : prefix + "/listEcharts", //请求发送到Controller处的实时数据图读取实时液位
+                data : {},
+                dataType : "json", //返回数据形式为json
+                success : function(result) {
+                    //请求成功时执行该函数内容，result即为服务器返回的json对象
+                    if (result) {
+                        equipmentA6.push(result[0].equipmentA6); //挨个取出时间（已存在）并填入时间（已存在）数组
+                        equipmentA6Data = equipmentA6[0];
+                        equipmentA6Data = equipmentA6Data/30000;
+                        realtimeChart6.hideLoading(); //隐藏加载动画
+                        realtimeChart6.setOption({ //加载数据图表
+                            series: [{
+                                data : [equipmentA6Data,equipmentA6Data-0.02,equipmentA6Data-0.05,equipmentA6Data-0.1]
+                            }]
+                        });
+                    }
+                },
+                error : function(errorMsg) {
+                    //请求失败时执行该函数
+                    alert("图表请求数据失败!");
+                    realtimeoption6.hideLoading();
+                }
+            })
+        });
+        $(function() {
+            var realtimeChart7 = echarts.init(document.getElementById("echarts-realtime-chart7"));
+
+            var realtimeoption7 = {
+                series: [{
+                    type: 'liquidFill',
+                    data: [0.6, 0.55, 0.4, 0.25],
+                    color: ['#F99E4F'],
+                    radius: '60%',
+                    outline: {
+                        show: false
+                    },
+                    backgroundStyle: {
+                        borderColor: '#636363',
+                        borderWidth: 0,
+                        shadowColor: '#636363',
+                        shadowBlur: 20,
+                        color: '#636363',
+                        colorolor: 20
+                    },
+                    shape: 'path://m719.20755,166.445c0,37.92355 -57.75528,68.66667 -129.00003,68.66667m129.00003,-68.66667l0,0c0,37.92355 -57.75528,68.66667 -129.00003,68.66667c-71.24472,0 -128.99998,-30.74306 -128.99998,-68.66667m0,0l0,0c0,-37.92351 57.75526,-68.66665 128.99998,-68.66665c71.24475,0 129.00003,30.74314 129.00003,68.66665l0,274.6668c0,37.92351 -57.75528,68.66655 -129.00003,68.66655c-71.24472,0 -128.99998,-30.74304 -128.99998,-68.66655l0,-274.6668z',
+                    label: {
+                        position: ['50%', '50%'],
+                        // formatter: function() {
+                        //     return '7号\n高炉';
+                        // },
+                        fontSize: 18,
+                        color: '#00ffff'
+                    }
+                }]
+            };
+
+            realtimeChart7.setOption(realtimeoption7);
+            realtimeChart7.showLoading();
+            $(window).resize(realtimeChart7.resize);
+
+            var equipmentA7 = [];//1号高炉液位数组
+            var equipmentA7Data;//1号高炉液位单独数据
+
+            $.ajax({
+                type : "post",
+                async : true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url : prefix + "/listEcharts", //请求发送到Controller处的实时数据图读取实时液位
+                data : {},
+                dataType : "json", //返回数据形式为json
+                success : function(result) {
+                    //请求成功时执行该函数内容，result即为服务器返回的json对象
+                    if (result) {
+                        equipmentA7.push(result[0].equipmentA7); //挨个取出时间（已存在）并填入时间（已存在）数组
+                        equipmentA7Data = equipmentA7[0];
+                        equipmentA7Data = equipmentA7Data/30000;
+                        realtimeChart7.hideLoading(); //隐藏加载动画
+                        realtimeChart7.setOption({ //加载数据图表
+                            series: [{
+                                data : [equipmentA7Data,equipmentA7Data-0.02,equipmentA7Data-0.05,equipmentA7Data-0.1]
+                            }]
+                        });
+                    }
+                },
+                error : function(errorMsg) {
+                    //请求失败时执行该函数
+                    alert("图表请求数据失败!");
+                    realtimeoption7.hideLoading();
+                }
+            })
+        });
+        $(function() {
+            var realtimeChart8 = echarts.init(document.getElementById("echarts-realtime-chart8"));
+
+            var realtimeoption8 = {
+                series: [{
+                    type: 'liquidFill',
+                    data: [0.6, 0.55, 0.4, 0.25],
+                    color: ['#F99E4F'],
+                    radius: '60%',
+                    outline: {
+                        show: false
+                    },
+                    backgroundStyle: {
+                        borderColor: '#636363',
+                        borderWidth: 0,
+                        shadowColor: '#636363',
+                        shadowBlur: 20,
+                        color: '#636363',
+                        colorolor: 20
+                    },
+                    shape: 'path://m719.20755,166.445c0,37.92355 -57.75528,68.66667 -129.00003,68.66667m129.00003,-68.66667l0,0c0,37.92355 -57.75528,68.66667 -129.00003,68.66667c-71.24472,0 -128.99998,-30.74306 -128.99998,-68.66667m0,0l0,0c0,-37.92351 57.75526,-68.66665 128.99998,-68.66665c71.24475,0 129.00003,30.74314 129.00003,68.66665l0,274.6668c0,37.92351 -57.75528,68.66655 -129.00003,68.66655c-71.24472,0 -128.99998,-30.74304 -128.99998,-68.66655l0,-274.6668z',
+                    label: {
+                        position: ['50%', '50%'],
+                        // formatter: function() {
+                        //     return '8号\n高炉';
+                        // },
+                        fontSize: 18,
+                        color: '#00ffff'
+                    }
+                }]
+            };
+
+            realtimeChart8.setOption(realtimeoption8);
+            realtimeChart8.showLoading();
+            $(window).resize(realtimeChart8.resize);
+
+            var equipmentA8 = [];//8号高炉液位数组
+            var equipmentA8Data;//8号高炉液位单独数据
+
+            $.ajax({
+                type : "post",
+                async : true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+                url : prefix + "/listEcharts", //请求发送到Controller处的实时数据图读取实时液位
+                data : {},
+                dataType : "json", //返回数据形式为json
+                success : function(result) {
+                    //请求成功时执行该函数内容，result即为服务器返回的json对象
+                    if (result) {
+                        equipmentA8.push(result[0].equipmentA8); //挨个取出时间（已存在）并填入时间（已存在）数组
+                        equipmentA8Data = equipmentA8[0];
+                        equipmentA8Data = equipmentA8Data/30000;
+                        realtimeChart8.hideLoading(); //隐藏加载动画
+                        realtimeChart8.setOption({ //加载数据图表
+                            series: [{
+                                data : [equipmentA8Data,equipmentA8Data-0.02,equipmentA8Data-0.05,equipmentA8Data-0.1]
+                            }]
+                        });
+                    }
+                },
+                error : function(errorMsg) {
+                    //请求失败时执行该函数
+                    alert("图表请求数据失败!");
+                    realtimeoption8.hideLoading();
+                }
+            })
+        });
+    </script>
+    <th:block th:include="include :: echarts-js" />
+    <script th:src="@{/ajax/libs/report/echarts-liquidfill/echarts-liquidfill.min.js?v=2.0.5}"></script>
+</body>
+</html>
