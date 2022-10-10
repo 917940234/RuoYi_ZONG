@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.product.mapper.ProductBlastFurnaceStatusMapper">
+    
+    <resultMap type="ProductBlastFurnaceStatus" id="ProductBlastFurnaceStatusResult">
+        <result property="blastFurnaceStatusId"    column="blast_furnace_status_id"    />
+        <result property="dateExisted"    column="date_existed"    />
+        <result property="timeExisted"    column="time_existed"    />
+        <result property="equipmentA1State"    column="equipment_a1_state"    />
+        <result property="equipmentA2State"    column="equipment_a2_state"    />
+        <result property="equipmentA3State"    column="equipment_a3_state"    />
+        <result property="equipmentA6State"    column="equipment_a6_state"    />
+        <result property="equipmentA7State"    column="equipment_a7_state"    />
+        <result property="equipmentA8State"    column="equipment_a8_state"    />
+    </resultMap>
+
+    <sql id="selectProductBlastFurnaceStatusVo">
+        select blast_furnace_status_id, date_existed, time_existed, equipment_a1_state, equipment_a2_state, equipment_a3_state, equipment_a6_state, equipment_a7_state, equipment_a8_state from product_blast_furnace_status
+    </sql>
+
+    <select id="selectProductBlastFurnaceStatusList" parameterType="ProductBlastFurnaceStatus" resultMap="ProductBlastFurnaceStatusResult">
+        <include refid="selectProductBlastFurnaceStatusVo"/>
+        <where>  
+            <if test="dateExisted != null  and dateExisted != ''"> and date_existed = #{dateExisted}</if>
+            <if test="timeExisted != null  and timeExisted != ''"> and time_existed = #{timeExisted}</if>
+            <if test="equipmentA1State != null "> and equipment_a1_state = #{equipmentA1State}</if>
+            <if test="equipmentA2State != null "> and equipment_a2_state = #{equipmentA2State}</if>
+            <if test="equipmentA3State != null "> and equipment_a3_state = #{equipmentA3State}</if>
+            <if test="equipmentA6State != null "> and equipment_a6_state = #{equipmentA6State}</if>
+            <if test="equipmentA7State != null "> and equipment_a7_state = #{equipmentA7State}</if>
+            <if test="equipmentA8State != null "> and equipment_a8_state = #{equipmentA8State}</if>
+        </where>
+    </select>
+    
+    <select id="selectProductBlastFurnaceStatusByBlastFurnaceStatusId" parameterType="Long" resultMap="ProductBlastFurnaceStatusResult">
+        <include refid="selectProductBlastFurnaceStatusVo"/>
+        where blast_furnace_status_id = #{blastFurnaceStatusId}
+    </select>
+        
+    <insert id="insertProductBlastFurnaceStatus" parameterType="ProductBlastFurnaceStatus" useGeneratedKeys="true" keyProperty="blastFurnaceStatusId">
+        insert into product_blast_furnace_status
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dateExisted != null">date_existed,</if>
+            <if test="timeExisted != null">time_existed,</if>
+            <if test="equipmentA1State != null">equipment_a1_state,</if>
+            <if test="equipmentA2State != null">equipment_a2_state,</if>
+            <if test="equipmentA3State != null">equipment_a3_state,</if>
+            <if test="equipmentA6State != null">equipment_a6_state,</if>
+            <if test="equipmentA7State != null">equipment_a7_state,</if>
+            <if test="equipmentA8State != null">equipment_a8_state,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dateExisted != null">#{dateExisted},</if>
+            <if test="timeExisted != null">#{timeExisted},</if>
+            <if test="equipmentA1State != null">#{equipmentA1State},</if>
+            <if test="equipmentA2State != null">#{equipmentA2State},</if>
+            <if test="equipmentA3State != null">#{equipmentA3State},</if>
+            <if test="equipmentA6State != null">#{equipmentA6State},</if>
+            <if test="equipmentA7State != null">#{equipmentA7State},</if>
+            <if test="equipmentA8State != null">#{equipmentA8State},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductBlastFurnaceStatus" parameterType="ProductBlastFurnaceStatus">
+        update product_blast_furnace_status
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dateExisted != null">date_existed = #{dateExisted},</if>
+            <if test="timeExisted != null">time_existed = #{timeExisted},</if>
+            <if test="equipmentA1State != null">equipment_a1_state = #{equipmentA1State},</if>
+            <if test="equipmentA2State != null">equipment_a2_state = #{equipmentA2State},</if>
+            <if test="equipmentA3State != null">equipment_a3_state = #{equipmentA3State},</if>
+            <if test="equipmentA6State != null">equipment_a6_state = #{equipmentA6State},</if>
+            <if test="equipmentA7State != null">equipment_a7_state = #{equipmentA7State},</if>
+            <if test="equipmentA8State != null">equipment_a8_state = #{equipmentA8State},</if>
+        </trim>
+        where blast_furnace_status_id = #{blastFurnaceStatusId}
+    </update>
+
+    <delete id="deleteProductBlastFurnaceStatusByBlastFurnaceStatusId" parameterType="Long">
+        delete from product_blast_furnace_status where blast_furnace_status_id = #{blastFurnaceStatusId}
+    </delete>
+
+    <delete id="deleteProductBlastFurnaceStatusByBlastFurnaceStatusIds" parameterType="String">
+        delete from product_blast_furnace_status where blast_furnace_status_id in 
+        <foreach item="blastFurnaceStatusId" collection="array" open="(" separator="," close=")">
+            #{blastFurnaceStatusId}
+        </foreach>
+    </delete>
+
+</mapper>

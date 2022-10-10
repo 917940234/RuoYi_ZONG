@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改铁水包状态')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-blastfurnacestatus-edit" th:object="${productBlastFurnaceStatus}">
+            <input name="blastFurnaceStatusId" th:field="*{blastFurnaceStatusId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">日期：</label>
+                <div class="col-sm-8">
+                    <input name="dateExisted" th:field="*{dateExisted}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">时间：</label>
+                <div class="col-sm-8">
+                    <input name="timeExisted" th:field="*{timeExisted}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">1号铁水罐状态：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA1State" th:field="*{equipmentA1State}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">2号铁水罐状态：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA2State" th:field="*{equipmentA2State}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">3号铁水罐状态：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA3State" th:field="*{equipmentA3State}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">6号铁水罐状态：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA6State" th:field="*{equipmentA6State}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">7号铁水罐状态：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA7State" th:field="*{equipmentA7State}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">8号铁水罐状态：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA8State" th:field="*{equipmentA8State}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "product/blastfurnacestatus";
+        $("#form-blastfurnacestatus-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-blastfurnacestatus-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

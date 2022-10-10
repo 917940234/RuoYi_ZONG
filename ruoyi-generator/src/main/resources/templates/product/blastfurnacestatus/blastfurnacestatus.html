@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('铁水包状态列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>日期：</label>
+                                <input type="text" name="dateExisted"/>
+                            </li>
+                            <li>
+                                <label>时间：</label>
+                                <input type="text" name="timeExisted"/>
+                            </li>
+                            <li>
+                                <label>1号铁水罐状态：</label>
+                                <input type="text" name="equipmentA1State"/>
+                            </li>
+                            <li>
+                                <label>2号铁水罐状态：</label>
+                                <input type="text" name="equipmentA2State"/>
+                            </li>
+                            <li>
+                                <label>3号铁水罐状态：</label>
+                                <input type="text" name="equipmentA3State"/>
+                            </li>
+                            <li>
+                                <label>6号铁水罐状态：</label>
+                                <input type="text" name="equipmentA6State"/>
+                            </li>
+                            <li>
+                                <label>7号铁水罐状态：</label>
+                                <input type="text" name="equipmentA7State"/>
+                            </li>
+                            <li>
+                                <label>8号铁水罐状态：</label>
+                                <input type="text" name="equipmentA8State"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="product:blastfurnacestatus:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="product:blastfurnacestatus:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="product:blastfurnacestatus:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="product:blastfurnacestatus:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('product:blastfurnacestatus:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('product:blastfurnacestatus:remove')}]];
+        var prefix = ctx + "product/blastfurnacestatus";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "铁水包状态",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'blastFurnaceStatusId',
+                    title: '铁水包状态模块ID',
+                    visible: false
+                },
+                {
+                    field: 'dateExisted',
+                    title: '日期'
+                },
+                {
+                    field: 'timeExisted',
+                    title: '时间'
+                },
+                {
+                    field: 'equipmentA1State',
+                    title: '1号铁水罐状态'
+                },
+                {
+                    field: 'equipmentA2State',
+                    title: '2号铁水罐状态'
+                },
+                {
+                    field: 'equipmentA3State',
+                    title: '3号铁水罐状态'
+                },
+                {
+                    field: 'equipmentA6State',
+                    title: '6号铁水罐状态'
+                },
+                {
+                    field: 'equipmentA7State',
+                    title: '7号铁水罐状态'
+                },
+                {
+                    field: 'equipmentA8State',
+                    title: '8号铁水罐状态'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.blastFurnaceStatusId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.blastFurnaceStatusId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('铁水包状态')" />
+</head>
+<style type="text/css">
+    #backImg{
+        background: url("/iron_ladle.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+</style>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <h1>铁水包状态</h1>
+            <div class="row">
+                <div class="col-sm-5 text-center">
+                    <h2>西出铁口</h2>
+                    <div class="col-sm-4 text-center">
+                        <h3>铁水罐位1</h3>
+                        <img src="/iron_ladle.png" width="141" height="136.67">
+                        <h3 id="echarts1">初始化中</h3>
+                    </div>
+                    <div class="col-sm-4 text-center">
+                        <h3>铁水罐位2</h3>
+                        <img src="/iron_ladle.png" width="141" height="136.67">
+                        <h3 id="echarts2">初始化中</h3>
+                    </div>
+                    <div class="col-sm-4 text-center">
+                        <h3>铁水罐位3</h3>
+                        <img src="/iron_ladle.png" width="141" height="136.67">
+                        <h3 id="echarts3">初始化中</h3>
+                    </div>
+                </div>
+                <div class="col-sm-5 col-sm-offset-2 text-center">
+                    <h2>东出铁口</h2>
+                    <div class="col-sm-4 text-center">
+                        <h3>铁水罐位6</h3>
+                        <img src="/iron_ladle.png" width="141" height="136.67">
+                        <h3 id="echarts6">初始化中</h3>
+                    </div>
+                    <div class="col-sm-4 text-center">
+                        <h3>铁水罐位7</h3>
+                        <img src="/iron_ladle.png" width="141" height="136.67">
+                        <h3 id="echarts7">初始化中</h3>
+                    </div>
+                    <div class="col-sm-4 text-center">
+                        <h3>铁水罐位8</h3>
+                        <img src="/iron_ladle.png" width="141" height="136.67">
+                        <h3 id="echarts8">初始化中</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+
+    var prefix = ctx + "product/blastfurnacestatus";
+    var echarts1 = function () {
+        var equipmentA1State = [];//1号铁水包状态数组
+        var equipmentA1StateData;//1号铁水包状态单独数据
+        var stateData;
+
+        $.ajax({
+            type: "post",
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: prefix + "/echarts", //请求发送到Controller处的实时数据图读取实时状态
+            data: {},
+            dataType: "json", //返回数据形式为json
+            success: function (result) {
+                //请求成功时执行该函数内容，result即为服务器返回的json对象
+                if (result) {
+                    equipmentA1State.push(result[0].equipmentA1State); //挨个取出铁水包1状态并填入铁水包1状态数组
+                    equipmentA1StateData = equipmentA1State[0];
+                    if (equipmentA1StateData == 0) {
+                        stateData = "空包";
+                    } else if (equipmentA1StateData == 1) {
+                        stateData = "出钢";
+                    } else {
+                        stateData = "满包";
+                    }
+                    $("#echarts1").html(stateData);
+                }
+            }
+        })
+    }
+    setInterval(echarts1,1000);
+    var echarts2 = function () {
+        var equipmentA2State = [];//1号铁水包状态数组
+        var equipmentA2StateData;//1号铁水包状态单独数据
+        var stateData;
+
+        $.ajax({
+            type: "post",
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: prefix + "/echarts", //请求发送到Controller处的实时数据图读取实时状态
+            data: {},
+            dataType: "json", //返回数据形式为json
+            success: function (result) {
+                //请求成功时执行该函数内容，result即为服务器返回的json对象
+                if (result) {
+                    equipmentA2State.push(result[0].equipmentA2State); //挨个取出铁水包1状态并填入铁水包1状态数组
+                    equipmentA2StateData = equipmentA2State[0];
+                    if (equipmentA2StateData == 0) {
+                        stateData = "空包";
+                    } else if (equipmentA2StateData == 1) {
+                        stateData = "出钢";
+                    } else {
+                        stateData = "满包";
+                    }
+                    $("#echarts2").html(stateData);
+                }
+            }
+        })
+    }
+    setInterval(echarts2,1000);
+    var echarts3 = function () {
+        var equipmentA3State = [];//1号铁水包状态数组
+        var equipmentA3StateData;//1号铁水包状态单独数据
+        var stateData;
+
+        $.ajax({
+            type: "post",
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: prefix + "/echarts", //请求发送到Controller处的实时数据图读取实时状态
+            data: {},
+            dataType: "json", //返回数据形式为json
+            success: function (result) {
+                //请求成功时执行该函数内容，result即为服务器返回的json对象
+                if (result) {
+                    equipmentA3State.push(result[0].equipmentA3State); //挨个取出铁水包1状态并填入铁水包1状态数组
+                    equipmentA3StateData = equipmentA3State[0];
+                    if (equipmentA3StateData == 0) {
+                        stateData = "空包";
+                    } else if (equipmentA3StateData == 1) {
+                        stateData = "出钢";
+                    } else {
+                        stateData = "满包";
+                    }
+                    $("#echarts3").html(stateData);
+                }
+            }
+        })
+    }
+    setInterval(echarts3,1000);
+    var echarts6 = function () {
+        var equipmentA6State = [];//1号铁水包状态数组
+        var equipmentA6StateData;//1号铁水包状态单独数据
+        var stateData;
+
+        $.ajax({
+            type: "post",
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: prefix + "/echarts", //请求发送到Controller处的实时数据图读取实时状态
+            data: {},
+            dataType: "json", //返回数据形式为json
+            success: function (result) {
+                //请求成功时执行该函数内容，result即为服务器返回的json对象
+                if (result) {
+                    equipmentA6State.push(result[0].equipmentA6State); //挨个取出铁水包1状态并填入铁水包1状态数组
+                    equipmentA6StateData = equipmentA6State[0];
+                    if (equipmentA6StateData == 0) {
+                        stateData = "空包";
+                    } else if (equipmentA6StateData == 1) {
+                        stateData = "出钢";
+                    } else {
+                        stateData = "满包";
+                    }
+                    $("#echarts6").html(stateData);
+                }
+            }
+        })
+    }
+    setInterval(echarts6,1000);
+    var echarts7 = function () {
+        var equipmentA7State = [];//1号铁水包状态数组
+        var equipmentA7StateData;//1号铁水包状态单独数据
+        var stateData;
+
+        $.ajax({
+            type: "post",
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: prefix + "/echarts", //请求发送到Controller处的实时数据图读取实时状态
+            data: {},
+            dataType: "json", //返回数据形式为json
+            success: function (result) {
+                //请求成功时执行该函数内容，result即为服务器返回的json对象
+                if (result) {
+                    equipmentA7State.push(result[0].equipmentA7State); //挨个取出铁水包1状态并填入铁水包1状态数组
+                    equipmentA7StateData = equipmentA7State[0];
+                    if (equipmentA7StateData == 0) {
+                        stateData = "空包";
+                    } else if (equipmentA7StateData == 1) {
+                        stateData = "出钢";
+                    } else {
+                        stateData = "满包";
+                    }
+                    $("#echarts7").html(stateData);
+                }
+            }
+        })
+    }
+    setInterval(echarts7,1000);
+    var echarts8 = function () {
+        var equipmentA8State = [];//1号铁水包状态数组
+        var equipmentA8StateData;//1号铁水包状态单独数据
+        var stateData;
+
+        $.ajax({
+            type: "post",
+            async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+            url: prefix + "/echarts", //请求发送到Controller处的实时数据图读取实时状态
+            data: {},
+            dataType: "json", //返回数据形式为json
+            success: function (result) {
+                //请求成功时执行该函数内容，result即为服务器返回的json对象
+                if (result) {
+                    equipmentA8State.push(result[0].equipmentA8State); //挨个取出铁水包1状态并填入铁水包1状态数组
+                    equipmentA8StateData = equipmentA8State[0];
+                    if (equipmentA8StateData == 0) {
+                        stateData = "空包";
+                    } else if (equipmentA8StateData == 1) {
+                        stateData = "出钢";
+                    } else {
+                        stateData = "满包";
+                    }
+                    $("#echarts8").html(stateData);
+                }
+            }
+        })
+    }
+    setInterval(echarts8,1000);
+</script>
+<th:block th:include="include :: echarts-js" />
+<script th:src="@{/ajax/libs/report/echarts-liquidfill/echarts-liquidfill.min.js?v=2.0.5}"></script>
+</body>
+</html>
