@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('出铁流速预报列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>外键对应液位ID：</label>
+                                <input type="text" name="blastFurnaceLevelIdIndex"/>
+                            </li>
+                            <li>
+                                <label>1号铁水罐位流速：</label>
+                                <input type="text" name="equipmentA1Speed"/>
+                            </li>
+                            <li>
+                                <label>2号铁水罐位流速：</label>
+                                <input type="text" name="equipmentA2Speed"/>
+                            </li>
+                            <li>
+                                <label>3号铁水罐位流速：</label>
+                                <input type="text" name="equipmentA3Speed"/>
+                            </li>
+                            <li>
+                                <label>6号铁水罐位流速：</label>
+                                <input type="text" name="equipmentA6Speed"/>
+                            </li>
+                            <li>
+                                <label>7号铁水罐位流速：</label>
+                                <input type="text" name="equipmentA7Speed"/>
+                            </li>
+                            <li>
+                                <label>8号铁水罐位流速：</label>
+                                <input type="text" name="equipmentA8Speed"/>
+                            </li>
+                            <li>
+                                <label>1号铁水罐位流量：</label>
+                                <input type="text" name="equipmentA1Flow"/>
+                            </li>
+                            <li>
+                                <label>2号铁水罐位流量：</label>
+                                <input type="text" name="equipmentA2Flow"/>
+                            </li>
+                            <li>
+                                <label>3号铁水罐位流量：</label>
+                                <input type="text" name="equipmentA3Flow"/>
+                            </li>
+                            <li>
+                                <label>6号铁水罐位流量：</label>
+                                <input type="text" name="equipmentA6Flow"/>
+                            </li>
+                            <li>
+                                <label>7号铁水罐位流量：</label>
+                                <input type="text" name="equipmentA7Flow"/>
+                            </li>
+                            <li>
+                                <label>8号铁水罐位流量：</label>
+                                <input type="text" name="equipmentA8Flow"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="product:blastfurnacespeed:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="product:blastfurnacespeed:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="product:blastfurnacespeed:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="product:blastfurnacespeed:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('product:blastfurnacespeed:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('product:blastfurnacespeed:remove')}]];
+        var prefix = ctx + "product/blastfurnacespeed";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "出铁流速预报",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'blastFurnaceSpeedId',
+                    title: '出铁流速流量ID',
+                    visible: false
+                },
+                {
+                    field: 'blastFurnaceLevelIdIndex',
+                    title: '外键对应液位ID'
+                },
+                {
+                    field: 'equipmentA1Speed',
+                    title: '1号铁水罐位流速'
+                },
+                {
+                    field: 'equipmentA2Speed',
+                    title: '2号铁水罐位流速'
+                },
+                {
+                    field: 'equipmentA3Speed',
+                    title: '3号铁水罐位流速'
+                },
+                {
+                    field: 'equipmentA6Speed',
+                    title: '6号铁水罐位流速'
+                },
+                {
+                    field: 'equipmentA7Speed',
+                    title: '7号铁水罐位流速'
+                },
+                {
+                    field: 'equipmentA8Speed',
+                    title: '8号铁水罐位流速'
+                },
+                {
+                    field: 'equipmentA1Flow',
+                    title: '1号铁水罐位流量'
+                },
+                {
+                    field: 'equipmentA2Flow',
+                    title: '2号铁水罐位流量'
+                },
+                {
+                    field: 'equipmentA3Flow',
+                    title: '3号铁水罐位流量'
+                },
+                {
+                    field: 'equipmentA6Flow',
+                    title: '6号铁水罐位流量'
+                },
+                {
+                    field: 'equipmentA7Flow',
+                    title: '7号铁水罐位流量'
+                },
+                {
+                    field: 'equipmentA8Flow',
+                    title: '8号铁水罐位流量'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.blastFurnaceSpeedId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.blastFurnaceSpeedId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

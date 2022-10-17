@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.product.mapper.ProductBlastFurnaceCastMapper">
+    
+    <resultMap type="ProductBlastFurnaceCast" id="ProductBlastFurnaceCastResult">
+        <result property="blastFurnaceCastId"    column="blast_furnace_cast_id"    />
+        <result property="equipmentLocation"    column="equipment_location"    />
+        <result property="castStartTime"    column="cast_start_time"    />
+        <result property="castAlertTime"    column="cast_alert_time"    />
+        <result property="castEndTime"    column="cast_end_time"    />
+        <result property="castTotalTime"    column="cast_total_time"    />
+        <result property="castTonnage"    column="cast_tonnage"    />
+    </resultMap>
+
+    <sql id="selectProductBlastFurnaceCastVo">
+        select blast_furnace_cast_id, equipment_location, cast_start_time, cast_alert_time, cast_end_time, cast_total_time, cast_tonnage from product_blast_furnace_cast
+    </sql>
+
+    <select id="selectProductBlastFurnaceCastList" parameterType="ProductBlastFurnaceCast" resultMap="ProductBlastFurnaceCastResult">
+        <include refid="selectProductBlastFurnaceCastVo"/>
+        <where>  
+            <if test="equipmentLocation != null "> and equipment_location = #{equipmentLocation}</if>
+            <if test="castStartTime != null "> and cast_start_time = #{castStartTime}</if>
+            <if test="castAlertTime != null "> and cast_alert_time = #{castAlertTime}</if>
+            <if test="castEndTime != null "> and cast_end_time = #{castEndTime}</if>
+            <if test="castTotalTime != null  and castTotalTime != ''"> and cast_total_time = #{castTotalTime}</if>
+            <if test="castTonnage != null  and castTonnage != ''"> and cast_tonnage = #{castTonnage}</if>
+        </where>
+    </select>
+    
+    <select id="selectProductBlastFurnaceCastByBlastFurnaceCastId" parameterType="Long" resultMap="ProductBlastFurnaceCastResult">
+        <include refid="selectProductBlastFurnaceCastVo"/>
+        where blast_furnace_cast_id = #{blastFurnaceCastId}
+    </select>
+        
+    <insert id="insertProductBlastFurnaceCast" parameterType="ProductBlastFurnaceCast" useGeneratedKeys="true" keyProperty="blastFurnaceCastId">
+        insert into product_blast_furnace_cast
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="equipmentLocation != null">equipment_location,</if>
+            <if test="castStartTime != null">cast_start_time,</if>
+            <if test="castAlertTime != null">cast_alert_time,</if>
+            <if test="castEndTime != null">cast_end_time,</if>
+            <if test="castTotalTime != null">cast_total_time,</if>
+            <if test="castTonnage != null">cast_tonnage,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="equipmentLocation != null">#{equipmentLocation},</if>
+            <if test="castStartTime != null">#{castStartTime},</if>
+            <if test="castAlertTime != null">#{castAlertTime},</if>
+            <if test="castEndTime != null">#{castEndTime},</if>
+            <if test="castTotalTime != null">#{castTotalTime},</if>
+            <if test="castTonnage != null">#{castTonnage},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductBlastFurnaceCast" parameterType="ProductBlastFurnaceCast">
+        update product_blast_furnace_cast
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="equipmentLocation != null">equipment_location = #{equipmentLocation},</if>
+            <if test="castStartTime != null">cast_start_time = #{castStartTime},</if>
+            <if test="castAlertTime != null">cast_alert_time = #{castAlertTime},</if>
+            <if test="castEndTime != null">cast_end_time = #{castEndTime},</if>
+            <if test="castTotalTime != null">cast_total_time = #{castTotalTime},</if>
+            <if test="castTonnage != null">cast_tonnage = #{castTonnage},</if>
+        </trim>
+        where blast_furnace_cast_id = #{blastFurnaceCastId}
+    </update>
+
+    <delete id="deleteProductBlastFurnaceCastByBlastFurnaceCastId" parameterType="Long">
+        delete from product_blast_furnace_cast where blast_furnace_cast_id = #{blastFurnaceCastId}
+    </delete>
+
+    <delete id="deleteProductBlastFurnaceCastByBlastFurnaceCastIds" parameterType="String">
+        delete from product_blast_furnace_cast where blast_furnace_cast_id in 
+        <foreach item="blastFurnaceCastId" collection="array" open="(" separator="," close=")">
+            #{blastFurnaceCastId}
+        </foreach>
+    </delete>
+
+</mapper>

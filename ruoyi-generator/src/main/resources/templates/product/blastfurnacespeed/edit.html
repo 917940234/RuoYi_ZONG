@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改出铁流速预报')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-blastfurnacespeed-edit" th:object="${productBlastFurnaceSpeed}">
+            <input name="blastFurnaceSpeedId" th:field="*{blastFurnaceSpeedId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">外键对应液位ID：</label>
+                <div class="col-sm-8">
+                    <input name="blastFurnaceLevelIdIndex" th:field="*{blastFurnaceLevelIdIndex}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">1号铁水罐位流速：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA1Speed" th:field="*{equipmentA1Speed}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">2号铁水罐位流速：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA2Speed" th:field="*{equipmentA2Speed}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">3号铁水罐位流速：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA3Speed" th:field="*{equipmentA3Speed}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">6号铁水罐位流速：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA6Speed" th:field="*{equipmentA6Speed}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">7号铁水罐位流速：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA7Speed" th:field="*{equipmentA7Speed}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">8号铁水罐位流速：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA8Speed" th:field="*{equipmentA8Speed}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">1号铁水罐位流量：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA1Flow" th:field="*{equipmentA1Flow}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">2号铁水罐位流量：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA2Flow" th:field="*{equipmentA2Flow}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">3号铁水罐位流量：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA3Flow" th:field="*{equipmentA3Flow}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">6号铁水罐位流量：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA6Flow" th:field="*{equipmentA6Flow}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">7号铁水罐位流量：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA7Flow" th:field="*{equipmentA7Flow}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">8号铁水罐位流量：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentA8Flow" th:field="*{equipmentA8Flow}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "product/blastfurnacespeed";
+        $("#form-blastfurnacespeed-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-blastfurnacespeed-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.product.mapper.ProductBlastFurnaceSpeedMapper">
+    
+    <resultMap type="ProductBlastFurnaceSpeed" id="ProductBlastFurnaceSpeedResult">
+        <result property="blastFurnaceSpeedId"    column="blast_furnace_speed_id"    />
+        <result property="blastFurnaceLevelIdIndex"    column="blast_furnace_level_id_index"    />
+        <result property="equipmentA1Speed"    column="equipment_a1_speed"    />
+        <result property="equipmentA2Speed"    column="equipment_a2_speed"    />
+        <result property="equipmentA3Speed"    column="equipment_a3_speed"    />
+        <result property="equipmentA6Speed"    column="equipment_a6_speed"    />
+        <result property="equipmentA7Speed"    column="equipment_a7_speed"    />
+        <result property="equipmentA8Speed"    column="equipment_a8_speed"    />
+        <result property="equipmentA1Flow"    column="equipment_a1_flow"    />
+        <result property="equipmentA2Flow"    column="equipment_a2_flow"    />
+        <result property="equipmentA3Flow"    column="equipment_a3_flow"    />
+        <result property="equipmentA6Flow"    column="equipment_a6_flow"    />
+        <result property="equipmentA7Flow"    column="equipment_a7_flow"    />
+        <result property="equipmentA8Flow"    column="equipment_a8_flow"    />
+    </resultMap>
+
+    <sql id="selectProductBlastFurnaceSpeedVo">
+        select blast_furnace_speed_id, blast_furnace_level_id_index, equipment_a1_speed, equipment_a2_speed, equipment_a3_speed, equipment_a6_speed, equipment_a7_speed, equipment_a8_speed, equipment_a1_flow, equipment_a2_flow, equipment_a3_flow, equipment_a6_flow, equipment_a7_flow, equipment_a8_flow from product_blast_furnace_speed
+    </sql>
+
+    <select id="selectProductBlastFurnaceSpeedList" parameterType="ProductBlastFurnaceSpeed" resultMap="ProductBlastFurnaceSpeedResult">
+        <include refid="selectProductBlastFurnaceSpeedVo"/>
+        <where>  
+            <if test="blastFurnaceLevelIdIndex != null "> and blast_furnace_level_id_index = #{blastFurnaceLevelIdIndex}</if>
+            <if test="equipmentA1Speed != null "> and equipment_a1_speed = #{equipmentA1Speed}</if>
+            <if test="equipmentA2Speed != null "> and equipment_a2_speed = #{equipmentA2Speed}</if>
+            <if test="equipmentA3Speed != null "> and equipment_a3_speed = #{equipmentA3Speed}</if>
+            <if test="equipmentA6Speed != null "> and equipment_a6_speed = #{equipmentA6Speed}</if>
+            <if test="equipmentA7Speed != null "> and equipment_a7_speed = #{equipmentA7Speed}</if>
+            <if test="equipmentA8Speed != null "> and equipment_a8_speed = #{equipmentA8Speed}</if>
+            <if test="equipmentA1Flow != null "> and equipment_a1_flow = #{equipmentA1Flow}</if>
+            <if test="equipmentA2Flow != null "> and equipment_a2_flow = #{equipmentA2Flow}</if>
+            <if test="equipmentA3Flow != null "> and equipment_a3_flow = #{equipmentA3Flow}</if>
+            <if test="equipmentA6Flow != null "> and equipment_a6_flow = #{equipmentA6Flow}</if>
+            <if test="equipmentA7Flow != null "> and equipment_a7_flow = #{equipmentA7Flow}</if>
+            <if test="equipmentA8Flow != null "> and equipment_a8_flow = #{equipmentA8Flow}</if>
+        </where>
+    </select>
+    
+    <select id="selectProductBlastFurnaceSpeedByBlastFurnaceSpeedId" parameterType="Long" resultMap="ProductBlastFurnaceSpeedResult">
+        <include refid="selectProductBlastFurnaceSpeedVo"/>
+        where blast_furnace_speed_id = #{blastFurnaceSpeedId}
+    </select>
+        
+    <insert id="insertProductBlastFurnaceSpeed" parameterType="ProductBlastFurnaceSpeed" useGeneratedKeys="true" keyProperty="blastFurnaceSpeedId">
+        insert into product_blast_furnace_speed
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="blastFurnaceLevelIdIndex != null">blast_furnace_level_id_index,</if>
+            <if test="equipmentA1Speed != null">equipment_a1_speed,</if>
+            <if test="equipmentA2Speed != null">equipment_a2_speed,</if>
+            <if test="equipmentA3Speed != null">equipment_a3_speed,</if>
+            <if test="equipmentA6Speed != null">equipment_a6_speed,</if>
+            <if test="equipmentA7Speed != null">equipment_a7_speed,</if>
+            <if test="equipmentA8Speed != null">equipment_a8_speed,</if>
+            <if test="equipmentA1Flow != null">equipment_a1_flow,</if>
+            <if test="equipmentA2Flow != null">equipment_a2_flow,</if>
+            <if test="equipmentA3Flow != null">equipment_a3_flow,</if>
+            <if test="equipmentA6Flow != null">equipment_a6_flow,</if>
+            <if test="equipmentA7Flow != null">equipment_a7_flow,</if>
+            <if test="equipmentA8Flow != null">equipment_a8_flow,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="blastFurnaceLevelIdIndex != null">#{blastFurnaceLevelIdIndex},</if>
+            <if test="equipmentA1Speed != null">#{equipmentA1Speed},</if>
+            <if test="equipmentA2Speed != null">#{equipmentA2Speed},</if>
+            <if test="equipmentA3Speed != null">#{equipmentA3Speed},</if>
+            <if test="equipmentA6Speed != null">#{equipmentA6Speed},</if>
+            <if test="equipmentA7Speed != null">#{equipmentA7Speed},</if>
+            <if test="equipmentA8Speed != null">#{equipmentA8Speed},</if>
+            <if test="equipmentA1Flow != null">#{equipmentA1Flow},</if>
+            <if test="equipmentA2Flow != null">#{equipmentA2Flow},</if>
+            <if test="equipmentA3Flow != null">#{equipmentA3Flow},</if>
+            <if test="equipmentA6Flow != null">#{equipmentA6Flow},</if>
+            <if test="equipmentA7Flow != null">#{equipmentA7Flow},</if>
+            <if test="equipmentA8Flow != null">#{equipmentA8Flow},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductBlastFurnaceSpeed" parameterType="ProductBlastFurnaceSpeed">
+        update product_blast_furnace_speed
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="blastFurnaceLevelIdIndex != null">blast_furnace_level_id_index = #{blastFurnaceLevelIdIndex},</if>
+            <if test="equipmentA1Speed != null">equipment_a1_speed = #{equipmentA1Speed},</if>
+            <if test="equipmentA2Speed != null">equipment_a2_speed = #{equipmentA2Speed},</if>
+            <if test="equipmentA3Speed != null">equipment_a3_speed = #{equipmentA3Speed},</if>
+            <if test="equipmentA6Speed != null">equipment_a6_speed = #{equipmentA6Speed},</if>
+            <if test="equipmentA7Speed != null">equipment_a7_speed = #{equipmentA7Speed},</if>
+            <if test="equipmentA8Speed != null">equipment_a8_speed = #{equipmentA8Speed},</if>
+            <if test="equipmentA1Flow != null">equipment_a1_flow = #{equipmentA1Flow},</if>
+            <if test="equipmentA2Flow != null">equipment_a2_flow = #{equipmentA2Flow},</if>
+            <if test="equipmentA3Flow != null">equipment_a3_flow = #{equipmentA3Flow},</if>
+            <if test="equipmentA6Flow != null">equipment_a6_flow = #{equipmentA6Flow},</if>
+            <if test="equipmentA7Flow != null">equipment_a7_flow = #{equipmentA7Flow},</if>
+            <if test="equipmentA8Flow != null">equipment_a8_flow = #{equipmentA8Flow},</if>
+        </trim>
+        where blast_furnace_speed_id = #{blastFurnaceSpeedId}
+    </update>
+
+    <delete id="deleteProductBlastFurnaceSpeedByBlastFurnaceSpeedId" parameterType="Long">
+        delete from product_blast_furnace_speed where blast_furnace_speed_id = #{blastFurnaceSpeedId}
+    </delete>
+
+    <delete id="deleteProductBlastFurnaceSpeedByBlastFurnaceSpeedIds" parameterType="String">
+        delete from product_blast_furnace_speed where blast_furnace_speed_id in 
+        <foreach item="blastFurnaceSpeedId" collection="array" open="(" separator="," close=")">
+            #{blastFurnaceSpeedId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改出铁时间计控')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-blastfurnacecast-edit" th:object="${productBlastFurnaceCast}">
+            <input name="blastFurnaceCastId" th:field="*{blastFurnaceCastId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">铁水包位置：</label>
+                <div class="col-sm-8">
+                    <input name="equipmentLocation" th:field="*{equipmentLocation}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出铁开始时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="castStartTime" th:value="${#dates.format(productBlastFurnaceCast.castStartTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出铁报警时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="castAlertTime" th:value="${#dates.format(productBlastFurnaceCast.castAlertTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出铁结束时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <input name="castEndTime" th:value="${#dates.format(productBlastFurnaceCast.castEndTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出铁合计时间：</label>
+                <div class="col-sm-8">
+                    <input name="castTotalTime" th:field="*{castTotalTime}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">出铁吨位：</label>
+                <div class="col-sm-8">
+                    <input name="castTonnage" th:field="*{castTonnage}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "product/blastfurnacecast";
+        $("#form-blastfurnacecast-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-blastfurnacecast-edit').serialize());
+            }
+        }
+
+        $("input[name='castStartTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='castAlertTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='castEndTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

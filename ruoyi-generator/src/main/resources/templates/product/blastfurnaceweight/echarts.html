@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+  <th:block th:include="include :: header('出铁重量计量图')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="echarts" style="height: 600px" id="main"></div>
+    </div>
+  </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+
+  var prefix = ctx + "product/blastfurnaceweight";
+
+  //出铁重量计量图
+  $(function() {
+
+    var chartDom = document.getElementById('main');//对象ID
+    var myChart = echarts.init(chartDom);
+
+    var option = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      legend: {
+        data: ['液位', '预测重量']
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: [
+        {
+          type: 'category',
+          axisTick: {
+            show: false
+          },
+          data: ['1号铁水包', '2号铁水包', '3号铁水包', '6号铁水包', '7号铁水包', '8号铁水包']
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value'
+        }
+      ],
+      series: [
+        {
+          name: '预测重量',
+          type: 'bar',
+          stack: 'Total',
+          label: {
+            show: true
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [320, 302, 341, 374, 390, 450]
+        },
+        {
+          name: '液位',
+          type: 'bar',
+          stack: 'Total',
+          label: {
+            show: true,
+            position: 'left'
+          },
+          emphasis: {
+            focus: 'series'
+          },
+          data: [-120, -132, -101, -134, -190, -230]
+        }
+      ]
+    };
+
+    option && myChart.setOption(option);
+    // echarts.showLoading();
+    $(window).resize(echarts.resize);
+
+    // var timeExisted = []; //时间（已存在）数组
+    // var equipmentA1 = []; //1号高炉液位数组
+    // var equipmentA2 = []; //2号高炉液位数组
+    // var equipmentA3 = []; //3号高炉液位数组
+    // var equipmentA6 = []; //6号高炉液位数组
+    // var equipmentA7 = []; //7号高炉液位数组
+    // var equipmentA8 = []; //8号高炉液位数组
+    //
+    // $.ajax({
+    //   type : "post",
+    //   async : true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+    //   url : prefix + "/echarts", //请求发送到Controller处，路径我上面写好了的，直接拼的，你自己按照你的写
+    //   data : {},
+    //   dataType : "json", //返回数据形式为json
+    //   success : function(result) {
+    //     //请求成功时执行该函数内容，result即为服务器返回的json对象
+    //     if (result) {
+    //       for (var i = 0; i < result.length; i++) {
+    //         timeExisted.push(result[i].timeExisted); //挨个取出时间（已存在）并填入时间（已存在）数组
+    //       }
+    //       for (var i = 0; i < result.length; i++) {
+    //         equipmentA1.push(result[i].equipmentA1); //挨个取出高炉液位并填入高炉液位数组
+    //       }
+    //       for (var i = 0; i < result.length; i++) {
+    //         equipmentA2.push(result[i].equipmentA2); //挨个取出高炉液位并填入高炉液位数组
+    //       }
+    //       for (var i = 0; i < result.length; i++) {
+    //         equipmentA3.push(result[i].equipmentA3); //挨个取出高炉液位并填入高炉液位数组
+    //       }
+    //       for (var i = 0; i < result.length; i++) {
+    //         equipmentA6.push(result[i].equipmentA6); //挨个取出高炉液位并填入高炉液位数组
+    //       }
+    //       for (var i = 0; i < result.length; i++) {
+    //         equipmentA7.push(result[i].equipmentA7); //挨个取出高炉液位并填入高炉液位数组
+    //       }
+    //       for (var i = 0; i < result.length; i++) {
+    //         equipmentA8.push(result[i].equipmentA8); //挨个取出高炉液位并填入高炉液位数组
+    //       }
+    //       echarts.hideLoading(); //隐藏加载动画
+    //       echarts.setOption({ //加载数据图表
+    //         xAxis : {
+    //           data : timeExisted
+    //         },
+    //         series : [ {
+    //           // 根据名字对应到相应的系列
+    //           name : '1号高炉液位',
+    //           data : equipmentA1
+    //         }, {
+    //           name : '2号高炉液位',
+    //           data : equipmentA2
+    //         }, {
+    //           name : '3号高炉液位',
+    //           data : equipmentA3
+    //         }, {
+    //           name : '6号高炉液位',
+    //           data : equipmentA6
+    //         }, {
+    //           name : '7号高炉液位',
+    //           data : equipmentA7
+    //         }, {
+    //           name : '8号高炉液位',
+    //           data : equipmentA8
+    //         }
+    //         ]
+    //       });
+    //     }
+    //   },
+    //   error : function(errorMsg) {
+    //     //请求失败时执行该函数
+    //     alert("图表请求数据失败!");
+    //     echarts.hideLoading();
+    //   }
+    // })
+  });
+</script>
+<th:block th:include="include :: echarts-js" />
+</body>
+</html>

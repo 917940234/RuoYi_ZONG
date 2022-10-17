@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.product.mapper.ProductBlastFurnaceWeightMapper">
+    
+    <resultMap type="ProductBlastFurnaceWeight" id="ProductBlastFurnaceWeightResult">
+        <result property="blastFurnaceWeightId"    column="blast_furnace_weight_id"    />
+        <result property="blastFurnaceLevelId"    column="blast_furnace_level_id"    />
+        <result property="equipmentA1Weight"    column="equipment_a1_weight"    />
+        <result property="equipmentA2Weight"    column="equipment_a2_weight"    />
+        <result property="equipmentA3Weight"    column="equipment_a3_weight"    />
+        <result property="equipmentA6Weight"    column="equipment_a6_weight"    />
+        <result property="equipmentA7Weight"    column="equipment_a7_weight"    />
+        <result property="equipmentA8Weight"    column="equipment_a8_weight"    />
+    </resultMap>
+
+    <sql id="selectProductBlastFurnaceWeightVo">
+        select blast_furnace_weight_id, blast_furnace_level_id, equipment_a1_weight, equipment_a2_weight, equipment_a3_weight, equipment_a6_weight, equipment_a7_weight, equipment_a8_weight from product_blast_furnace_weight
+    </sql>
+
+    <select id="selectProductBlastFurnaceWeightList" parameterType="ProductBlastFurnaceWeight" resultMap="ProductBlastFurnaceWeightResult">
+        <include refid="selectProductBlastFurnaceWeightVo"/>
+        <where>  
+            <if test="blastFurnaceLevelId != null "> and blast_furnace_level_id = #{blastFurnaceLevelId}</if>
+            <if test="equipmentA1Weight != null "> and equipment_a1_weight = #{equipmentA1Weight}</if>
+            <if test="equipmentA2Weight != null "> and equipment_a2_weight = #{equipmentA2Weight}</if>
+            <if test="equipmentA3Weight != null "> and equipment_a3_weight = #{equipmentA3Weight}</if>
+            <if test="equipmentA6Weight != null "> and equipment_a6_weight = #{equipmentA6Weight}</if>
+            <if test="equipmentA7Weight != null "> and equipment_a7_weight = #{equipmentA7Weight}</if>
+            <if test="equipmentA8Weight != null "> and equipment_a8_weight = #{equipmentA8Weight}</if>
+        </where>
+    </select>
+    
+    <select id="selectProductBlastFurnaceWeightByBlastFurnaceWeightId" parameterType="Long" resultMap="ProductBlastFurnaceWeightResult">
+        <include refid="selectProductBlastFurnaceWeightVo"/>
+        where blast_furnace_weight_id = #{blastFurnaceWeightId}
+    </select>
+        
+    <insert id="insertProductBlastFurnaceWeight" parameterType="ProductBlastFurnaceWeight" useGeneratedKeys="true" keyProperty="blastFurnaceWeightId">
+        insert into product_blast_furnace_weight
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="blastFurnaceLevelId != null">blast_furnace_level_id,</if>
+            <if test="equipmentA1Weight != null">equipment_a1_weight,</if>
+            <if test="equipmentA2Weight != null">equipment_a2_weight,</if>
+            <if test="equipmentA3Weight != null">equipment_a3_weight,</if>
+            <if test="equipmentA6Weight != null">equipment_a6_weight,</if>
+            <if test="equipmentA7Weight != null">equipment_a7_weight,</if>
+            <if test="equipmentA8Weight != null">equipment_a8_weight,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="blastFurnaceLevelId != null">#{blastFurnaceLevelId},</if>
+            <if test="equipmentA1Weight != null">#{equipmentA1Weight},</if>
+            <if test="equipmentA2Weight != null">#{equipmentA2Weight},</if>
+            <if test="equipmentA3Weight != null">#{equipmentA3Weight},</if>
+            <if test="equipmentA6Weight != null">#{equipmentA6Weight},</if>
+            <if test="equipmentA7Weight != null">#{equipmentA7Weight},</if>
+            <if test="equipmentA8Weight != null">#{equipmentA8Weight},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductBlastFurnaceWeight" parameterType="ProductBlastFurnaceWeight">
+        update product_blast_furnace_weight
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="blastFurnaceLevelId != null">blast_furnace_level_id = #{blastFurnaceLevelId},</if>
+            <if test="equipmentA1Weight != null">equipment_a1_weight = #{equipmentA1Weight},</if>
+            <if test="equipmentA2Weight != null">equipment_a2_weight = #{equipmentA2Weight},</if>
+            <if test="equipmentA3Weight != null">equipment_a3_weight = #{equipmentA3Weight},</if>
+            <if test="equipmentA6Weight != null">equipment_a6_weight = #{equipmentA6Weight},</if>
+            <if test="equipmentA7Weight != null">equipment_a7_weight = #{equipmentA7Weight},</if>
+            <if test="equipmentA8Weight != null">equipment_a8_weight = #{equipmentA8Weight},</if>
+        </trim>
+        where blast_furnace_weight_id = #{blastFurnaceWeightId}
+    </update>
+
+    <delete id="deleteProductBlastFurnaceWeightByBlastFurnaceWeightId" parameterType="Long">
+        delete from product_blast_furnace_weight where blast_furnace_weight_id = #{blastFurnaceWeightId}
+    </delete>
+
+    <delete id="deleteProductBlastFurnaceWeightByBlastFurnaceWeightIds" parameterType="String">
+        delete from product_blast_furnace_weight where blast_furnace_weight_id in 
+        <foreach item="blastFurnaceWeightId" collection="array" open="(" separator="," close=")">
+            #{blastFurnaceWeightId}
+        </foreach>
+    </delete>
+
+</mapper>
