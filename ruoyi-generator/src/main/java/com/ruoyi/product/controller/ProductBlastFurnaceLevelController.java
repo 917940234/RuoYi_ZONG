@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.math3.stat.descriptive.summary.Product;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -107,11 +108,11 @@ public class ProductBlastFurnaceLevelController extends BaseController
     @PostMapping("/realTimeEcharts")
     public void selectRealTimeEcharts(ProductBlastFurnaceLevel productBlastFurnaceLevel, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
         //查询数据
-        List<ProductBlastFurnaceLevel> list = (List<ProductBlastFurnaceLevel>) productBlastFurnaceLevelService.selectProductBlastFurnaceLevelByBlastFurnaceLevelId(productBlastFurnaceLevel.getBlastFurnaceLevelId());
+        Object object = productBlastFurnaceLevelService.selectProductBlastFurnaceLevelByBlastFurnaceLevelId(productBlastFurnaceLevel.getBlastFurnaceLevelId());
         //提供java-json相互转换功能的类
         ObjectMapper mapper = new ObjectMapper();
         //将list中的对象转换为Json格式的数组
-        String json = mapper.writeValueAsString(list);
+        String json = mapper.writeValueAsString(object);
         //System.out.println(json);
         //将json数据返回给客户端
         response.setContentType("text/html; charset=utf-8");

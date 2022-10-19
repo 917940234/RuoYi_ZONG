@@ -1,9 +1,14 @@
 package com.ruoyi.product.controller;
 
+import java.io.IOException;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ruoyi.product.domain.ProductBlastFurnaceWeight;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +23,9 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 出铁流速预报Controller
@@ -42,6 +50,17 @@ public class ProductBlastFurnaceSpeedController extends BaseController
     }
 
     /**
+     * product:blastfurnacelevel:echarts返回到echarts页面(权限决定是否读取到该方法，return决定跳转到何页面，getmapping不能重复，会报错)
+     * @return
+     */
+    @RequiresPermissions("product:blastfurnacespeed:echarts")
+    @GetMapping("/echarts")
+    public String echarts()
+    {
+        return prefix + "/echarts.html";
+    }
+
+    /**
      * 查询出铁流速预报列表
      */
     @RequiresPermissions("product:blastfurnacespeed:list")
@@ -52,6 +71,23 @@ public class ProductBlastFurnaceSpeedController extends BaseController
         startPage();
         List<ProductBlastFurnaceSpeed> list = productBlastFurnaceSpeedService.selectProductBlastFurnaceSpeedList(productBlastFurnaceSpeed);
         return getDataTable(list);
+    }
+
+    /**
+     * 出铁重量计量图json
+     */
+    @PostMapping("/echarts")
+    public void selectEcharts(ProductBlastFurnaceSpeed productBlastFurnaceSpeed, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //查询数据
+        List<ProductBlastFurnaceSpeed> list =  productBlastFurnaceSpeedService.selectProductBlastFurnaceSpeedList(productBlastFurnaceSpeed);
+        //提供java-json相互转换功能的类
+        ObjectMapper mapper = new ObjectMapper();
+        //将list中的对象转换为Json格式的数组
+        String json = mapper.writeValueAsString(list);
+        //System.out.println(json);
+        //将json数据返回给客户端
+        response.setContentType("text/html; charset=utf-8");
+        response.getWriter().write(json);
     }
 
     /**

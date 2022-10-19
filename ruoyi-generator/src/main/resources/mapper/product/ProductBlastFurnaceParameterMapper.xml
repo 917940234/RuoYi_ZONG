@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.product.mapper.ProductBlastFurnaceParameterMapper">
+    
+    <resultMap type="ProductBlastFurnaceParameter" id="ProductBlastFurnaceParameterResult">
+        <result property="tankAgeCoefficient"    column="tank_age_coefficient"    />
+        <result property="foundationHeight"    column="foundation_height"    />
+    </resultMap>
+
+    <sql id="selectProductBlastFurnaceParameterVo">
+        select tank_age_coefficient, foundation_height from product_blast_furnace_parameter
+    </sql>
+
+    <select id="selectProductBlastFurnaceParameterList" parameterType="ProductBlastFurnaceParameter" resultMap="ProductBlastFurnaceParameterResult">
+        <include refid="selectProductBlastFurnaceParameterVo"/>
+        <where>  
+            <if test="tankAgeCoefficient != null "> and tank_age_coefficient = #{tankAgeCoefficient}</if>
+            <if test="foundationHeight != null "> and foundation_height = #{foundationHeight}</if>
+        </where>
+    </select>
+    
+    <select id="selectProductBlastFurnaceParameterByTankAgeCoefficient" parameterType="Long" resultMap="ProductBlastFurnaceParameterResult">
+        <include refid="selectProductBlastFurnaceParameterVo"/>
+        where tank_age_coefficient = #{tankAgeCoefficient}
+    </select>
+        
+    <insert id="insertProductBlastFurnaceParameter" parameterType="ProductBlastFurnaceParameter">
+        insert into product_blast_furnace_parameter
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tankAgeCoefficient != null">tank_age_coefficient,</if>
+            <if test="foundationHeight != null">foundation_height,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tankAgeCoefficient != null">#{tankAgeCoefficient},</if>
+            <if test="foundationHeight != null">#{foundationHeight},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductBlastFurnaceParameter" parameterType="ProductBlastFurnaceParameter">
+        update product_blast_furnace_parameter
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="foundationHeight != null">foundation_height = #{foundationHeight},</if>
+        </trim>
+        where tank_age_coefficient = #{tankAgeCoefficient}
+    </update>
+
+    <delete id="deleteProductBlastFurnaceParameterByTankAgeCoefficient" parameterType="Long">
+        delete from product_blast_furnace_parameter where tank_age_coefficient = #{tankAgeCoefficient}
+    </delete>
+
+    <delete id="deleteProductBlastFurnaceParameterByTankAgeCoefficients" parameterType="String">
+        delete from product_blast_furnace_parameter where tank_age_coefficient in 
+        <foreach item="tankAgeCoefficient" collection="array" open="(" separator="," close=")">
+            #{tankAgeCoefficient}
+        </foreach>
+    </delete>
+
+</mapper>

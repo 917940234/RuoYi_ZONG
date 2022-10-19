@@ -17,42 +17,42 @@
         <div class="col-sm-12 text-center">
             <h1>铁水包状态</h1>
             <div class="row">
-                <div class="col-sm-5 text-center">
+                <div class="col-sm-6 text-center">
                     <h2>西出铁口</h2>
-                    <div class="col-sm-4 text-center">
+                </div>
+                <div class="col-sm-6 text-center">
+                    <h2>东出铁口</h2>
+                </div>
+                    <div class="col-sm-2 text-center">
                         <h3>铁水罐位1</h3>
                         <img src="/iron_ladle.png" width="141" height="136.67">
-                        <h3 id="echarts1">初始化中</h3>
+                        <h1 id="echarts1" style="background-color: white">初始化中</h1>
                     </div>
-                    <div class="col-sm-4 text-center">
+                    <div class="col-sm-2 text-center">
                         <h3>铁水罐位2</h3>
                         <img src="/iron_ladle.png" width="141" height="136.67">
-                        <h3 id="echarts2">初始化中</h3>
+                        <h1 id="echarts2" style="background-color: white">初始化中</h1>
                     </div>
-                    <div class="col-sm-4 text-center">
+                    <div class="col-sm-2 text-center">
                         <h3>铁水罐位3</h3>
                         <img src="/iron_ladle.png" width="141" height="136.67">
-                        <h3 id="echarts3">初始化中</h3>
+                        <h1 id="echarts3" style="background-color: white">初始化中</h1>
                     </div>
-                </div>
-                <div class="col-sm-5 col-sm-offset-2 text-center">
-                    <h2>东出铁口</h2>
-                    <div class="col-sm-4 text-center">
+                    <div class="col-sm-2 text-center">
                         <h3>铁水罐位6</h3>
                         <img src="/iron_ladle.png" width="141" height="136.67">
-                        <h3 id="echarts6">初始化中</h3>
+                        <h1 id="echarts6" style="background-color: white">初始化中</h1>
                     </div>
-                    <div class="col-sm-4 text-center">
+                    <div class="col-sm-2 text-center">
                         <h3>铁水罐位7</h3>
                         <img src="/iron_ladle.png" width="141" height="136.67">
-                        <h3 id="echarts7">初始化中</h3>
+                        <h1 id="echarts7" style="background-color: white">初始化中</h1>
                     </div>
-                    <div class="col-sm-4 text-center">
+                    <div class="col-sm-2 text-center">
                         <h3>铁水罐位8</h3>
                         <img src="/iron_ladle.png" width="141" height="136.67">
-                        <h3 id="echarts8">初始化中</h3>
+                        <h1 id="echarts8" style="background-color: white">初始化中</h1>
                     </div>
-                </div>
             </div>
         </div>
     </div>
@@ -65,6 +65,7 @@
         var equipmentA1State = [];//1号铁水包状态数组
         var equipmentA1StateData;//1号铁水包状态单独数据
         var stateData;
+        var backgroundColor;//铁水包状态背景色
 
         $.ajax({
             type: "post",
@@ -79,12 +80,16 @@
                     equipmentA1StateData = equipmentA1State[0];
                     if (equipmentA1StateData == 0) {
                         stateData = "空包";
+                        backgroundColor = 'white';
                     } else if (equipmentA1StateData == 1) {
                         stateData = "出钢";
+                        backgroundColor = 'yellow';
                     } else {
                         stateData = "满包";
+                        backgroundColor = 'red';
                     }
                     $("#echarts1").html(stateData);
+                    $('#echarts1').css('background-color',backgroundColor);
                 }
             }
         })
@@ -94,6 +99,7 @@
         var equipmentA2State = [];//1号铁水包状态数组
         var equipmentA2StateData;//1号铁水包状态单独数据
         var stateData;
+        var backgroundColor;//铁水包状态背景色
 
         $.ajax({
             type: "post",
@@ -108,12 +114,16 @@
                     equipmentA2StateData = equipmentA2State[0];
                     if (equipmentA2StateData == 0) {
                         stateData = "空包";
+                        backgroundColor = 'white';
                     } else if (equipmentA2StateData == 1) {
                         stateData = "出钢";
+                        backgroundColor = 'yellow';
                     } else {
                         stateData = "满包";
+                        backgroundColor = 'red';
                     }
                     $("#echarts2").html(stateData);
+                    $('#echarts2').css('background-color',backgroundColor);
                 }
             }
         })
@@ -123,6 +133,7 @@
         var equipmentA3State = [];//1号铁水包状态数组
         var equipmentA3StateData;//1号铁水包状态单独数据
         var stateData;
+        var backgroundColor;//铁水包状态背景色
 
         $.ajax({
             type: "post",
@@ -137,12 +148,16 @@
                     equipmentA3StateData = equipmentA3State[0];
                     if (equipmentA3StateData == 0) {
                         stateData = "空包";
+                        backgroundColor = 'white';
                     } else if (equipmentA3StateData == 1) {
                         stateData = "出钢";
+                        backgroundColor = 'yellow';
                     } else {
                         stateData = "满包";
+                        backgroundColor = 'red';
                     }
                     $("#echarts3").html(stateData);
+                    $('#echarts3').css('background-color',backgroundColor);
                 }
             }
         })
@@ -152,6 +167,7 @@
         var equipmentA6State = [];//1号铁水包状态数组
         var equipmentA6StateData;//1号铁水包状态单独数据
         var stateData;
+        var backgroundColor;//铁水包状态背景色
 
         $.ajax({
             type: "post",
@@ -166,12 +182,16 @@
                     equipmentA6StateData = equipmentA6State[0];
                     if (equipmentA6StateData == 0) {
                         stateData = "空包";
+                        backgroundColor = 'white';
                     } else if (equipmentA6StateData == 1) {
                         stateData = "出钢";
+                        backgroundColor = 'yellow';
                     } else {
                         stateData = "满包";
+                        backgroundColor = 'red';
                     }
                     $("#echarts6").html(stateData);
+                    $('#echarts6').css('background-color',backgroundColor);
                 }
             }
         })
@@ -181,6 +201,7 @@
         var equipmentA7State = [];//1号铁水包状态数组
         var equipmentA7StateData;//1号铁水包状态单独数据
         var stateData;
+        var backgroundColor;//铁水包状态背景色
 
         $.ajax({
             type: "post",
@@ -195,12 +216,16 @@
                     equipmentA7StateData = equipmentA7State[0];
                     if (equipmentA7StateData == 0) {
                         stateData = "空包";
+                        backgroundColor = 'white';
                     } else if (equipmentA7StateData == 1) {
                         stateData = "出钢";
+                        backgroundColor = 'yellow';
                     } else {
                         stateData = "满包";
+                        backgroundColor = 'red';
                     }
                     $("#echarts7").html(stateData);
+                    $('#echarts7').css('background-color',backgroundColor);
                 }
             }
         })
@@ -210,6 +235,7 @@
         var equipmentA8State = [];//1号铁水包状态数组
         var equipmentA8StateData;//1号铁水包状态单独数据
         var stateData;
+        var backgroundColor;//铁水包状态背景色
 
         $.ajax({
             type: "post",
@@ -224,12 +250,16 @@
                     equipmentA8StateData = equipmentA8State[0];
                     if (equipmentA8StateData == 0) {
                         stateData = "空包";
+                        backgroundColor = 'white';
                     } else if (equipmentA8StateData == 1) {
                         stateData = "出钢";
+                        backgroundColor = 'yellow';
                     } else {
                         stateData = "满包";
+                        backgroundColor = 'red';
                     }
                     $("#echarts8").html(stateData);
+                    $('#echarts8').css('background-color',backgroundColor);
                 }
             }
         })
