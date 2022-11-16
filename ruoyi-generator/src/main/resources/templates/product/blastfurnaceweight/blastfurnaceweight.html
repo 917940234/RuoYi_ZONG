@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('出铁重量预测列表')" />
+    <th:block th:include="include :: header('出铁重量计量列表')" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -11,31 +11,31 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>外键对应液位ID：</label>
+                                <label>当前液位表ID：</label>
                                 <input type="text" name="blastFurnaceLevelId"/>
                             </li>
                             <li>
-                                <label>1号铁水包液位对应重量：</label>
+                                <label>1号铁水包重量：</label>
                                 <input type="text" name="equipmentA1Weight"/>
                             </li>
                             <li>
-                                <label>2号铁水包液位对应重量：</label>
+                                <label>2号铁水包重量：</label>
                                 <input type="text" name="equipmentA2Weight"/>
                             </li>
                             <li>
-                                <label>3号铁水包液位对应重量：</label>
+                                <label>3号铁水包重量：</label>
                                 <input type="text" name="equipmentA3Weight"/>
                             </li>
                             <li>
-                                <label>6号铁水包液位对应重量：</label>
+                                <label>6号铁水包重量：</label>
                                 <input type="text" name="equipmentA6Weight"/>
                             </li>
                             <li>
-                                <label>7号铁水包液位对应重量：</label>
+                                <label>7号铁水包重量：</label>
                                 <input type="text" name="equipmentA7Weight"/>
                             </li>
                             <li>
-                                <label>8号铁水包液位对应重量：</label>
+                                <label>8号铁水包重量：</label>
                                 <input type="text" name="equipmentA8Weight"/>
                             </li>
                             <li>
@@ -79,42 +79,42 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
-                modalName: "出铁重量预测",
+                modalName: "出铁重量计量",
                 columns: [{
                     checkbox: true
                 },
                 {
                     field: 'blastFurnaceWeightId',
-                    title: '出铁重量计量ID',
+                    title: '出铁重量表ID',
                     visible: false
                 },
                 {
                     field: 'blastFurnaceLevelId',
-                    title: '外键对应液位ID'
+                    title: '当前液位表ID'
                 },
                 {
                     field: 'equipmentA1Weight',
-                    title: '1号铁水包液位对应重量'
+                    title: '1号铁水包重量'
                 },
                 {
                     field: 'equipmentA2Weight',
-                    title: '2号铁水包液位对应重量'
+                    title: '2号铁水包重量'
                 },
                 {
                     field: 'equipmentA3Weight',
-                    title: '3号铁水包液位对应重量'
+                    title: '3号铁水包重量'
                 },
                 {
                     field: 'equipmentA6Weight',
-                    title: '6号铁水包液位对应重量'
+                    title: '6号铁水包重量'
                 },
                 {
                     field: 'equipmentA7Weight',
-                    title: '7号铁水包液位对应重量'
+                    title: '7号铁水包重量'
                 },
                 {
                     field: 'equipmentA8Weight',
-                    title: '8号铁水包液位对应重量'
+                    title: '8号铁水包重量'
                 },
                 {
                     title: '操作',

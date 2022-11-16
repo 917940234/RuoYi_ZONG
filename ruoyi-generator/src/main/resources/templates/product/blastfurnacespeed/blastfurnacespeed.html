@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('出铁流速预报列表')" />
+    <th:block th:include="include :: header('出铁流速流量预报列表')" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -15,51 +15,51 @@
                                 <input type="text" name="blastFurnaceLevelIdIndex"/>
                             </li>
                             <li>
-                                <label>1号铁水罐位流速：</label>
+                                <label>1号铁水包流速：</label>
                                 <input type="text" name="equipmentA1Speed"/>
                             </li>
                             <li>
-                                <label>2号铁水罐位流速：</label>
+                                <label>2号铁水包流速：</label>
                                 <input type="text" name="equipmentA2Speed"/>
                             </li>
                             <li>
-                                <label>3号铁水罐位流速：</label>
+                                <label>3号铁水包流速：</label>
                                 <input type="text" name="equipmentA3Speed"/>
                             </li>
                             <li>
-                                <label>6号铁水罐位流速：</label>
+                                <label>6号铁水包流速：</label>
                                 <input type="text" name="equipmentA6Speed"/>
                             </li>
                             <li>
-                                <label>7号铁水罐位流速：</label>
+                                <label>7号铁水包流速：</label>
                                 <input type="text" name="equipmentA7Speed"/>
                             </li>
                             <li>
-                                <label>8号铁水罐位流速：</label>
+                                <label>8号铁水包流速：</label>
                                 <input type="text" name="equipmentA8Speed"/>
                             </li>
                             <li>
-                                <label>1号铁水罐位流量：</label>
+                                <label>1号铁水包流量：</label>
                                 <input type="text" name="equipmentA1Flow"/>
                             </li>
                             <li>
-                                <label>2号铁水罐位流量：</label>
+                                <label>2号铁水包流量：</label>
                                 <input type="text" name="equipmentA2Flow"/>
                             </li>
                             <li>
-                                <label>3号铁水罐位流量：</label>
+                                <label>3号铁水包流量：</label>
                                 <input type="text" name="equipmentA3Flow"/>
                             </li>
                             <li>
-                                <label>6号铁水罐位流量：</label>
+                                <label>6号铁水包流量：</label>
                                 <input type="text" name="equipmentA6Flow"/>
                             </li>
                             <li>
-                                <label>7号铁水罐位流量：</label>
+                                <label>7号铁水包流量：</label>
                                 <input type="text" name="equipmentA7Flow"/>
                             </li>
                             <li>
-                                <label>8号铁水罐位流量：</label>
+                                <label>8号铁水包流量：</label>
                                 <input type="text" name="equipmentA8Flow"/>
                             </li>
                             <li>
@@ -103,7 +103,7 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
-                modalName: "出铁流速预报",
+                modalName: "出铁流速流量预报",
                 columns: [{
                     checkbox: true
                 },
@@ -118,51 +118,51 @@
                 },
                 {
                     field: 'equipmentA1Speed',
-                    title: '1号铁水罐位流速'
+                    title: '1号铁水包流速'
                 },
                 {
                     field: 'equipmentA2Speed',
-                    title: '2号铁水罐位流速'
+                    title: '2号铁水包流速'
                 },
                 {
                     field: 'equipmentA3Speed',
-                    title: '3号铁水罐位流速'
+                    title: '3号铁水包流速'
                 },
                 {
                     field: 'equipmentA6Speed',
-                    title: '6号铁水罐位流速'
+                    title: '6号铁水包流速'
                 },
                 {
                     field: 'equipmentA7Speed',
-                    title: '7号铁水罐位流速'
+                    title: '7号铁水包流速'
                 },
                 {
                     field: 'equipmentA8Speed',
-                    title: '8号铁水罐位流速'
+                    title: '8号铁水包流速'
                 },
                 {
                     field: 'equipmentA1Flow',
-                    title: '1号铁水罐位流量'
+                    title: '1号铁水包流量'
                 },
                 {
                     field: 'equipmentA2Flow',
-                    title: '2号铁水罐位流量'
+                    title: '2号铁水包流量'
                 },
                 {
                     field: 'equipmentA3Flow',
-                    title: '3号铁水罐位流量'
+                    title: '3号铁水包流量'
                 },
                 {
                     field: 'equipmentA6Flow',
-                    title: '6号铁水罐位流量'
+                    title: '6号铁水包流量'
                 },
                 {
                     field: 'equipmentA7Flow',
-                    title: '7号铁水罐位流量'
+                    title: '7号铁水包流量'
                 },
                 {
                     field: 'equipmentA8Flow',
-                    title: '8号铁水罐位流量'
+                    title: '8号铁水包流量'
                 },
                 {
                     title: '操作',

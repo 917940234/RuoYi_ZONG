@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.math3.stat.descriptive.summary.Product;
+import com.ruoyi.product.domain.ProductBlastFurnaceStatus;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,10 +28,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 高炉液位数据监控Controller
+ * 铁水包液位Controller
  * 
  * @author zongyoucheng
- * @date 2022-09-26
+ * @date 2022-11-24
  */
 @Controller
 @RequestMapping("/product/blastfurnacelevel")
@@ -72,7 +72,7 @@ public class ProductBlastFurnaceLevelController extends BaseController
     }
 
     /**
-     * 查询高炉液位数据监控列表
+     * 查询铁水包液位列表
      */
     @RequiresPermissions("product:blastfurnacelevel:list")
     @PostMapping("/list")
@@ -85,12 +85,83 @@ public class ProductBlastFurnaceLevelController extends BaseController
     }
 
     /**
+     * 导出铁水包液位列表
+     */
+    @RequiresPermissions("product:blastfurnacelevel:export")
+    @Log(title = "铁水包液位", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    @ResponseBody
+    public AjaxResult export(ProductBlastFurnaceLevel productBlastFurnaceLevel)
+    {
+        List<ProductBlastFurnaceLevel> list = productBlastFurnaceLevelService.selectProductBlastFurnaceLevelList(productBlastFurnaceLevel);
+        ExcelUtil<ProductBlastFurnaceLevel> util = new ExcelUtil<ProductBlastFurnaceLevel>(ProductBlastFurnaceLevel.class);
+        return util.exportExcel(list, "铁水包液位数据");
+    }
+
+    /**
+     * 新增铁水包液位
+     */
+    @GetMapping("/add")
+    public String add()
+    {
+        return prefix + "/add";
+    }
+
+    /**
+     * 新增保存铁水包液位
+     */
+    @RequiresPermissions("product:blastfurnacelevel:add")
+    @Log(title = "铁水包液位", businessType = BusinessType.INSERT)
+    @PostMapping("/add")
+    @ResponseBody
+    public AjaxResult addSave(ProductBlastFurnaceLevel productBlastFurnaceLevel)
+    {
+        return toAjax(productBlastFurnaceLevelService.insertProductBlastFurnaceLevel(productBlastFurnaceLevel));
+    }
+
+    /**
+     * 修改铁水包液位
+     */
+    @RequiresPermissions("product:blastfurnacelevel:edit")
+    @GetMapping("/edit/{blastFurnaceLevelId}")
+    public String edit(@PathVariable("blastFurnaceLevelId") Long blastFurnaceLevelId, ModelMap mmap)
+    {
+        ProductBlastFurnaceLevel productBlastFurnaceLevel = productBlastFurnaceLevelService.selectProductBlastFurnaceLevelByBlastFurnaceLevelId(blastFurnaceLevelId);
+        mmap.put("productBlastFurnaceLevel", productBlastFurnaceLevel);
+        return prefix + "/edit";
+    }
+
+    /**
+     * 修改保存铁水包液位
+     */
+    @RequiresPermissions("product:blastfurnacelevel:edit")
+    @Log(title = "铁水包液位", businessType = BusinessType.UPDATE)
+    @PostMapping("/edit")
+    @ResponseBody
+    public AjaxResult editSave(ProductBlastFurnaceLevel productBlastFurnaceLevel)
+    {
+        return toAjax(productBlastFurnaceLevelService.updateProductBlastFurnaceLevel(productBlastFurnaceLevel));
+    }
+
+    /**
+     * 删除铁水包液位
+     */
+    @RequiresPermissions("product:blastfurnacelevel:remove")
+    @Log(title = "铁水包液位", businessType = BusinessType.DELETE)
+    @PostMapping( "/remove")
+    @ResponseBody
+    public AjaxResult remove(String ids)
+    {
+        return toAjax(productBlastFurnaceLevelService.deleteProductBlastFurnaceLevelByBlastFurnaceLevelIds(ids));
+    }
+
+    /**
      * 高炉液位数据折线图表json
      */
     @PostMapping("/listEcharts")
     public void selectListEcharts(ProductBlastFurnaceLevel productBlastFurnaceLevel, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
         //查询数据
-        List<ProductBlastFurnaceLevel> list =  productBlastFurnaceLevelService.selectProductBlastFurnaceLevelList(productBlastFurnaceLevel);
+        List<ProductBlastFurnaceLevel> list =  productBlastFurnaceLevelService.selectProductBlastFurnaceLevelListNew(productBlastFurnaceLevel);
         //提供java-json相互转换功能的类
         ObjectMapper mapper = new ObjectMapper();
         //将list中的对象转换为Json格式的数组
@@ -106,87 +177,16 @@ public class ProductBlastFurnaceLevelController extends BaseController
      * 目的：读取最新一行的所有数据，传递给前端
      */
     @PostMapping("/realTimeEcharts")
-    public void selectRealTimeEcharts(ProductBlastFurnaceLevel productBlastFurnaceLevel, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void selectRealTimeEcharts(Long blastFurnaceLevelId, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
         //查询数据
-        Object object = productBlastFurnaceLevelService.selectProductBlastFurnaceLevelByBlastFurnaceLevelId(productBlastFurnaceLevel.getBlastFurnaceLevelId());
+        ProductBlastFurnaceLevel list = productBlastFurnaceLevelService.selectProductBlastFurnaceLevelByBlastFurnaceLevelId(1L);
         //提供java-json相互转换功能的类
         ObjectMapper mapper = new ObjectMapper();
         //将list中的对象转换为Json格式的数组
-        String json = mapper.writeValueAsString(object);
-        //System.out.println(json);
+        String json = mapper.writeValueAsString(list);
+        System.out.println(json);
         //将json数据返回给客户端
         response.setContentType("text/html; charset=utf-8");
         response.getWriter().write(json);
-    }
-
-    /**
-     * 导出高炉液位数据监控列表
-     */
-    @RequiresPermissions("product:blastfurnacelevel:export")
-    @Log(title = "高炉液位数据监控", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    @ResponseBody
-    public AjaxResult export(ProductBlastFurnaceLevel productBlastFurnaceLevel)
-    {
-        List<ProductBlastFurnaceLevel> list = productBlastFurnaceLevelService.selectProductBlastFurnaceLevelList(productBlastFurnaceLevel);
-        ExcelUtil<ProductBlastFurnaceLevel> util = new ExcelUtil<ProductBlastFurnaceLevel>(ProductBlastFurnaceLevel.class);
-        return util.exportExcel(list, "高炉液位数据监控数据");
-    }
-
-    /**
-     * 新增高炉液位数据监控
-     */
-    @GetMapping("/add")
-    public String add()
-    {
-        return prefix + "/add";
-    }
-
-    /**
-     * 新增保存高炉液位数据监控
-     */
-    @RequiresPermissions("product:blastfurnacelevel:add")
-    @Log(title = "高炉液位数据监控", businessType = BusinessType.INSERT)
-    @PostMapping("/add")
-    @ResponseBody
-    public AjaxResult addSave(ProductBlastFurnaceLevel productBlastFurnaceLevel)
-    {
-        return toAjax(productBlastFurnaceLevelService.insertProductBlastFurnaceLevel(productBlastFurnaceLevel));
-    }
-
-    /**
-     * 修改高炉液位数据监控
-     */
-    @RequiresPermissions("product:blastfurnacelevel:edit")
-    @GetMapping("/edit/{blastFurnaceLevelId}")
-    public String edit(@PathVariable("blastFurnaceLevelId") Long blastFurnaceLevelId, ModelMap mmap)
-    {
-        ProductBlastFurnaceLevel productBlastFurnaceLevel = productBlastFurnaceLevelService.selectProductBlastFurnaceLevelByBlastFurnaceLevelId(blastFurnaceLevelId);
-        mmap.put("productBlastFurnaceLevel", productBlastFurnaceLevel);
-        return prefix + "/edit";
-    }
-
-    /**
-     * 修改保存高炉液位数据监控
-     */
-    @RequiresPermissions("product:blastfurnacelevel:edit")
-    @Log(title = "高炉液位数据监控", businessType = BusinessType.UPDATE)
-    @PostMapping("/edit")
-    @ResponseBody
-    public AjaxResult editSave(ProductBlastFurnaceLevel productBlastFurnaceLevel)
-    {
-        return toAjax(productBlastFurnaceLevelService.updateProductBlastFurnaceLevel(productBlastFurnaceLevel));
-    }
-
-    /**
-     * 删除高炉液位数据监控
-     */
-    @RequiresPermissions("product:blastfurnacelevel:remove")
-    @Log(title = "高炉液位数据监控", businessType = BusinessType.DELETE)
-    @PostMapping( "/remove")
-    @ResponseBody
-    public AjaxResult remove(String ids)
-    {
-        return toAjax(productBlastFurnaceLevelService.deleteProductBlastFurnaceLevelByBlastFurnaceLevelIds(ids));
     }
 }

@@ -9,10 +9,10 @@ import com.ruoyi.product.service.IProductBlastFurnaceLevelService;
 import com.ruoyi.common.core.text.Convert;
 
 /**
- * 高炉液位数据监控Service业务层处理
+ * 铁水包液位Service业务层处理
  * 
  * @author zongyoucheng
- * @date 2022-09-26
+ * @date 2022-11-24
  */
 @Service
 public class ProductBlastFurnaceLevelServiceImpl implements IProductBlastFurnaceLevelService 
@@ -21,10 +21,10 @@ public class ProductBlastFurnaceLevelServiceImpl implements IProductBlastFurnace
     private ProductBlastFurnaceLevelMapper productBlastFurnaceLevelMapper;
 
     /**
-     * 查询高炉液位数据监控
+     * 查询铁水包液位
      * 
-     * @param blastFurnaceLevelId 高炉液位数据监控主键
-     * @return 高炉液位数据监控
+     * @param blastFurnaceLevelId 铁水包液位主键
+     * @return 铁水包液位
      */
     @Override
     public ProductBlastFurnaceLevel selectProductBlastFurnaceLevelByBlastFurnaceLevelId(Long blastFurnaceLevelId)
@@ -33,10 +33,10 @@ public class ProductBlastFurnaceLevelServiceImpl implements IProductBlastFurnace
     }
 
     /**
-     * 查询高炉液位数据监控列表
+     * 查询铁水包液位列表
      * 
-     * @param productBlastFurnaceLevel 高炉液位数据监控
-     * @return 高炉液位数据监控
+     * @param productBlastFurnaceLevel 铁水包液位
+     * @return 铁水包液位
      */
     @Override
     public List<ProductBlastFurnaceLevel> selectProductBlastFurnaceLevelList(ProductBlastFurnaceLevel productBlastFurnaceLevel)
@@ -45,9 +45,21 @@ public class ProductBlastFurnaceLevelServiceImpl implements IProductBlastFurnace
     }
 
     /**
-     * 新增高炉液位数据监控
+     * 查询铁水包液位列表（大数据专用）
+     *
+     * @param productBlastFurnaceLevel 铁水包液位
+     * @return 铁水包液位
+     */
+    @Override
+    public List<ProductBlastFurnaceLevel> selectProductBlastFurnaceLevelListNew(ProductBlastFurnaceLevel productBlastFurnaceLevel)
+    {
+        return productBlastFurnaceLevelMapper.selectProductBlastFurnaceLevelListNew(productBlastFurnaceLevel);
+    }
+
+    /**
+     * 新增铁水包液位
      * 
-     * @param productBlastFurnaceLevel 高炉液位数据监控
+     * @param productBlastFurnaceLevel 铁水包液位
      * @return 结果
      */
     @Override
@@ -57,9 +69,9 @@ public class ProductBlastFurnaceLevelServiceImpl implements IProductBlastFurnace
     }
 
     /**
-     * 修改高炉液位数据监控
+     * 修改铁水包液位
      * 
-     * @param productBlastFurnaceLevel 高炉液位数据监控
+     * @param productBlastFurnaceLevel 铁水包液位
      * @return 结果
      */
     @Override
@@ -69,9 +81,9 @@ public class ProductBlastFurnaceLevelServiceImpl implements IProductBlastFurnace
     }
 
     /**
-     * 批量删除高炉液位数据监控
+     * 批量删除铁水包液位
      * 
-     * @param blastFurnaceLevelIds 需要删除的高炉液位数据监控主键
+     * @param blastFurnaceLevelIds 需要删除的铁水包液位主键
      * @return 结果
      */
     @Override
@@ -81,9 +93,9 @@ public class ProductBlastFurnaceLevelServiceImpl implements IProductBlastFurnace
     }
 
     /**
-     * 删除高炉液位数据监控信息
+     * 删除铁水包液位信息
      * 
-     * @param blastFurnaceLevelId 高炉液位数据监控主键
+     * @param blastFurnaceLevelId 铁水包液位主键
      * @return 结果
      */
     @Override

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ruoyi.product.domain.ProductBlastFurnaceLevel;
+import com.ruoyi.product.domain.ProductBlastFurnaceStatus;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,10 +28,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 出铁重量预测Controller
+ * 出铁重量计量Controller
  * 
  * @author zongyoucheng
- * @date 2022-10-11
+ * @date 2022-11-26
  */
 @Controller
 @RequestMapping("/product/blastfurnaceweight")
@@ -50,7 +50,7 @@ public class ProductBlastFurnaceWeightController extends BaseController
     }
 
     /**
-     * product:blastfurnacelevel:echarts返回到echarts页面(权限决定是否读取到该方法，return决定跳转到何页面，getmapping不能重复，会报错)
+     * product:blastfurnaceweight:echarts返回到echarts页面(权限决定是否读取到该方法，return决定跳转到何页面，getmapping不能重复，会报错)
      * @return
      */
     @RequiresPermissions("product:blastfurnaceweight:echarts")
@@ -61,7 +61,7 @@ public class ProductBlastFurnaceWeightController extends BaseController
     }
 
     /**
-     * 查询出铁重量预测列表
+     * 查询出铁重量计量列表
      */
     @RequiresPermissions("product:blastfurnaceweight:list")
     @PostMapping("/list")
@@ -74,38 +74,21 @@ public class ProductBlastFurnaceWeightController extends BaseController
     }
 
     /**
-     * 出铁重量计量图json
-     */
-    @PostMapping("/echarts")
-    public void selectEcharts(ProductBlastFurnaceWeight productBlastFurnaceWeight, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //查询数据
-        List<ProductBlastFurnaceWeight> list =  productBlastFurnaceWeightService.selectProductBlastFurnaceWeightList(productBlastFurnaceWeight);
-        //提供java-json相互转换功能的类
-        ObjectMapper mapper = new ObjectMapper();
-        //将list中的对象转换为Json格式的数组
-        String json = mapper.writeValueAsString(list);
-        //System.out.println(json);
-        //将json数据返回给客户端
-        response.setContentType("text/html; charset=utf-8");
-        response.getWriter().write(json);
-    }
-
-    /**
-     * 导出出铁重量预测列表
+     * 导出出铁重量计量列表
      */
     @RequiresPermissions("product:blastfurnaceweight:export")
-    @Log(title = "出铁重量预测", businessType = BusinessType.EXPORT)
+    @Log(title = "出铁重量计量", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     @ResponseBody
     public AjaxResult export(ProductBlastFurnaceWeight productBlastFurnaceWeight)
     {
         List<ProductBlastFurnaceWeight> list = productBlastFurnaceWeightService.selectProductBlastFurnaceWeightList(productBlastFurnaceWeight);
         ExcelUtil<ProductBlastFurnaceWeight> util = new ExcelUtil<ProductBlastFurnaceWeight>(ProductBlastFurnaceWeight.class);
-        return util.exportExcel(list, "出铁重量预测数据");
+        return util.exportExcel(list, "出铁重量计量数据");
     }
 
     /**
-     * 新增出铁重量预测
+     * 新增出铁重量计量
      */
     @GetMapping("/add")
     public String add()
@@ -114,10 +97,10 @@ public class ProductBlastFurnaceWeightController extends BaseController
     }
 
     /**
-     * 新增保存出铁重量预测
+     * 新增保存出铁重量计量
      */
     @RequiresPermissions("product:blastfurnaceweight:add")
-    @Log(title = "出铁重量预测", businessType = BusinessType.INSERT)
+    @Log(title = "出铁重量计量", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(ProductBlastFurnaceWeight productBlastFurnaceWeight)
@@ -126,7 +109,7 @@ public class ProductBlastFurnaceWeightController extends BaseController
     }
 
     /**
-     * 修改出铁重量预测
+     * 修改出铁重量计量
      */
     @RequiresPermissions("product:blastfurnaceweight:edit")
     @GetMapping("/edit/{blastFurnaceWeightId}")
@@ -138,10 +121,10 @@ public class ProductBlastFurnaceWeightController extends BaseController
     }
 
     /**
-     * 修改保存出铁重量预测
+     * 修改保存出铁重量计量
      */
     @RequiresPermissions("product:blastfurnaceweight:edit")
-    @Log(title = "出铁重量预测", businessType = BusinessType.UPDATE)
+    @Log(title = "出铁重量计量", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(ProductBlastFurnaceWeight productBlastFurnaceWeight)
@@ -150,14 +133,30 @@ public class ProductBlastFurnaceWeightController extends BaseController
     }
 
     /**
-     * 删除出铁重量预测
+     * 删除出铁重量计量
      */
     @RequiresPermissions("product:blastfurnaceweight:remove")
-    @Log(title = "出铁重量预测", businessType = BusinessType.DELETE)
+    @Log(title = "出铁重量计量", businessType = BusinessType.DELETE)
     @PostMapping( "/remove")
     @ResponseBody
     public AjaxResult remove(String ids)
     {
         return toAjax(productBlastFurnaceWeightService.deleteProductBlastFurnaceWeightByBlastFurnaceWeightIds(ids));
+    }
+    /**
+     * 铁水包状态数据json
+     */
+    @PostMapping("/echarts")
+    public void selectWeightEcharts(Long blastFurnaceWeightId, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //查询数据
+        ProductBlastFurnaceWeight list =  productBlastFurnaceWeightService.selectProductBlastFurnaceWeightByBlastFurnaceWeightId(1L);
+        //提供java-json相互转换功能的类
+        ObjectMapper mapper = new ObjectMapper();
+        //将list中的对象转换为Json格式的数组
+        String json = mapper.writeValueAsString(list);
+        System.out.println(json);
+        //将json数据返回给客户端
+        response.setContentType("text/html; charset=utf-8");
+        response.getWriter().write(json);
     }
 }

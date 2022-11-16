@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-    <th:block th:include="include :: header('高炉液位数据监控列表')" />
+    <th:block th:include="include :: header('铁水包液位列表')" />
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -11,35 +11,31 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>日期：</label>
-                                <input type="text" name="dateExisted"/>
-                            </li>
-                            <li>
                                 <label>时间：</label>
-                                <input type="text" name="timeExisted"/>
+                                <input type="text" class="time-input" placeholder="请选择时间" name="datetime"/>
                             </li>
                             <li>
-                                <label>1号高炉液位：</label>
+                                <label>1号铁水包：</label>
                                 <input type="text" name="equipmentA1"/>
                             </li>
                             <li>
-                                <label>2号高炉液位：</label>
+                                <label>2号铁水包：</label>
                                 <input type="text" name="equipmentA2"/>
                             </li>
                             <li>
-                                <label>3号高炉液位：</label>
+                                <label>3号铁水包：</label>
                                 <input type="text" name="equipmentA3"/>
                             </li>
                             <li>
-                                <label>6号高炉液位：</label>
+                                <label>6号铁水包：</label>
                                 <input type="text" name="equipmentA6"/>
                             </li>
                             <li>
-                                <label>7号高炉液位：</label>
+                                <label>7号铁水包：</label>
                                 <input type="text" name="equipmentA7"/>
                             </li>
                             <li>
-                                <label>8号高炉液位：</label>
+                                <label>8号铁水包：</label>
                                 <input type="text" name="equipmentA8"/>
                             </li>
                             <li>
@@ -83,46 +79,42 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
-                modalName: "高炉液位数据监控",
+                modalName: "铁水包液位",
                 columns: [{
                     checkbox: true
                 },
                 {
                     field: 'blastFurnaceLevelId',
-                    title: '高炉液位跟踪数据ID',
+                    title: '液位数据ID',
                     visible: false
                 },
                 {
-                    field: 'dateExisted',
-                    title: '日期'
-                },
-                {
-                    field: 'timeExisted',
+                    field: 'datetime',
                     title: '时间'
                 },
                 {
                     field: 'equipmentA1',
-                    title: '1号高炉液位'
+                    title: '1号铁水包'
                 },
                 {
                     field: 'equipmentA2',
-                    title: '2号高炉液位'
+                    title: '2号铁水包'
                 },
                 {
                     field: 'equipmentA3',
-                    title: '3号高炉液位'
+                    title: '3号铁水包'
                 },
                 {
                     field: 'equipmentA6',
-                    title: '6号高炉液位'
+                    title: '6号铁水包'
                 },
                 {
                     field: 'equipmentA7',
-                    title: '7号高炉液位'
+                    title: '7号铁水包'
                 },
                 {
                     field: 'equipmentA8',
-                    title: '8号高炉液位'
+                    title: '8号铁水包'
                 },
                 {
                     title: '操作',

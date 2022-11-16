@@ -48,7 +48,9 @@
                 //液位高度
                 yAxis: {
                     type: 'value',
-                    boundaryGap: [0, '100%']
+                    boundaryGap: [0, '100%'],
+                    max: 3,
+                    min: 0
                 },
                 dataZoom: [
                     {
@@ -64,7 +66,7 @@
                 //六个高度
                 series: [
                     {
-                        name: '1号高炉液位',
+                        name: '1号铁水包液位',
                         type: 'line',
                         symbol: 'none',
                         sampling: 'lttb',
@@ -86,7 +88,7 @@
                         data: []
                     },
                     {
-                        name: '2号高炉液位',
+                        name: '2号铁水包液位',
                         type: 'line',
                         symbol: 'none',
                         sampling: 'lttb',
@@ -108,7 +110,7 @@
                         data: []
                     },
                     {
-                        name: '3号高炉液位',
+                        name: '3号铁水包液位',
                         type: 'line',
                         symbol: 'none',
                         sampling: 'lttb',
@@ -130,7 +132,7 @@
                         data: []
                     },
                     {
-                        name: '6号高炉液位',
+                        name: '6号铁水包液位',
                         type: 'line',
                         symbol: 'none',
                         sampling: 'lttb',
@@ -152,7 +154,7 @@
                         data: []
                     },
                     {
-                        name: '7号高炉液位',
+                        name: '7号铁水包液位',
                         type: 'line',
                         symbol: 'none',
                         sampling: 'lttb',
@@ -174,7 +176,7 @@
                         data: []
                     },
                     {
-                        name: '8号高炉液位',
+                        name: '8号铁水包液位',
                         type: 'line',
                         symbol: 'none',
                         sampling: 'lttb',
@@ -202,7 +204,7 @@
             listChart.showLoading();
             $(window).resize(listChart.resize);
 
-            var timeExisted = []; //时间（已存在）数组
+            var dateTime = []; //时间（已存在）数组
             var equipmentA1 = []; //1号高炉液位数组
             var equipmentA2 = []; //2号高炉液位数组
             var equipmentA3 = []; //3号高炉液位数组
@@ -220,7 +222,7 @@
                     //请求成功时执行该函数内容，result即为服务器返回的json对象
                     if (result) {
                         for (var i = 0; i < result.length; i++) {
-                            timeExisted.push(result[i].timeExisted); //挨个取出时间（已存在）并填入时间（已存在）数组
+                            dateTime.push(result[i].datetime); //挨个取出时间（已存在）并填入时间（已存在）数组
                         }
                         for (var i = 0; i < result.length; i++) {
                             equipmentA1.push(result[i].equipmentA1); //挨个取出高炉液位并填入高炉液位数组
@@ -243,26 +245,26 @@
                         listChart.hideLoading(); //隐藏加载动画
                         listChart.setOption({ //加载数据图表
                             xAxis : {
-                                data : timeExisted
+                                data : dateTime
                             },
                             series : [ {
                                 // 根据名字对应到相应的系列
-                                name : '1号高炉液位',
+                                name : '1号铁水包液位',
                                 data : equipmentA1
                             }, {
-                                name : '2号高炉液位',
+                                name : '2号铁水包液位',
                                 data : equipmentA2
                             }, {
-                                name : '3号高炉液位',
+                                name : '3号铁水包液位',
                                 data : equipmentA3
                             }, {
-                                name : '6号高炉液位',
+                                name : '6号铁水包液位',
                                 data : equipmentA6
                             }, {
-                                name : '7号高炉液位',
+                                name : '7号铁水包液位',
                                 data : equipmentA7
                             }, {
-                                name : '8号高炉液位',
+                                name : '8号铁水包液位',
                                 data : equipmentA8
                                 }
                             ]

@@ -7,7 +7,7 @@ import com.ruoyi.product.domain.ProductBlastFurnaceStatus;
  * 铁水包状态Service接口
  * 
  * @author zongyoucheng
- * @date 2022-10-10
+ * @date 2022-11-24
  */
 public interface IProductBlastFurnaceStatusService 
 {

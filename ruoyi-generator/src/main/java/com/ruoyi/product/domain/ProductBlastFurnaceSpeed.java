@@ -6,10 +6,10 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 出铁流速预报对象 product_blast_furnace_speed
+ * 出铁流速流量预报对象 product_blast_furnace_speed
  * 
  * @author zongyoucheng
- * @date 2022-10-11
+ * @date 2022-11-26
  */
 public class ProductBlastFurnaceSpeed extends BaseEntity
 {
@@ -22,53 +22,53 @@ public class ProductBlastFurnaceSpeed extends BaseEntity
     @Excel(name = "外键对应液位ID")
     private Long blastFurnaceLevelIdIndex;
 
-    /** 1号铁水罐位流速 */
-    @Excel(name = "1号铁水罐位流速")
-    private Long equipmentA1Speed;
+    /** 1号铁水包流速 */
+    @Excel(name = "1号铁水包流速")
+    private Double equipmentA1Speed;
 
-    /** 2号铁水罐位流速 */
-    @Excel(name = "2号铁水罐位流速")
-    private Long equipmentA2Speed;
+    /** 2号铁水包流速 */
+    @Excel(name = "2号铁水包流速")
+    private Double equipmentA2Speed;
 
-    /** 3号铁水罐位流速 */
-    @Excel(name = "3号铁水罐位流速")
-    private Long equipmentA3Speed;
+    /** 3号铁水包流速 */
+    @Excel(name = "3号铁水包流速")
+    private Double equipmentA3Speed;
 
-    /** 6号铁水罐位流速 */
-    @Excel(name = "6号铁水罐位流速")
-    private Long equipmentA6Speed;
+    /** 6号铁水包流速 */
+    @Excel(name = "6号铁水包流速")
+    private Double equipmentA6Speed;
 
-    /** 7号铁水罐位流速 */
-    @Excel(name = "7号铁水罐位流速")
-    private Long equipmentA7Speed;
+    /** 7号铁水包流速 */
+    @Excel(name = "7号铁水包流速")
+    private Double equipmentA7Speed;
 
-    /** 8号铁水罐位流速 */
-    @Excel(name = "8号铁水罐位流速")
-    private Long equipmentA8Speed;
+    /** 8号铁水包流速 */
+    @Excel(name = "8号铁水包流速")
+    private Double equipmentA8Speed;
 
-    /** 1号铁水罐位流量 */
-    @Excel(name = "1号铁水罐位流量")
-    private Long equipmentA1Flow;
+    /** 1号铁水包流量 */
+    @Excel(name = "1号铁水包流量")
+    private Double equipmentA1Flow;
 
-    /** 2号铁水罐位流量 */
-    @Excel(name = "2号铁水罐位流量")
-    private Long equipmentA2Flow;
+    /** 2号铁水包流量 */
+    @Excel(name = "2号铁水包流量")
+    private Double equipmentA2Flow;
 
-    /** 3号铁水罐位流量 */
-    @Excel(name = "3号铁水罐位流量")
-    private Long equipmentA3Flow;
+    /** 3号铁水包流量 */
+    @Excel(name = "3号铁水包流量")
+    private Double equipmentA3Flow;
 
-    /** 6号铁水罐位流量 */
-    @Excel(name = "6号铁水罐位流量")
-    private Long equipmentA6Flow;
+    /** 6号铁水包流量 */
+    @Excel(name = "6号铁水包流量")
+    private Double equipmentA6Flow;
 
-    /** 7号铁水罐位流量 */
-    @Excel(name = "7号铁水罐位流量")
-    private Long equipmentA7Flow;
+    /** 7号铁水包流量 */
+    @Excel(name = "7号铁水包流量")
+    private Double equipmentA7Flow;
 
-    /** 8号铁水罐位流量 */
-    @Excel(name = "8号铁水罐位流量")
-    private Long equipmentA8Flow;
+    /** 8号铁水包流量 */
+    @Excel(name = "8号铁水包流量")
+    private Double equipmentA8Flow;
 
     public void setBlastFurnaceSpeedId(Long blastFurnaceSpeedId) 
     {
@@ -88,111 +88,111 @@ public class ProductBlastFurnaceSpeed extends BaseEntity
     {
         return blastFurnaceLevelIdIndex;
     }
-    public void setEquipmentA1Speed(Long equipmentA1Speed) 
+    public void setEquipmentA1Speed(Double equipmentA1Speed) 
     {
         this.equipmentA1Speed = equipmentA1Speed;
     }
 
-    public Long getEquipmentA1Speed() 
+    public Double getEquipmentA1Speed() 
     {
         return equipmentA1Speed;
     }
-    public void setEquipmentA2Speed(Long equipmentA2Speed) 
+    public void setEquipmentA2Speed(Double equipmentA2Speed) 
     {
         this.equipmentA2Speed = equipmentA2Speed;
     }
 
-    public Long getEquipmentA2Speed() 
+    public Double getEquipmentA2Speed() 
     {
         return equipmentA2Speed;
     }
-    public void setEquipmentA3Speed(Long equipmentA3Speed) 
+    public void setEquipmentA3Speed(Double equipmentA3Speed) 
     {
         this.equipmentA3Speed = equipmentA3Speed;
     }
 
-    public Long getEquipmentA3Speed() 
+    public Double getEquipmentA3Speed() 
     {
         return equipmentA3Speed;
     }
-    public void setEquipmentA6Speed(Long equipmentA6Speed) 
+    public void setEquipmentA6Speed(Double equipmentA6Speed) 
     {
         this.equipmentA6Speed = equipmentA6Speed;
     }
 
-    public Long getEquipmentA6Speed() 
+    public Double getEquipmentA6Speed() 
     {
         return equipmentA6Speed;
     }
-    public void setEquipmentA7Speed(Long equipmentA7Speed) 
+    public void setEquipmentA7Speed(Double equipmentA7Speed) 
     {
         this.equipmentA7Speed = equipmentA7Speed;
     }
 
-    public Long getEquipmentA7Speed() 
+    public Double getEquipmentA7Speed() 
     {
         return equipmentA7Speed;
     }
-    public void setEquipmentA8Speed(Long equipmentA8Speed) 
+    public void setEquipmentA8Speed(Double equipmentA8Speed) 
     {
         this.equipmentA8Speed = equipmentA8Speed;
     }
 
-    public Long getEquipmentA8Speed() 
+    public Double getEquipmentA8Speed() 
     {
         return equipmentA8Speed;
     }
-    public void setEquipmentA1Flow(Long equipmentA1Flow) 
+    public void setEquipmentA1Flow(Double equipmentA1Flow) 
     {
         this.equipmentA1Flow = equipmentA1Flow;
     }
 
-    public Long getEquipmentA1Flow() 
+    public Double getEquipmentA1Flow() 
     {
         return equipmentA1Flow;
     }
-    public void setEquipmentA2Flow(Long equipmentA2Flow) 
+    public void setEquipmentA2Flow(Double equipmentA2Flow) 
     {
         this.equipmentA2Flow = equipmentA2Flow;
     }
 
-    public Long getEquipmentA2Flow() 
+    public Double getEquipmentA2Flow() 
     {
         return equipmentA2Flow;
     }
-    public void setEquipmentA3Flow(Long equipmentA3Flow) 
+    public void setEquipmentA3Flow(Double equipmentA3Flow) 
     {
         this.equipmentA3Flow = equipmentA3Flow;
     }
 
-    public Long getEquipmentA3Flow() 
+    public Double getEquipmentA3Flow() 
     {
         return equipmentA3Flow;
     }
-    public void setEquipmentA6Flow(Long equipmentA6Flow) 
+    public void setEquipmentA6Flow(Double equipmentA6Flow) 
     {
         this.equipmentA6Flow = equipmentA6Flow;
     }
 
-    public Long getEquipmentA6Flow() 
+    public Double getEquipmentA6Flow() 
     {
         return equipmentA6Flow;
     }
-    public void setEquipmentA7Flow(Long equipmentA7Flow) 
+    public void setEquipmentA7Flow(Double equipmentA7Flow) 
     {
         this.equipmentA7Flow = equipmentA7Flow;
     }
 
-    public Long getEquipmentA7Flow() 
+    public Double getEquipmentA7Flow() 
     {
         return equipmentA7Flow;
     }
-    public void setEquipmentA8Flow(Long equipmentA8Flow) 
+    public void setEquipmentA8Flow(Double equipmentA8Flow) 
     {
         this.equipmentA8Flow = equipmentA8Flow;
     }
 
-    public Long getEquipmentA8Flow() 
+    public Double getEquipmentA8Flow() 
     {
         return equipmentA8Flow;
     }

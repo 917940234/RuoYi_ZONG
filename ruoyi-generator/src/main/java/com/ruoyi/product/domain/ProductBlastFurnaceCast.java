@@ -25,18 +25,18 @@ public class ProductBlastFurnaceCast extends BaseEntity
     private Long equipmentLocation;
 
     /** 出铁开始时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "出铁开始时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "出铁开始时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date castStartTime;
 
     /** 出铁报警时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "出铁报警时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "出铁报警时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date castAlertTime;
 
     /** 出铁结束时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "出铁结束时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "出铁结束时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date castEndTime;
 
     /** 出铁合计时间 */

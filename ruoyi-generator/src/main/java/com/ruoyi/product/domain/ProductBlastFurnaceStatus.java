@@ -1,5 +1,8 @@
 package com.ruoyi.product.domain;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -9,45 +12,42 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 铁水包状态对象 product_blast_furnace_status
  * 
  * @author zongyoucheng
- * @date 2022-10-10
+ * @date 2022-11-24
  */
 public class ProductBlastFurnaceStatus extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 铁水包状态模块ID */
+    /** 状态数据ID */
     private Long blastFurnaceStatusId;
 
-    /** 日期（已存在） */
-    @Excel(name = "日期", readConverterExp = "已=存在")
-    private String dateExisted;
+    /** 时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "时间", dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date datetimeLevel;
 
-    /** 时间（已存在） */
-    @Excel(name = "时间", readConverterExp = "已=存在")
-    private String timeExisted;
-
-    /** 1号铁水罐状态 */
-    @Excel(name = "1号铁水罐状态")
+    /** 1号铁水包 */
+    @Excel(name = "1号铁水包")
     private Long equipmentA1State;
 
-    /** 2号铁水罐状态 */
-    @Excel(name = "2号铁水罐状态")
+    /** 2号铁水包 */
+    @Excel(name = "2号铁水包")
     private Long equipmentA2State;
 
-    /** 3号铁水罐状态 */
-    @Excel(name = "3号铁水罐状态")
+    /** 3号铁水包 */
+    @Excel(name = "3号铁水包")
     private Long equipmentA3State;
 
-    /** 6号铁水罐状态 */
-    @Excel(name = "6号铁水罐状态")
+    /** 6号铁水包 */
+    @Excel(name = "6号铁水包")
     private Long equipmentA6State;
 
-    /** 7号铁水罐状态 */
-    @Excel(name = "7号铁水罐状态")
+    /** 7号铁水包 */
+    @Excel(name = "7号铁水包")
     private Long equipmentA7State;
 
-    /** 8号铁水罐状态 */
-    @Excel(name = "8号铁水罐状态")
+    /** 8号铁水包 */
+    @Excel(name = "8号铁水包")
     private Long equipmentA8State;
 
     public void setBlastFurnaceStatusId(Long blastFurnaceStatusId) 
@@ -59,23 +59,14 @@ public class ProductBlastFurnaceStatus extends BaseEntity
     {
         return blastFurnaceStatusId;
     }
-    public void setDateExisted(String dateExisted) 
+    public void setDatetimeLevel(Date datetimeLevel)
     {
-        this.dateExisted = dateExisted;
+        this.datetimeLevel = datetimeLevel;
     }
 
-    public String getDateExisted() 
+    public Date getDatetimeLevel()
     {
-        return dateExisted;
-    }
-    public void setTimeExisted(String timeExisted) 
-    {
-        this.timeExisted = timeExisted;
-    }
-
-    public String getTimeExisted() 
-    {
-        return timeExisted;
+        return datetimeLevel;
     }
     public void setEquipmentA1State(Long equipmentA1State) 
     {
@@ -136,8 +127,7 @@ public class ProductBlastFurnaceStatus extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("blastFurnaceStatusId", getBlastFurnaceStatusId())
-            .append("dateExisted", getDateExisted())
-            .append("timeExisted", getTimeExisted())
+            .append("datetimeLevel", getDatetimeLevel())
             .append("equipmentA1State", getEquipmentA1State())
             .append("equipmentA2State", getEquipmentA2State())
             .append("equipmentA3State", getEquipmentA3State())

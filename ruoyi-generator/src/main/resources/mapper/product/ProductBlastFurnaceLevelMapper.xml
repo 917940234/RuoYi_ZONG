@@ -6,8 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="ProductBlastFurnaceLevel" id="ProductBlastFurnaceLevelResult">
         <result property="blastFurnaceLevelId"    column="blast_furnace_level_id"    />
-        <result property="dateExisted"    column="date_existed"    />
-        <result property="timeExisted"    column="time_existed"    />
+        <result property="datetime"    column="datetime"    />
         <result property="equipmentA1"    column="equipment_a1"    />
         <result property="equipmentA2"    column="equipment_a2"    />
         <result property="equipmentA3"    column="equipment_a3"    />
@@ -17,14 +16,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectProductBlastFurnaceLevelVo">
-        select blast_furnace_level_id, date_existed, time_existed, equipment_a1, equipment_a2, equipment_a3, equipment_a6, equipment_a7, equipment_a8 from product_blast_furnace_level
+        select blast_furnace_level_id, datetime, equipment_a1, equipment_a2, equipment_a3, equipment_a6, equipment_a7, equipment_a8 from product_blast_furnace_level
     </sql>
 
     <select id="selectProductBlastFurnaceLevelList" parameterType="ProductBlastFurnaceLevel" resultMap="ProductBlastFurnaceLevelResult">
         <include refid="selectProductBlastFurnaceLevelVo"/>
         <where>  
-            <if test="dateExisted != null  and dateExisted != ''"> and date_existed = #{dateExisted}</if>
-            <if test="timeExisted != null  and timeExisted != ''"> and time_existed = #{timeExisted}</if>
+            <if test="datetime != null "> and datetime = #{datetime}</if>
             <if test="equipmentA1 != null "> and equipment_a1 = #{equipmentA1}</if>
             <if test="equipmentA2 != null "> and equipment_a2 = #{equipmentA2}</if>
             <if test="equipmentA3 != null "> and equipment_a3 = #{equipmentA3}</if>
@@ -33,17 +31,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="equipmentA8 != null "> and equipment_a8 = #{equipmentA8}</if>
         </where>
     </select>
-    
-    <select id="selectProductBlastFurnaceLevelByBlastFurnaceLevelId" parameterType="Long" resultMap="ProductBlastFurnaceLevelResult">
-        <include refid="selectProductBlastFurnaceLevelVo"/>
-        where blast_furnace_level_id = #{blastFurnaceLevelId}
+
+    <!--新增：查询最新3万行液位数据给大数据表-->
+    <select id="selectProductBlastFurnaceLevelListNew" parameterType="ProductBlastFurnaceLevel" resultMap="ProductBlastFurnaceLevelResult">
+        select datetime, equipment_a1, equipment_a2, equipment_a3, equipment_a6, equipment_a7, equipment_a8
+        from product_blast_furnace_level
+        ORDER BY blast_furnace_level_id DESC
+            LIMIT 30000
     </select>
-        
+
+    <!--已被魔改成读取当前id最大的一位，也就是当前最新行-->
+    <select id="selectProductBlastFurnaceLevelByBlastFurnaceLevelId" parameterType="Long" resultMap="ProductBlastFurnaceLevelResult">
+        SELECT equipment_a1, equipment_a2, equipment_a3, equipment_a6, equipment_a7, equipment_a8
+        FROM product_blast_furnace_level
+        ORDER BY blast_furnace_level_id DESC
+            LIMIT 1;
+    </select>
+
     <insert id="insertProductBlastFurnaceLevel" parameterType="ProductBlastFurnaceLevel" useGeneratedKeys="true" keyProperty="blastFurnaceLevelId">
         insert into product_blast_furnace_level
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="dateExisted != null">date_existed,</if>
-            <if test="timeExisted != null">time_existed,</if>
+            <if test="datetime != null">datetime,</if>
             <if test="equipmentA1 != null">equipment_a1,</if>
             <if test="equipmentA2 != null">equipment_a2,</if>
             <if test="equipmentA3 != null">equipment_a3,</if>
@@ -52,8 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="equipmentA8 != null">equipment_a8,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="dateExisted != null">#{dateExisted},</if>
-            <if test="timeExisted != null">#{timeExisted},</if>
+            <if test="datetime != null">#{datetime},</if>
             <if test="equipmentA1 != null">#{equipmentA1},</if>
             <if test="equipmentA2 != null">#{equipmentA2},</if>
             <if test="equipmentA3 != null">#{equipmentA3},</if>
@@ -66,8 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateProductBlastFurnaceLevel" parameterType="ProductBlastFurnaceLevel">
         update product_blast_furnace_level
         <trim prefix="SET" suffixOverrides=",">
-            <if test="dateExisted != null">date_existed = #{dateExisted},</if>
-            <if test="timeExisted != null">time_existed = #{timeExisted},</if>
+            <if test="datetime != null">datetime = #{datetime},</if>
             <if test="equipmentA1 != null">equipment_a1 = #{equipmentA1},</if>
             <if test="equipmentA2 != null">equipment_a2 = #{equipmentA2},</if>
             <if test="equipmentA3 != null">equipment_a3 = #{equipmentA3},</if>

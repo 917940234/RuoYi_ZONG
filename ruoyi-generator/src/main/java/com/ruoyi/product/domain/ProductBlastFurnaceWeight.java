@@ -6,45 +6,45 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 出铁重量预测对象 product_blast_furnace_weight
+ * 出铁重量计量对象 product_blast_furnace_weight
  * 
  * @author zongyoucheng
- * @date 2022-10-11
+ * @date 2022-11-26
  */
 public class ProductBlastFurnaceWeight extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 出铁重量计量ID */
+    /** 出铁重量表ID */
     private Long blastFurnaceWeightId;
 
-    /** 外键对应液位ID */
-    @Excel(name = "外键对应液位ID")
+    /** 当前液位表ID */
+    @Excel(name = "当前液位表ID")
     private Long blastFurnaceLevelId;
 
-    /** 1号铁水包液位对应重量 */
-    @Excel(name = "1号铁水包液位对应重量")
-    private Long equipmentA1Weight;
+    /** 1号铁水包重量 */
+    @Excel(name = "1号铁水包重量")
+    private Double equipmentA1Weight;
 
-    /** 2号铁水包液位对应重量 */
-    @Excel(name = "2号铁水包液位对应重量")
-    private Long equipmentA2Weight;
+    /** 2号铁水包重量 */
+    @Excel(name = "2号铁水包重量")
+    private Double equipmentA2Weight;
 
-    /** 3号铁水包液位对应重量 */
-    @Excel(name = "3号铁水包液位对应重量")
-    private Long equipmentA3Weight;
+    /** 3号铁水包重量 */
+    @Excel(name = "3号铁水包重量")
+    private Double equipmentA3Weight;
 
-    /** 6号铁水包液位对应重量 */
-    @Excel(name = "6号铁水包液位对应重量")
-    private Long equipmentA6Weight;
+    /** 6号铁水包重量 */
+    @Excel(name = "6号铁水包重量")
+    private Double equipmentA6Weight;
 
-    /** 7号铁水包液位对应重量 */
-    @Excel(name = "7号铁水包液位对应重量")
-    private Long equipmentA7Weight;
+    /** 7号铁水包重量 */
+    @Excel(name = "7号铁水包重量")
+    private Double equipmentA7Weight;
 
-    /** 8号铁水包液位对应重量 */
-    @Excel(name = "8号铁水包液位对应重量")
-    private Long equipmentA8Weight;
+    /** 8号铁水包重量 */
+    @Excel(name = "8号铁水包重量")
+    private Double equipmentA8Weight;
 
     public void setBlastFurnaceWeightId(Long blastFurnaceWeightId) 
     {
@@ -64,57 +64,57 @@ public class ProductBlastFurnaceWeight extends BaseEntity
     {
         return blastFurnaceLevelId;
     }
-    public void setEquipmentA1Weight(Long equipmentA1Weight) 
+    public void setEquipmentA1Weight(Double equipmentA1Weight) 
     {
         this.equipmentA1Weight = equipmentA1Weight;
     }
 
-    public Long getEquipmentA1Weight() 
+    public Double getEquipmentA1Weight() 
     {
         return equipmentA1Weight;
     }
-    public void setEquipmentA2Weight(Long equipmentA2Weight) 
+    public void setEquipmentA2Weight(Double equipmentA2Weight) 
     {
         this.equipmentA2Weight = equipmentA2Weight;
     }
 
-    public Long getEquipmentA2Weight() 
+    public Double getEquipmentA2Weight() 
     {
         return equipmentA2Weight;
     }
-    public void setEquipmentA3Weight(Long equipmentA3Weight) 
+    public void setEquipmentA3Weight(Double equipmentA3Weight) 
     {
         this.equipmentA3Weight = equipmentA3Weight;
     }
 
-    public Long getEquipmentA3Weight() 
+    public Double getEquipmentA3Weight() 
     {
         return equipmentA3Weight;
     }
-    public void setEquipmentA6Weight(Long equipmentA6Weight) 
+    public void setEquipmentA6Weight(Double equipmentA6Weight) 
     {
         this.equipmentA6Weight = equipmentA6Weight;
     }
 
-    public Long getEquipmentA6Weight() 
+    public Double getEquipmentA6Weight() 
     {
         return equipmentA6Weight;
     }
-    public void setEquipmentA7Weight(Long equipmentA7Weight) 
+    public void setEquipmentA7Weight(Double equipmentA7Weight) 
     {
         this.equipmentA7Weight = equipmentA7Weight;
     }
 
-    public Long getEquipmentA7Weight() 
+    public Double getEquipmentA7Weight() 
     {
         return equipmentA7Weight;
     }
-    public void setEquipmentA8Weight(Long equipmentA8Weight) 
+    public void setEquipmentA8Weight(Double equipmentA8Weight) 
     {
         this.equipmentA8Weight = equipmentA8Weight;
     }
 
-    public Long getEquipmentA8Weight() 
+    public Double getEquipmentA8Weight() 
     {
         return equipmentA8Weight;
     }

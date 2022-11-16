@@ -21,12 +21,12 @@
     <div class="container-div">
         <div class="row">
             <div class="col-sm-12 text-center">
-                <h1>液位实时监控界面</h1>
+                <div style="font-size: 50px">液位实时监控界面</div>
                     <div class="col-sm-4 col-sm-offset-4 text-center">
                         <!--<h2>高炉出铁</h2>-->
                         <!--<img src="/iron_molten.png" width="160" height="110">-->
                         <div id="ironMoltenImg">
-                            <video controls>
+                            <video controls autoplay="autoplay" loop="loop" muted>
                                 <source src="/iron_molten.mp4" type="video/mp4">
                             </video>
                         </div>
@@ -122,21 +122,18 @@
             $(window).resize(realtimeChart1.resize);
 
             var echarts1 = function () {
-                var equipmentA1 = [];//1号高炉液位数组
                 var equipmentA1Data;//1号高炉液位单独数据
 
                 $.ajax({
                     type: "post",
                     async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-                    url: prefix + "/listEcharts", //请求发送到Controller处的实时数据图读取实时液位
+                    url: prefix + "/realTimeEcharts", //请求发送到Controller处的实时数据图读取实时液位
                     data: {},
                     dataType: "json", //返回数据形式为json
                     success: function (result) {
                         //请求成功时执行该函数内容，result即为服务器返回的json对象
                         if (result) {
-                            equipmentA1.push(result[0].equipmentA1); //挨个取出时间（已存在）并填入时间（已存在）数组
-                            equipmentA1Data = equipmentA1[0];
-                            equipmentA1Data = equipmentA1Data / 30000;
+                            equipmentA1Data = result.equipmentA1 / 2.42;
                             realtimeChart1.hideLoading(); //隐藏加载动画
                             realtimeChart1.setOption({ //加载数据图表
                                 series: [{
@@ -191,21 +188,18 @@
             $(window).resize(realtimeChart2.resize);
 
             var echarts2 = function () {
-                var equipmentA2 = [];//1号高炉液位数组
                 var equipmentA2Data;//1号高炉液位单独数据
 
                 $.ajax({
                     type: "post",
                     async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-                    url: prefix + "/listEcharts", //请求发送到Controller处的实时数据图读取实时液位
+                    url: prefix + "/realTimeEcharts", //请求发送到Controller处的实时数据图读取实时液位
                     data: {},
                     dataType: "json", //返回数据形式为json
                     success: function (result) {
                         //请求成功时执行该函数内容，result即为服务器返回的json对象
                         if (result) {
-                            equipmentA2.push(result[0].equipmentA2); //挨个取出时间（已存在）并填入时间（已存在）数组
-                            equipmentA2Data = equipmentA2[0];
-                            equipmentA2Data = equipmentA2Data / 30000;
+                            equipmentA2Data = result.equipmentA2 / 2.32;
                             realtimeChart2.hideLoading(); //隐藏加载动画
                             realtimeChart2.setOption({ //加载数据图表
                                 series: [{
@@ -260,21 +254,18 @@
             $(window).resize(realtimeChart3.resize);
 
             var echarts3 = function () {
-                var equipmentA3 = [];//1号高炉液位数组
                 var equipmentA3Data;//1号高炉液位单独数据
 
                 $.ajax({
                     type: "post",
                     async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-                    url: prefix + "/listEcharts", //请求发送到Controller处的实时数据图读取实时液位
+                    url: prefix + "/realTimeEcharts", //请求发送到Controller处的实时数据图读取实时液位
                     data: {},
                     dataType: "json", //返回数据形式为json
                     success: function (result) {
                         //请求成功时执行该函数内容，result即为服务器返回的json对象
                         if (result) {
-                            equipmentA3.push(result[0].equipmentA3); //挨个取出时间（已存在）并填入时间（已存在）数组
-                            equipmentA3Data = equipmentA3[0];
-                            equipmentA3Data = equipmentA3Data / 30000;
+                            equipmentA3Data = result.equipmentA3 / 1.62;
                             realtimeChart3.hideLoading(); //隐藏加载动画
                             realtimeChart3.setOption({ //加载数据图表
                                 series: [{
@@ -329,21 +320,18 @@
             $(window).resize(realtimeChart6.resize);
 
             var echarts6 = function () {
-                var equipmentA6 = [];//1号高炉液位数组
                 var equipmentA6Data;//1号高炉液位单独数据
 
                 $.ajax({
                     type: "post",
                     async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-                    url: prefix + "/listEcharts", //请求发送到Controller处的实时数据图读取实时液位
+                    url: prefix + "/realTimeEcharts", //请求发送到Controller处的实时数据图读取实时液位
                     data: {},
                     dataType: "json", //返回数据形式为json
                     success: function (result) {
                         //请求成功时执行该函数内容，result即为服务器返回的json对象
                         if (result) {
-                            equipmentA6.push(result[0].equipmentA6); //挨个取出时间（已存在）并填入时间（已存在）数组
-                            equipmentA6Data = equipmentA6[0];
-                            equipmentA6Data = equipmentA6Data / 30000;
+                            equipmentA6Data = result.equipmentA6 / 2.32;
                             realtimeChart6.hideLoading(); //隐藏加载动画
                             realtimeChart6.setOption({ //加载数据图表
                                 series: [{
@@ -398,21 +386,18 @@
             $(window).resize(realtimeChart7.resize);
 
             var echarts7 = function () {
-                var equipmentA7 = [];//1号高炉液位数组
                 var equipmentA7Data;//1号高炉液位单独数据
 
                 $.ajax({
                     type: "post",
                     async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-                    url: prefix + "/listEcharts", //请求发送到Controller处的实时数据图读取实时液位
+                    url: prefix + "/realTimeEcharts", //请求发送到Controller处的实时数据图读取实时液位
                     data: {},
                     dataType: "json", //返回数据形式为json
                     success: function (result) {
                         //请求成功时执行该函数内容，result即为服务器返回的json对象
                         if (result) {
-                            equipmentA7.push(result[0].equipmentA7); //挨个取出时间（已存在）并填入时间（已存在）数组
-                            equipmentA7Data = equipmentA7[0];
-                            equipmentA7Data = equipmentA7Data / 30000;
+                            equipmentA7Data = result.equipmentA7 / 2.12;
                             realtimeChart7.hideLoading(); //隐藏加载动画
                             realtimeChart7.setOption({ //加载数据图表
                                 series: [{
@@ -473,15 +458,13 @@
                 $.ajax({
                     type: "post",
                     async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-                    url: prefix + "/listEcharts", //请求发送到Controller处的实时数据图读取实时液位
+                    url: prefix + "/realTimeEcharts", //请求发送到Controller处的实时数据图读取实时液位
                     data: {},
                     dataType: "json", //返回数据形式为json
                     success: function (result) {
                         //请求成功时执行该函数内容，result即为服务器返回的json对象
                         if (result) {
-                            equipmentA8.push(result[0].equipmentA8); //挨个取出时间（已存在）并填入时间（已存在）数组
-                            equipmentA8Data = equipmentA8[0];
-                            equipmentA8Data = equipmentA8Data / 30000;
+                            equipmentA8Data = result.equipmentA8 / 1.86;
                             realtimeChart8.hideLoading(); //隐藏加载动画
                             realtimeChart8.setOption({ //加载数据图表
                                 series: [{

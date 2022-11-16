@@ -9,10 +9,10 @@ import com.ruoyi.product.service.IProductBlastFurnaceWeightService;
 import com.ruoyi.common.core.text.Convert;
 
 /**
- * 出铁重量预测Service业务层处理
+ * 出铁重量计量Service业务层处理
  * 
  * @author zongyoucheng
- * @date 2022-10-11
+ * @date 2022-11-26
  */
 @Service
 public class ProductBlastFurnaceWeightServiceImpl implements IProductBlastFurnaceWeightService 
@@ -21,10 +21,10 @@ public class ProductBlastFurnaceWeightServiceImpl implements IProductBlastFurnac
     private ProductBlastFurnaceWeightMapper productBlastFurnaceWeightMapper;
 
     /**
-     * 查询出铁重量预测
+     * 查询出铁重量计量
      * 
-     * @param blastFurnaceWeightId 出铁重量预测主键
-     * @return 出铁重量预测
+     * @param blastFurnaceWeightId 出铁重量计量主键
+     * @return 出铁重量计量
      */
     @Override
     public ProductBlastFurnaceWeight selectProductBlastFurnaceWeightByBlastFurnaceWeightId(Long blastFurnaceWeightId)
@@ -33,10 +33,10 @@ public class ProductBlastFurnaceWeightServiceImpl implements IProductBlastFurnac
     }
 
     /**
-     * 查询出铁重量预测列表
+     * 查询出铁重量计量列表
      * 
-     * @param productBlastFurnaceWeight 出铁重量预测
-     * @return 出铁重量预测
+     * @param productBlastFurnaceWeight 出铁重量计量
+     * @return 出铁重量计量
      */
     @Override
     public List<ProductBlastFurnaceWeight> selectProductBlastFurnaceWeightList(ProductBlastFurnaceWeight productBlastFurnaceWeight)
@@ -45,9 +45,9 @@ public class ProductBlastFurnaceWeightServiceImpl implements IProductBlastFurnac
     }
 
     /**
-     * 新增出铁重量预测
+     * 新增出铁重量计量
      * 
-     * @param productBlastFurnaceWeight 出铁重量预测
+     * @param productBlastFurnaceWeight 出铁重量计量
      * @return 结果
      */
     @Override
@@ -57,9 +57,9 @@ public class ProductBlastFurnaceWeightServiceImpl implements IProductBlastFurnac
     }
 
     /**
-     * 修改出铁重量预测
+     * 修改出铁重量计量
      * 
-     * @param productBlastFurnaceWeight 出铁重量预测
+     * @param productBlastFurnaceWeight 出铁重量计量
      * @return 结果
      */
     @Override
@@ -69,9 +69,9 @@ public class ProductBlastFurnaceWeightServiceImpl implements IProductBlastFurnac
     }
 
     /**
-     * 批量删除出铁重量预测
+     * 批量删除出铁重量计量
      * 
-     * @param blastFurnaceWeightIds 需要删除的出铁重量预测主键
+     * @param blastFurnaceWeightIds 需要删除的出铁重量计量主键
      * @return 结果
      */
     @Override
@@ -81,9 +81,9 @@ public class ProductBlastFurnaceWeightServiceImpl implements IProductBlastFurnac
     }
 
     /**
-     * 删除出铁重量预测信息
+     * 删除出铁重量计量信息
      * 
-     * @param blastFurnaceWeightId 出铁重量预测主键
+     * @param blastFurnaceWeightId 出铁重量计量主键
      * @return 结果
      */
     @Override

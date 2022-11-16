@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ruoyi.product.domain.ProductBlastFurnaceLevel;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
  * 铁水包状态Controller
  * 
  * @author zongyoucheng
- * @date 2022-10-10
+ * @date 2022-11-24
  */
 @Controller
 @RequestMapping("/product/blastfurnacestatus")
@@ -148,14 +147,15 @@ public class ProductBlastFurnaceStatusController extends BaseController
      * 铁水包状态数据json
      */
     @PostMapping("/echarts")
-    public void selectStatusEcharts(ProductBlastFurnaceStatus productBlastFurnaceStatus, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void selectStatusEcharts(Long blastFurnaceStatusId, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
         //查询数据
-        List<ProductBlastFurnaceStatus> list =  productBlastFurnaceStatusService.selectProductBlastFurnaceStatusList(productBlastFurnaceStatus);
+        ProductBlastFurnaceStatus list = productBlastFurnaceStatusService.selectProductBlastFurnaceStatusByBlastFurnaceStatusId(1L);
         //提供java-json相互转换功能的类
         ObjectMapper mapper = new ObjectMapper();
         //将list中的对象转换为Json格式的数组
         String json = mapper.writeValueAsString(list);
-        //System.out.println(json);
+        System.out.println(json);
         //将json数据返回给客户端
         response.setContentType("text/html; charset=utf-8");
         response.getWriter().write(json);
