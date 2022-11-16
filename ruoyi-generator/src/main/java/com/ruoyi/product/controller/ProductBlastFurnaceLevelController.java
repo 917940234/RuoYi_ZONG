@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.math3.stat.descriptive.summary.Product;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,9 +28,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 高炉液位数据监控Controller
- * 
+ *
  * @author zongyoucheng
- * @date 2022-09-26
+ * @date 2022-11-16
  */
 @Controller
 @RequestMapping("/product/blastfurnacelevel")

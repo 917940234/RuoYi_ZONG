@@ -7,7 +7,7 @@ import com.ruoyi.product.domain.ProductBlastFurnaceLevel;
  * 高炉液位数据监控Service接口
  * 
  * @author zongyoucheng
- * @date 2022-09-26
+ * @date 2022-11-16
  */
 public interface IProductBlastFurnaceLevelService 
 {

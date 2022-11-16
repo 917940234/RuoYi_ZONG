@@ -25,17 +25,9 @@
 
             <hr>
         </div>
-        <div class="col-sm-3">
-            <h2>访客，你好！</h2>
-            <small>移动设备访问请扫描以下二维码：</small>
-            <br>
-            <br>
-            <img th:src="@{/img/qr_code.png}" width="100%" style="max-width:264px;">
-            <br>
-        </div>
         <div class="col-sm-5">
-            <h2>安工大智能冶金研究所后台管理框架</h2>
-            <p>以开源框架若依为模版搭建，支持移动端访问</p>
+            <h2>长江钢铁2#高炉铁水液位在线自动检测管控系统</h2>
+            <p>安徽工业大学智能冶金研究所</p>
             <p>
                 <b>当前版本：</b><span>v[[${version}]]</span>
             </p>
@@ -55,39 +47,27 @@
         <div class="col-sm-4">
             <h4>技术选型：</h4>
             <ol>
-                <li>核心框架：Spring Boot。</li>
-                <li>安全框架：Apache Shiro。</li>
-                <li>模板引擎：Thymeleaf。</li>
-                <li>持久层框架：MyBatis。</li>
-				<li>定时任务:Quartz。</li>
-                <li>数据库连接池：Druid。</li>
-                <li>工具类：Fastjson。</li>
-                <li>更多……</li>
+                <li>核心框架：Spring Boot</li>
+                <li>安全框架：Apache Shiro</li>
+                <li>模板引擎：Thymeleaf</li>
+                <li>持久层框架：MyBatis</li>
+				<li>定时任务:Quartz</li>
+                <li>数据库连接池：Druid</li>
+                <li>工具类：Fastjson</li>
             </ol>
+        </div>
+        <div class="col-sm-3">
+            <h2>你好！欢迎使用本系统！</h2>
+            <!--<small>移动设备访问请扫描以下二维码：</small>-->
+            <!--<br>-->
+            <!--<br>-->
+            <!--<img th:src="@{/img/qr_code.png}" width="100%" style="max-width:264px;">-->
+            <!--<br>-->
         </div>
 
     </div>
     <div class="wrapper wrapper-content">
         <div class="row">
-            <div class="col-sm-4">
-
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>联系信息</h5>
-
-                    </div>
-                    <div class="ibox-content">
-                        <p><i class="fa fa-send-o"></i> 官网：<a href="blank" target="_blank">暂无</a>
-                        </p>
-                        <p><i class="fa fa-qq"></i> QQ：917940234<!--<a href="https://jq.qq.com/?_wv=1027&k=p86p2AJX" target="_blank">213650505</a>-->
-                        </p>
-                        <p><i class="fa fa-weixin"></i> 微信：917940234<!--<a href="javascript:;">/ *若依</a>-->
-                        </p>
-                        <!--<p><i class="fa fa-credit-card"></i> 支付宝：<a href="javascript:;" class="支付宝信息">/ *若依</a>-->
-                        <!--</p>-->
-                    </div>
-                </div>
-            </div>
             <div class="col-sm-4">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
@@ -102,7 +82,7 @@
                                 <!--            <a data-toggle="collapse" data-parent="#version" href="#v版本号">v版本号</a><code class="pull-right">日期</code>-->
                                 <!--        </h5>-->
                                 <!--    </div>-->
-                                <!--    <div id="v版本号" class="panel-collapse collapse in">&lt;!&ndash;collpse in显示，collapse隐藏&ndash;&gt;-->
+                                <!--    <div id="v版本号" class="panel-collapse collapse in">&lt;!&ndash;collapse in显示，collapse隐藏&ndash;&gt;-->
                                 <!--        <div class="panel-body">-->
                                 <!--            <ol>-->
                                 <!--                <li>内容</li>-->
@@ -113,10 +93,42 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h5 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#version" href="#v1.0.12">v1.0.12</a><code class="pull-right">2022.11.16</code>
+                                        </h5>
+                                    </div>
+                                    <div id="v1.0.12" class="panel-collapse collapse in"><!--collapse in显示，collapse隐藏-->
+                                        <div class="panel-body">
+                                            <ol>
+                                                <li>实现读取modbus数据功能</li>
+                                                <li>将读取串口数据写入本系统液位表</li>
+                                                <li>数据库基础表：液位表更新，液位数据类型由int变为double</li>
+                                                <li>更新整个液位模块页面</li>
+                                                <li></li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h5 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#version" href="#v1.0.11">v1.0.11</a><code class="pull-right">2022.10.20</code>
+                                        </h5>
+                                    </div>
+                                    <div id="v1.0.11" class="panel-collapse collapse"><!--collapse in显示，collapse隐藏-->
+                                        <div class="panel-body">
+                                            <ol>
+                                                <li>高炉动画修改</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h5 class="panel-title">
                                             <a data-toggle="collapse" data-parent="#version" href="#v1.0.9">v1.0.9</a><code class="pull-right">2022.10.19</code>
                                         </h5>
                                     </div>
-                                    <div id="v1.0.9" class="panel-collapse collapse in"><!--collpse in显示，collapse隐藏-->
+                                    <div id="v1.0.9" class="panel-collapse collapse"><!--collpse in显示，collapse隐藏-->
                                         <div class="panel-body">
                                             <ol>
                                                 <li>优化铁水包状态图，背景色</li>
@@ -134,7 +146,7 @@
                                             <a data-toggle="collapse" data-parent="#version" href="#v1.0.8">v1.0.8</a><code class="pull-right">2022.10.17</code>
                                         </h5>
                                     </div>
-                                    <div id="v1.0.8" class="panel-collapse collapse in"><!--collpse in显示，collapse隐藏-->
+                                    <div id="v1.0.8" class="panel-collapse collapse"><!--collpse in显示，collapse隐藏-->
                                         <div class="panel-body">
                                             <ol>
                                                 <li>开发出铁重量计量图界面</li>
@@ -149,7 +161,7 @@
                                             <a data-toggle="collapse" data-parent="#version" href="#v1.0.7">v1.0.7</a><code class="pull-right">2022.10.11</code>
                                         </h5>
                                     </div>
-                                    <div id="v1.0.7" class="panel-collapse collapse in"><!--collpse in显示，collapse隐藏-->
+                                    <div id="v1.0.7" class="panel-collapse collapse"><!--collpse in显示，collapse隐藏-->
                                         <div class="panel-body">
                                             <ol>
                                                 <li>开发出铁时间计控模块</li>
@@ -165,7 +177,7 @@
                                             <a data-toggle="collapse" data-parent="#version" href="#v1.0.6">v1.0.6</a><code class="pull-right">2022.10.10</code>
                                         </h5>
                                     </div>
-                                    <div id="v1.0.6" class="panel-collapse collapse in"><!--collpse in显示，collapse隐藏-->
+                                    <div id="v1.0.6" class="panel-collapse collapse"><!--collpse in显示，collapse隐藏-->
                                         <div class="panel-body">
                                             <ol>
                                                 <li>开发铁水包状态模块</li>
@@ -180,7 +192,7 @@
                                             <a data-toggle="collapse" data-parent="#version" href="#v105">v1.0.5</a><code class="pull-right">2022.09.27</code>
                                         </h5>
                                     </div>
-                                    <div id="v105" class="panel-collapse collapse in"><!--collpse in显示，collapse隐藏-->
+                                    <div id="v105" class="panel-collapse collapse"><!--collpse in显示，collapse隐藏-->
                                         <div class="panel-body">
                                             <ol>
                                                 <li>继续开发高炉液位跟踪系统，升级波浪图样式，添加高炉出铁水示意图，位置调整，添加出铁水视频</li>
@@ -194,7 +206,7 @@
                                             <a data-toggle="collapse" data-parent="#version" href="#v104">v1.0.4</a><code class="pull-right">2022.09.26</code>
                                         </h5>
                                     </div>
-                                    <div id="v104" class="panel-collapse collapse in"><!--collpse in显示，collapse隐藏-->
+                                    <div id="v104" class="panel-collapse collapse"><!--collpse in显示，collapse隐藏-->
                                         <div class="panel-body">
                                             <ol>
                                                 <li>开发高炉液位跟踪系统，采用波浪柱形图</li>
@@ -209,7 +221,7 @@
                                             <a data-toggle="collapse" data-parent="#version" href="#v103">v1.0.3</a><code class="pull-right">2022.09.23</code>
                                         </h5>
                                     </div>
-                                    <div id="v103" class="panel-collapse collapse in"><!--collpse in显示，collapse隐藏-->
+                                    <div id="v103" class="panel-collapse collapse"><!--collpse in显示，collapse隐藏-->
                                         <div class="panel-body">
                                             <ol>
                                                 <li>实现数据可视化功能，折线图优化</li>
@@ -224,7 +236,7 @@
                                             <a data-toggle="collapse" data-parent="#version" href="#v102">v1.0.2</a><code class="pull-right">2022.09.22</code>
                                         </h5>
                                     </div>
-                                    <div id="v102" class="panel-collapse collapse in"><!--collpse in显示，collapse隐藏-->
+                                    <div id="v102" class="panel-collapse collapse"><!--collpse in显示，collapse隐藏-->
                                         <div class="panel-body">
                                             <ol>
                                                 <li>增加用户任务报告功能，可添加新安排任务，已完成任务，继续开发数据可视化功能</li>
@@ -238,7 +250,7 @@
 										   <a data-toggle="collapse" data-parent="#version" href="#v101">v1.0.1</a><code class="pull-right">2022.09.21</code>
 									   </h5>
 									</div>
-									<div id="v101" class="panel-collapse collapse in"><!--collpse in显示，collapse隐藏-->
+									<div id="v101" class="panel-collapse collapse"><!--collpse in显示，collapse隐藏-->
 										<div class="panel-body">
 											<ol>
 												<li>修改logo，名称，添加菜单栏，修改权限管理，用户管理，二维码，主页等必要内容。</li>
@@ -252,7 +264,7 @@
 											<a data-toggle="collapse" data-parent="#version" href="#v100">v1.0.0</a><code class="pull-right">2022.09.21</code>
 										</h4>
 									</div>
-									<div id="v100" class="panel-collapse collapse in">
+									<div id="v100" class="panel-collapse collapse">
 										<div class="panel-body">
 											<ol>
 												<li>基于若依的管理系统基本完成</li>
@@ -262,6 +274,23 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>联系信息</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <p><i class="fa fa-send-o"></i> 官网：<a href="https://www.ahut.edu.cn/" target="_blank">安徽工业大学</a>
+                        </p>
+                        <p><i class="fa fa-qq"></i> QQ：<!--<a href="https://jq.qq.com/?_wv=1027&k=p86p2AJX" target="_blank">213650505</a>-->
+                        </p>
+                        <p><i class="fa fa-weixin"></i> 微信：<!--<a href="javascript:;">/ *若依</a>-->
+                        </p>
+                        <!--<p><i class="fa fa-credit-card"></i> 支付宝：<a href="javascript:;" class="支付宝信息">/ *若依</a>-->
+                        <!--</p>-->
                     </div>
                 </div>
             </div>

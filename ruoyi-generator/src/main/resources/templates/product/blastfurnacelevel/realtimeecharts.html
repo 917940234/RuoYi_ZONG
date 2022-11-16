@@ -26,7 +26,7 @@
                         <!--<h2>高炉出铁</h2>-->
                         <!--<img src="/iron_molten.png" width="160" height="110">-->
                         <div id="ironMoltenImg">
-                            <video controls>
+                            <video controls autoplay="autoplay" loop="loop">
                                 <source src="/iron_molten.mp4" type="video/mp4">
                             </video>
                         </div>
@@ -499,6 +499,28 @@
             }
             setInterval(echarts8,1000);
         });
+
+        //检测当前铁水罐状态（空包/出铁/满包）
+        // var state1 = function () {
+        //     var state;
+        //     $.ajax({
+        //         type: "post",
+        //         async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+        //         url: prefix + "/state", //请求发送到Controller处的铁水包状态逻辑判断
+        //         data: {},
+        //         dataType: "json", //返回数据形式为json
+        //         success: function (result) {
+        //             //请求成功时执行该函数内容，result即为服务器返回的json对象
+        //             if (result) {
+        //                 equipmentA8.push(result[0].equipmentA8); //挨个取出时间（已存在）并填入时间（已存在）数组
+        //                 equipmentA8Data = equipmentA8[0];
+        //                 equipmentA8Data = equipmentA8Data / 30000;
+        //                 data: [equipmentA8Data, equipmentA8Data - 0.02, equipmentA8Data - 0.05, equipmentA8Data - 0.1]
+        //             };
+        //         }
+        //     });
+        // }
+        // setInterval(state1,1000);
 
     </script>
     <th:block th:include="include :: echarts-js" />

@@ -1,5 +1,6 @@
 package com.ruoyi.product.domain;
 
+import java.math.BigDecimal;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -9,7 +10,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 高炉液位数据监控对象 product_blast_furnace_level
  * 
  * @author zongyoucheng
- * @date 2022-09-26
+ * @date 2022-11-16
  */
 public class ProductBlastFurnaceLevel extends BaseEntity
 {
@@ -18,37 +19,37 @@ public class ProductBlastFurnaceLevel extends BaseEntity
     /** 高炉液位跟踪数据ID */
     private Long blastFurnaceLevelId;
 
-    /** 日期（已存在） */
-    @Excel(name = "日期", readConverterExp = "已=存在")
+    /** 日期 */
+    @Excel(name = "日期")
     private String dateExisted;
 
-    /** 时间（已存在） */
-    @Excel(name = "时间", readConverterExp = "已=存在")
+    /** 时间 */
+    @Excel(name = "时间")
     private String timeExisted;
 
-    /** 1号高炉液位 */
-    @Excel(name = "1号高炉液位")
-    private Long equipmentA1;
+    /** 1号铁水包 */
+    @Excel(name = "1号铁水包")
+    private BigDecimal equipmentA1;
 
-    /** 2号高炉液位 */
-    @Excel(name = "2号高炉液位")
-    private Long equipmentA2;
+    /** 2号铁水包 */
+    @Excel(name = "2号铁水包")
+    private BigDecimal equipmentA2;
 
-    /** 3号高炉液位 */
-    @Excel(name = "3号高炉液位")
-    private Long equipmentA3;
+    /** 3号铁水包 */
+    @Excel(name = "3号铁水包")
+    private BigDecimal equipmentA3;
 
-    /** 6号高炉液位 */
-    @Excel(name = "6号高炉液位")
-    private Long equipmentA6;
+    /** 6号铁水包 */
+    @Excel(name = "6号铁水包")
+    private BigDecimal equipmentA6;
 
-    /** 7号高炉液位 */
-    @Excel(name = "7号高炉液位")
-    private Long equipmentA7;
+    /** 7号铁水包 */
+    @Excel(name = "7号铁水包")
+    private BigDecimal equipmentA7;
 
-    /** 8号高炉液位 */
-    @Excel(name = "8号高炉液位")
-    private Long equipmentA8;
+    /** 8号铁水包 */
+    @Excel(name = "8号铁水包")
+    private BigDecimal equipmentA8;
 
     public void setBlastFurnaceLevelId(Long blastFurnaceLevelId) 
     {
@@ -77,57 +78,57 @@ public class ProductBlastFurnaceLevel extends BaseEntity
     {
         return timeExisted;
     }
-    public void setEquipmentA1(Long equipmentA1) 
+    public void setEquipmentA1(BigDecimal equipmentA1) 
     {
         this.equipmentA1 = equipmentA1;
     }
 
-    public Long getEquipmentA1() 
+    public BigDecimal getEquipmentA1() 
     {
         return equipmentA1;
     }
-    public void setEquipmentA2(Long equipmentA2) 
+    public void setEquipmentA2(BigDecimal equipmentA2) 
     {
         this.equipmentA2 = equipmentA2;
     }
 
-    public Long getEquipmentA2() 
+    public BigDecimal getEquipmentA2() 
     {
         return equipmentA2;
     }
-    public void setEquipmentA3(Long equipmentA3) 
+    public void setEquipmentA3(BigDecimal equipmentA3) 
     {
         this.equipmentA3 = equipmentA3;
     }
 
-    public Long getEquipmentA3() 
+    public BigDecimal getEquipmentA3() 
     {
         return equipmentA3;
     }
-    public void setEquipmentA6(Long equipmentA6) 
+    public void setEquipmentA6(BigDecimal equipmentA6) 
     {
         this.equipmentA6 = equipmentA6;
     }
 
-    public Long getEquipmentA6() 
+    public BigDecimal getEquipmentA6() 
     {
         return equipmentA6;
     }
-    public void setEquipmentA7(Long equipmentA7) 
+    public void setEquipmentA7(BigDecimal equipmentA7) 
     {
         this.equipmentA7 = equipmentA7;
     }
 
-    public Long getEquipmentA7() 
+    public BigDecimal getEquipmentA7() 
     {
         return equipmentA7;
     }
-    public void setEquipmentA8(Long equipmentA8) 
+    public void setEquipmentA8(BigDecimal equipmentA8) 
     {
         this.equipmentA8 = equipmentA8;
     }
 
-    public Long getEquipmentA8() 
+    public BigDecimal getEquipmentA8() 
     {
         return equipmentA8;
     }
