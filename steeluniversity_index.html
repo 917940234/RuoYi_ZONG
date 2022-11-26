@@ -1,0 +1,2260 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Electric Arc Furnace Simulation</title>
+    <link rel="stylesheet" href="styles/main.min.b9911bac.css"/>
+    <link rel="stylesheet" href="styles/eaf_simulator.dcf80da1.css">
+    <script src="scripts/vendor/init.min.32fa189c.js"></script>
+    <script type="text/javascript" src="scripts/lang.5134c9f8.js" ></script>
+    <script>
+        function getParameter(val, url) {
+            var result,
+                tmp = [],
+                str = location.search.substr(1).replace('&amp;', '&');
+
+            if(url){
+                str = (url.split("?")[1] || "").replace('&amp;', '&');
+            }
+            var items = str.split("&");
+            for (var index = 0; index < items.length; index++) {
+                tmp = items[index].split("=");
+                if (tmp[0] === val) result = decodeURIComponent(tmp[1]);
+            }
+            return result;
+        }
+
+        function getParameters() {
+            var result = [],
+                tmp = [],
+                str = location.search.substr(1).replace('&amp;', '&');
+            var items = str.split("&");
+            for (var index = 0; index < items.length; index++) {
+                tmp = items[index].split("=");
+                result.push(tmp);
+            }
+            return result;
+        }
+
+        function selectLanguage(){
+            var lang = document.getElementById("lang").value,
+                href = window.location.href,
+                paramsIndex = href.indexOf("?");
+            if(paramsIndex > -1){
+                var url = href.slice(0, paramsIndex + 1),
+                    params = getParameters();
+                for (var i = 0; i < params.length; i++) {
+                    if(params[i][0] !== "lang"){
+                        url += params[i][0] + "=" + params[i][1] + "&";
+                    }
+                }
+                href = url + "lang=" + lang
+            }
+            else{
+                href += "?lang=" + lang
+            }
+            window.location.href = href;
+        }
+
+        var studentLanguage;
+
+        studentLanguage = getParameter('lang') || getParameter('lang', document.referrer);
+        switch(studentLanguage){
+            case "es":
+            case "es-ES":
+                studentLanguage = "es-ES";
+                break;
+            case "zh-hans":
+            case "zh-CHS":
+                studentLanguage = "zh-CHS";
+                break;
+            case "ru":
+            case "ru-RU":
+                studentLanguage = "ru-RU";
+                break;
+            default:
+                studentLanguage = "en-GB";
+                break;
+        }
+
+        set_lang(studentLanguage);
+
+    </script>
+</head>
+<body>
+<header id="sim_header">
+    <div class="row">
+        <div class="logo">
+            <img src="images/logo.png" alt="Steel University">
+            <a href="../ss/index.html" class="cross_sim_link"><script>pt('go_to_ss');</script></a>
+        </div>
+    </div>
+    <div class="separator">
+        <div class="color redbg"></div>
+        <div class="color greenbg"></div>
+        <div class="color orangebg"></div>
+        <div class="color yellowbg"></div>
+        <div class="color bluebg"></div>
+        <div class="color redbg"></div>
+        <div class="gradient"><h2 class="title"><script>pt('eafEAFSim');</script></h2><span id="run_id"></span></div>
+    </div>
+</header>
+<div id="sim_body">
+    <section id="intro" class="view background">
+        <div class="description">
+            <h3><script>pt('Introduction');</script></h3>
+            <script>pt('eafSimDesc');</script>
+            <p><script>document.write('<a href="help/'+gt('case_study_link')+'" target="blank" style="font-size: 16px;">'+gt('read_more')+'</a>');</script></p>
+            <div class="intro-buttons">
+                <span class="intro_message red"></span>
+                <img id="flag_lang" src="">
+                <select name="lang" id="lang" class="radius reduced-margin" onchange="selectLanguage();">
+                    <option value="en-GB">English</option>
+                    <option value="zh-CHS">中国版</option>
+                    <option value="es-ES">Español</option>
+                    <option value="ru-RU">Русский</option>
+                </select>
+                <button class="button expand radius upper" data-goto-id="options" disabled><script>pt('intro_start');</script> <span class="fa fa-chevron-circle-right"></span> <i class="fa fa-spin fa-2x fa-spinner invisible"></i></button>
+            </div>
+        </div>
+    </section>
+    <section id="options" class="view">
+        <div>
+            <h3><script>pt('ccs_SimulationSettings');</script></h3>
+            <script>
+                document.write('<a href="help/'+gt('case_study_link')+'" class="case_study" target="blank">'+gt('case_study')+'</a>');
+            </script>
+            <script>
+                document.write('<a href="'+gt('user_guide_link')+'" class="user_guide" target="blank">'+gt('user_guide')+'</a>');
+            </script>
+        </div>
+        <dl class="accordion" data-accordion>
+            <dd class="step1">
+                <a href="#step1">
+                    <span class="bullet"></span>
+                    <span class="right">
+                            <script>
+                            pt('smStep');
+                            </script> 1
+                        </span>
+                    <strong>
+                        <script>
+                            pt('ccUserLevel');
+                        </script>
+                    </strong>
+                </a>
+                <div id="step1" class="content">
+                    <div>
+                        <label for="student_radio">
+                            <input type="radio" id="student_radio" name="userLevel" value="student" disabled checked>
+                            <script>
+                                pt('UniversityStudent');
+                            </script>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="worker_radio">
+                            <input type="radio" id="worker_radio" name="userLevel" value="worker" disabled>
+                            <script>
+                                pt('SteelIndustryTechnical');
+                            </script>
+                        </label>
+                    </div>
+                    <div class="panel small description">
+                        <script>
+                            pt('ss3dStudentDescrip');
+                        </script>
+                    </div>
+                </div>
+            </dd>
+            <dd class="step2">
+                <a href="#step2">
+                    <span class="bullet"></span>
+                    <span class="right">
+                            <script>
+                            pt('smStep');
+                            </script> 2
+                        </span>
+                    <strong>
+                        <script>
+                            pt('ccSteelGrade');
+                        </script>
+                    </strong>
+                </a>
+                <div id="step2" class="content">
+                    <div>
+                        <label for="beam_grade">
+                            <input type="radio" id="beam_grade" name="steelGrade" value="beam" disabled>
+                            <script>
+                                pt('ss3dF10Option1');
+                            </script>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="car_grade">
+                            <input type="radio" id="car_grade" name="steelGrade" value="car"disabled>
+                            <script>
+                                pt('ss3dF10Option2');
+                            </script>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="pipe_grade">
+                            <input type="radio" id="pipe_grade" name="steelGrade" value="pipe" disabled>
+                            <script>
+                                pt('ss3dF10Option3');
+                            </script>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="gear_grade">
+                            <input type="radio" id="gear_grade" name="steelGrade" value="gear" disabled checked>
+                            <script>
+                                pt('ss3dF10Option4');
+                            </script>
+                        </label>
+                    </div>
+                    <div class="panel small description">
+                        <script>
+                            pt('CON_desc');
+                            pt('NoviceUsers');
+                        </script>
+                    </div>
+                </div>
+            </dd>
+            <dd class="step3">
+                <a href="#step3">
+                    <span class="bullet"></span>
+                    <span class="right">
+                            <script>
+                            pt('smStep');
+                            </script> 3
+                        </span>
+                    <strong>
+                        <script>
+                            pt('eafSteelScrapSelection');
+                        </script>
+                    </strong>
+                </a>
+                <div id="step3" class="content">
+                    <div class="row">
+                        <a href="#" class="info" data-info-key="help-scrap-selection"></a>
+                        <div class="large-8 columns raw-materials no-padding-left">
+                            <table width="100%">
+                                <thead>
+                                <tr>
+                                    <th><script>pt('RawMaterial');</script></th>
+                                    <th><script>pt('eafUnitCost');</script></th>
+                                    <th><script>pt('Mass');</script></th>
+                                    <th><script>pt('c_Volume');</script></th>
+                                    <th width="75"><script>pt('usrCost');</script></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <script>
+                                        document.write('<td title="<b>'+gt('MetalComposition')+':</b> 0.5%C, 0.2%Si, 0.05%P, 0.04%S, 0.15%Cr, 0.06%Mo, 0.15%Ni, 0.25%Cu, 0.015%Sn, 0.8%Mn<br><b>'+gt('eafScrapForm')+':</b> '+gt('eafScrapForm01')+'<br><b>'+gt('eafOxideFraction')+':</b> 0.014<br><b>'+gt('OxideComposition')+':</b> 85% SiO<sup>2</sup>, 15% Al<sup>2</sup>O<sup>3</sup>" data-tooltip>'+gt('eafScrapType01')+'</td>');
+                                    </script>
+                                    <td>$160/t</td>
+                                    <td>
+                                        <input type="number" min="0" max="100" value="0" class="spinner scrap_mass rm00" id="scrap_no1_heavy_mass">
+                                    </td>
+                                    <td class="scrap_no1_heavy_volume">
+                                        <span class="value">0</span>m<sup>3</sup>
+                                    </td>
+                                    <td class="scrap_no1_heavy_cost">$
+                                        <span class="value">0</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <script>
+                                        document.write('<td title="<b>'+gt('MetalComposition')+':</b> 0.35%C, 0.15%Si, 0.04%P, 0.04%S, 0.25%Cr, 0.06%Mo, 0.18%Ni, 0.5%Cu, 0.025%Sn, 0.8%Mn<br><b>'+gt('eafScrapForm')+':</b> '+gt('eafScrapForm01')+'<br><b>'+gt('eafOxideFraction')+':</b> 0.014<br><b>'+gt('OxideComposition')+':</b> 85% SiO<sup>2</sup>, 15% Al<sup>2</sup>O<sup>3</sup>" data-tooltip>'+gt('eafScrapType02')+'</td>');
+                                    </script>
+                                    <td>$140/t</td>
+                                    <td>
+                                        <input type="number" min="0" max="100" value="0" class="spinner scrap_mass rm01" id="scrap_no2_heavy_mass">
+                                    </td>
+                                    <td class="scrap_no2_heavy_volume">
+                                        <span class="value">0</span>m<sup>3</sup>
+                                    </td>
+                                    <td class="scrap_no2_heavy_cost">$&nbsp;<span class="value">0</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <script>
+                                        document.write('<td title="<b>'+gt('MetalComposition')+':</b> 0.17%C, 0.04%Si, 0.31%Mn, 0.013%P, 0.0014%S, 0.26%Cr, 0.14%Mo, 0.15%Ni, 0.003%Ce, 0.1%Cu, 0.001%Nb, 0.001%Sn, 0.015%Ti, 0.005%V, 0.009%W<br><b>'+gt('eafScrapForm')+':</b> '+gt('eafScrapForm01')+'<br><b>'+gt('eafOxideFraction')+':</b> 0.014<br><b>'+gt('OxideComposition')+':</b> 85% SiO<sup>2</sup>, 15% Al<sup>2</sup>O<sup>3</sup>" data-tooltip>'+gt('eafScrapType03')+'</td>');
+                                    </script>
+                                    <td>$240/t</td>
+                                    <td>
+                                        <input type="number" min="0" max="100" value="0" class="spinner scrap_mass rm02" id="scrap_internal_low_alloyed_mass">
+                                    </td>
+                                    <td class="scrap_internal_low_alloyed_volume">
+                                        <span class="value">0</span>m<sup>3</sup>
+                                    </td>
+                                    <td class="scrap_internal_low_alloyed_cost">$&nbsp;<span class="value">0</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <script>
+                                        document.write('<td title="<b>'+gt('MetalComposition')+':</b> 0.25%C, 0.25%Si, 6.5%Mn, 0.03%P, 0.035%S, 0.12%Cr, 0.05%Mo, 0.15%Ni, 0.2%Cu, 0.015%Sn<br><b>'+gt('eafScrapForm')+':</b> '+gt('eafScrapForm01')+'<br><b>'+gt('eafOxideFraction')+':</b> 0.014<br><b>'+gt('OxideComposition')+':</b> 85% SiO<sup>2</sup>, 15% Al<sup>2</sup>O<sup>3</sup>" data-tooltip>'+gt('eafScrapType04')+'</td>');
+                                    </script>
+                                    <td>$290/t</td>
+                                    <td>
+                                        <input type="number" min="0" max="100" value="0" class="spinner scrap_mass rm03" id="scrap_plate_structural_mass">
+                                    </td>
+                                    <td class="scrap_plate_structural_volume">
+                                        <span class="value">0</span>m<sup>3</sup>
+                                    </td>
+                                    <td class="scrap_plate_structural_cost">$&nbsp;<span class="value">0</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <script>
+                                        document.write('<td title="<b>'+gt('MetalComposition')+':</b> 0.08%C, 0.11%Si, 0.7%Mn, 0.01%P, 0.01%S, 0.08%Cr, 0.03%Mo, 0.05%Ni, 0.08%Cu, 0.02%Al, 0.008%Sn, 0.001%Ti<br><b>'+gt('eafScrapForm')+':</b> '+gt('eafScrapForm02')+'<br><b>'+gt('eafOxideFraction')+':</b> 0.014<br><b>'+gt('OxideComposition')+':</b> 85% SiO<sup>2</sup>, 15% Al<sup>2</sup>O<sup>3</sup>" data-tooltip>'+gt('eafScrapType06')+'</td>');
+                                    </script>
+                                    <td>$180/t</td>
+                                    <td>
+                                        <input type="number" min="0" max="100" value="0" class="spinner scrap_mass rm05" id="scrap_no1_bundels_mass">
+                                    </td>
+                                    <td class="scrap_no1_bundels_volume">
+                                        <span class="value">0</span>m<sup>3</sup>
+                                    </td>
+                                    <td class="scrap_no1_bundels_cost">$&nbsp;<span class="value">0</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <script>
+                                        document.write('<td title="<b>'+gt('MetalComposition')+':</b> 0.2%C, 0.18%Si, 0.12%Mn, 0.03%P, 0.03%S, 0.12%Cr, 0.04%Mo, 0.15%Ni, 0.3%Cu, 0.001%Ti<br><b>'+gt('eafScrapForm')+':</b> '+gt('eafScrapForm02')+'<br><b>'+gt('eafOxideFraction')+':</b> 0" data-tooltip>'+gt('eafScrapType07')+'</td>');
+                                    </script>
+                                    <td>$170/t</td>
+                                    <td>
+                                        <input type="number" min="0" max="100" value="0" class="spinner scrap_mass rm06" id="scrap_no2_bundels_mass">
+                                    </td>
+                                    <td class="scrap_no2_bundels_volume">
+                                        <span class="value">0</span>m<sup>3</sup>
+                                    </td>
+                                    <td class="scrap_no2_bundels_cost">$&nbsp;<span class="value">0</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <script>
+                                        document.write('<td title="<b>'+gt('MetalComposition')+':</b> 2.4%C, 0.1%P, 0.01%S, 0.03%Nb, 0.005%Cu, 0.02%Ti, 0.02%V<br><b>'+gt('eafScrapForm')+':</b> '+gt('eafScrapForm02')+'<br><b>'+gt('eafOxideFraction')+':</b> 0.08<br><b>'+gt('OxideComposition')+':</b> 21.79% SiO<sup>2</sup>, 15.71% Al<sup>2</sup>O<sup>3</sup>, 15.25% CaO, 1.63% MgO + FeO bal." data-tooltip>'+gt('eafScrapType08')+'</td>');
+                                    </script>
+                                    <td>$220/t</td>
+                                    <td>
+                                        <input type="number" min="0" max="100" value="0" class="spinner scrap_mass rm07" id="scrap_direct_reduced_iron_mass">
+                                    </td>
+                                    <td class="scrap_direct_reduced_iron_volume">
+                                        <span class="value">0</span>m<sup>3</sup>
+                                    </td>
+                                    <td class="scrap_direct_reduced_iron_cost">$&nbsp;<span class="value">0</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <script>
+                                        document.write('<td title="<b>'+gt('MetalComposition')+':</b> 0.3%C, 0.2%Si, 0.03%P, 0.03%S, 0.15%Cr, 0.05%Mo, 0.18%Ni, 0.2%Cu, 0.015%Sn, 0.5%Mn, 0.02%Al<br><b>'+gt('eafScrapForm')+':</b> '+gt('eafScrapForm03')+'<br><b>'+gt('eafOxideFraction')+':</b> 0.014<br><b>'+gt('OxideComposition')+':</b> 85% SiO<sup>2</sup>, 15% Al<sup>2</sup>O<sup>3</sup>" data-tooltip>'+gt('eafScrapType09')+'</td>');
+                                    </script>
+                                    <td>$200/t</td>
+                                    <td>
+                                        <input type="number" min="0" max="100" value="0" class="spinner scrap_mass rm08" id="scrap_shredded_mass">
+                                    </td>
+                                    <td class="scrap_shredded_volume">
+                                        <span class="value">0</span>m<sup>3</sup>
+                                    </td>
+                                    <td class="scrap_shredded_cost">$&nbsp;<span class="value">0</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <script>
+                                        document.write('<td title="<b>'+gt('MetalComposition')+':</b> 0.5%C, 0.6%Si, 0.035%P, 0.8%S, 0.25%Cr, 0.1%Mo, 0.25%Ni, 0.35%Cu, 0.02%Sn, 0.6%Mn, 0.157%Pb<br><b>'+gt('eafScrapForm')+':</b> '+gt('eafScrapForm03')+'<br><b>'+gt('eafOxideFraction')+':</b> 0.2<br><b>'+gt('OxideComposition')+':</b> 10.96% SiO<sup>2</sup>, 10.31% CaO, 7.22%MgO, 3.55%MnO, 3.44% Al<sup>2</sup>O<sup>3</sup>, 0.0003% P, 0.0011% S + FeO bal." data-tooltip>'+gt('eafAdditive06')+'</td>');
+                                    </script>
+                                    <td>$110/t</td>
+                                    <td>
+                                        <input type="number" min="0" max="100" value="0" class="spinner scrap_mass rm21" id="scrap_turnings_mass">
+                                    </td>
+                                    <td class="scrap_turnings_volume">
+                                        <span class="value">0</span>m<sup>3</sup>
+                                    </td>
+                                    <td class="scrap_turnings_cost">$&nbsp;<span class="value">0</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <script>
+                                        document.write('<td title="<b>'+gt('MetalComposition')+':</b> 0.91%Si, 4.44%Mn, 0.019%P, 0.001%S, 20.03%Cr, 11.2%Ni, 0.14%Ca, 0.003%Ti<br><b>'+gt('eafScrapForm')+':</b> '+gt('Powder')+'<br><b>'+gt('eafOxideFraction')+':</b> 0.8<br><b>'+gt('OxideComposition')+':</b> 43% CaO<sup>2</sup>, 5% MnO, 2% MgO, 0.019% P, 0.001% S + FeO bal." data-tooltip>'+gt('eafAdditive05')+'</td>');
+                                    </script>
+                                    <td>$-120/t</td>
+                                    <td>
+                                        <input type="number" min="0" max="100" value="0" class="spinner scrap_mass rm20" id="scrap_eaf_dust_mass">
+                                    </td>
+                                    <td class="scrap_eaf_dust_volume">
+                                        <span class="value">0</span>m<sup>3</sup>
+                                    </td>
+                                    <td class="scrap_eaf_dust_cost">$&nbsp;<span class="value">0</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="2">
+                                        <strong>
+                                            <script>
+                                                pt('smTotal');
+                                            </script>
+                                        </strong>
+                                    </td>
+                                    <td class="scrap_total_mass text-center">
+                                        <span class="value">0</span>t</td>
+                                    <td class="scrap_total_volume">
+                                        <span class="value">0</span>m<sup>3</sup>
+                                    </td>
+                                    <td class="scrap_total_cost">$&nbsp;<span class="value">0</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <strong>
+                                            <script>
+                                                pt('ccCostPerMetricTonne');
+                                            </script>
+                                        </strong>
+                                    </td>
+                                    <td class="scrap_cost_per_tonne">$&nbsp;<span class="value">0</span>&nbsp;/t</td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                            <a class="clearform button tiny radius right">
+                                <span class="fa fa-eraser fa-lg"></span>
+                                <script>
+                                    pt('Clear');
+                                </script>
+                            </a>
+                        </div>
+                        <div class="large-4 end columns no-padding">
+                            <div>
+                                <label for="target_steel_grade">
+                                    <strong>
+                                        <script>
+                                            pt('bofTargetSteelGrade');
+                                        </script>
+                                    </strong>
+                                </label>
+                                <select name="targetSteelGrade" id="target_steel_grade" disabled>
+                                    <option value="beam">
+                                        <script>
+                                            pt('ccConstructionSteel');
+                                        </script>
+                                    </option>
+                                    <option value="car">
+                                        <script>
+                                            pt('ccUltralowCarbonSteel');
+                                        </script>
+                                    </option>
+                                    <option value="pipe">
+                                        <script>
+                                            pt('ccLinepipeSteel');
+                                        </script>
+                                    </option>
+                                    <option value="gear">
+                                        <script>
+                                            pt('ccEngineeringSteel');
+                                        </script>
+                                    </option>
+                                </select>
+                            </div>
+                            <table width="100%" class="composition-table">
+                                <thead>
+                                <tr>
+                                    <th><script>pt('eaf_Element');</script></th>
+                                    <th><script>pt('c_Result');</script></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th><script>pt('ss3dAlloyMin');</script></th>
+                                    <th><script>pt('ss3dAlloyMax');</script></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>C</td>
+                                    <td class="composition_c_result">0.000</td>
+                                    <td class="composition_c_status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                    <td class="composition_c_action action"></td>
+                                    <td class="composition_c_min">0.19</td>
+                                    <td class="composition_c_max">0.24</td>
+                                </tr>
+                                <tr>
+                                    <td>Si</td>
+                                    <td class="composition_si_result">0.000</td>
+                                    <td class="composition_si_status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                    <td class="composition_si_action action"></td>
+                                    <td class="composition_si_min">0.15</td>
+                                    <td class="composition_si_max">0.35</td>
+                                </tr>
+                                <tr>
+                                    <td>Mn</td>
+                                    <td class="composition_mn_result">0.000</td>
+                                    <td class="composition_mn_status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                    <td class="composition_mn_action action"></td>
+                                    <td class="composition_mn_min">0.95</td>
+                                    <td class="composition_mn_max">1.25</td>
+                                </tr>
+                                <tr>
+                                    <td>P</td>
+                                    <td class="composition_p_result">0.000</td>
+                                    <td class="composition_p_status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                    <td class="composition_p_action action"></td>
+                                    <td class="composition_p_min">0</td>
+                                    <td class="composition_p_max">0.035</td>
+                                </tr>
+                                <tr>
+                                    <td>S</td>
+                                    <td class="composition_s_result">0.000</td>
+                                    <td class="composition_s_status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                    <td class="composition_s_action action"></td>
+                                    <td class="composition_s_min">0</td>
+                                    <td class="composition_s_max">0.04</td>
+                                </tr>
+                                <tr>
+                                    <td>Cr</td>
+                                    <td class="composition_cr_result">0.000</td>
+                                    <td class="composition_cr_status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                    <td class="composition_cr_action action"></td>
+                                    <td class="composition_cr_min">0.25</td>
+                                    <td class="composition_cr_max">0.4</td>
+                                </tr>
+                                <tr>
+                                    <td>Mo</td>
+                                    <td class="composition_mo_result">0.000</td>
+                                    <td class="composition_mo_status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                    <td class="composition_mo_action action"></td>
+                                    <td class="composition_mo_min">0.05</td>
+                                    <td class="composition_mo_max">0.1</td>
+                                </tr>
+                                <tr>
+                                    <td>Ni</td>
+                                    <td class="composition_ni_result">0.000</td>
+                                    <td class="composition_ni_status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                    <td class="composition_ni_action action"></td>
+                                    <td class="composition_ni_min">0.2</td>
+                                    <td class="composition_ni_max">0.4</td>
+                                </tr>
+                                <tr>
+                                    <td>Nb</td>
+                                    <td class="composition_nb_result">0.000</td>
+                                    <td class="composition_nb_status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                    <td class="composition_nb_action action"></td>
+                                    <td class="composition_nb_min">0</td>
+                                    <td class="composition_nb_max">0.01</td>
+                                </tr>
+                                <tr>
+                                    <td>Cu</td>
+                                    <td class="composition_cu_result">0.000</td>
+                                    <td class="composition_cu_status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                    <td class="composition_cu_action action"></td>
+                                    <td class="composition_cu_min">0</td>
+                                    <td class="composition_cu_max">0.35</td>
+                                </tr>
+                                <tr>
+                                    <td>Ti</td>
+                                    <td class="composition_ti_result">0.000</td>
+                                    <td class="composition_ti_status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                    <td class="composition_ti_action action"></td>
+                                    <td class="composition_ti_min">&mdash;</td>
+                                    <td class="composition_ti_max">&mdash;</td>
+                                </tr>
+                                <tr>
+                                    <td>Al</td>
+                                    <td class="composition_al_result">0.000</td>
+                                    <td class="composition_al_status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                    <td class="composition_al_action action"></td>
+                                    <td class="composition_al_min">&mdash;</td>
+                                    <td class="composition_al_max">&mdash;</td>
+                                </tr>
+                                <tr>
+                                    <td>V</td>
+                                    <td class="composition_v_result">0.000</td>
+                                    <td class="composition_v_status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                    <td class="composition_v_action action"></td>
+                                    <td class="composition_v_min">&mdash;</td>
+                                    <td class="composition_v_max">&mdash;</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!-- <div>() <script>pt('eafCompExplanation');</script></div> -->
+                        </div>
+                    </div>
+                </div>
+            </dd>
+            <dd class="step4">
+                <a href="#step4">
+                    <span class="bullet"></span>
+                    <span class="right">
+                            <script>
+                            pt('smStep');
+                            </script> 4
+                        </span>
+                    <strong>
+                        <script>
+                            pt('eafScrapYard');
+                        </script>
+                    </strong>
+                </a>
+                <div id="step4" class="content">
+                    <div class="row scrap_yard panel-border">
+                        <h5><script>pt('eafScrapBins');</script></h5>
+                        <ul class="small-block-grid-2 medium-block-grid-4 large-block-grid-5 scrap_yard_bins">
+                            <li>
+                                <div class="scrap_yard_bin side_wall bg_primary1"></div>
+                                <div class="scrap_yard_bin side_wall_highlight"></div>
+                                <div class="scrap_yard_bin main rm0" id="no1_heavy_bin">
+                                    <span class="name"><script>pt('eafScrapType01');</script></span>
+                                    <span class="mass"><span class="value"></span>t</span>
+                                    <span class="volume"><span class="value"></span>&nbsp;m</sup></span>
+                                    <span class="form"><script>pt('eafScrapForm01');</script></span>
+                                    <span class="density">0.85t/m<sup>3</sup></span>
+                                    <div class="bin_image_wrapper">
+                                        <img class="image" src="images/coarse_scrap_pile.png" id="no1_heavy_image">
+                                    </div>
+                                </div>
+                                <div class="scrap_yard_bin floor bg_primary1"></div>
+                                <div class="scrap_yard_bin floor_highlight"></div>
+                            </li>
+                            <li>
+                                <div class="scrap_yard_bin side_wall bg_primary2"></div>
+                                <div class="scrap_yard_bin side_wall_highlight"></div>
+                                <div class="scrap_yard_bin main rm1" id="no2_heavy_bin">
+                                    <span class="name"><script>pt('eafScrapType02');</script></span>
+                                    <span class="mass"><span class="value"></span>t</span>
+                                    <span class="volume"><span class="value"></span>&nbsp;m</sup></span>
+                                    <span class="form"><script>pt('eafScrapForm01');</script></span>
+                                    <span class="density">0.75t/m<sup>3</sup></span>
+                                    <div class="bin_image_wrapper">
+                                        <img class="image" src="images/coarse_scrap_pile.png" id="no2_heavy_image">
+                                    </div>
+                                </div>
+                                <div class="scrap_yard_bin floor bg_primary2"></div>
+                                <div class="scrap_yard_bin floor_highlight"></div>
+                            </li>
+                            <li>
+                                <div class="scrap_yard_bin side_wall bg_primary3"></div>
+                                <div class="scrap_yard_bin side_wall_highlight"></div>
+                                <div class="scrap_yard_bin main rm2" id="internal_low_alloyed_bin">
+                                    <span class="name"><script>pt('eafScrapType03');</script></span>
+                                    <span class="mass"><span class="value"></span>t</span>
+                                    <span class="volume"><span class="value"></span>&nbsp;m</sup></span>
+                                    <span class="form"><script>pt('eafScrapForm01');</script></span>
+                                    <span class="density">3t/m<sup>3</sup></span>
+                                    <div class="bin_image_wrapper">
+                                        <img class="image" src="images/coarse_scrap_pile.png" id="internal_low_alloyed_image">
+                                    </div>
+                                </div>
+                                <div class="scrap_yard_bin floor bg_primary3"></div>
+                                <div class="scrap_yard_bin floor_highlight"></div>
+                            </li>
+                            <li>
+                                <div class="scrap_yard_bin side_wall bg_primary4"></div>
+                                <div class="scrap_yard_bin side_wall_highlight"></div>
+                                <div class="scrap_yard_bin main rm3" id="plate_structural_bin">
+                                    <span class="name"><script>pt('eafScrapType04');</script></span>
+                                    <span class="mass"><span class="value"></span>t</span>
+                                    <span class="volume"><span class="value"></span>&nbsp;m</sup></span>
+                                    <span class="form"><script>pt('eafScrapForm01');</script></span>
+                                    <span class="density">2t/m<sup>3</sup></span>
+                                    <div class="bin_image_wrapper">
+                                        <img class="image" src="images/coarse_scrap_pile.png" id="plate_structural_image">
+                                    </div>
+                                </div>
+                                <div class="scrap_yard_bin floor bg_primary4"></div>
+                                <div class="scrap_yard_bin floor_highlight"></div>
+                            </li>
+                            <li>
+                                <div class="scrap_yard_bin side_wall bg_primary5"></div>
+                                <div class="scrap_yard_bin side_wall_highlight"></div>
+                                <div class="scrap_yard_bin main rm4" id="no1_bundels_bin">
+                                    <span class="name"><script>pt('eafScrapType06');</script></span>
+                                    <span class="mass"><span class="value"></span>t</span>
+                                    <span class="volume"><span class="value"></span>&nbsp;m</sup></span>
+                                    <span class="form"><script>pt('eafScrapForm02');</script></span>
+                                    <span class="density">1.2t/m<sup>3</sup></span>
+                                    <div class="bin_image_wrapper">
+                                        <img class="image" src="images/fine_scrap_pile.png" id="no1_bundels_image">
+                                    </div>
+                                </div>
+                                <div class="scrap_yard_bin floor bg_primary5"></div>
+                                <div class="scrap_yard_bin floor_highlight"></div>
+                            </li>
+                            <li>
+                                <div class="scrap_yard_bin side_wall bg_secondary1"></div>
+                                <div class="scrap_yard_bin side_wall_highlight"></div>
+                                <div class="scrap_yard_bin main rm5" id="no2_bundels_bin">
+                                    <span class="name"><script>pt('eafScrapType07');</script></span>
+                                    <span class="mass"><span class="value"></span>t</span>
+                                    <span class="volume"><span class="value"></span>&nbsp;m</sup></span>
+                                    <span class="form"><script>pt('eafScrapForm02');</script></span>
+                                    <span class="density">1.2t/m<sup>3</sup></span>
+                                    <div class="bin_image_wrapper">
+                                        <img class="image" src="images/fine_scrap_pile.png" id="no2_bundels_image">
+                                    </div>
+                                </div>
+                                <div class="scrap_yard_bin floor bg_secondary1"></div>
+                                <div class="scrap_yard_bin floor_highlight"></div>
+                            </li>
+                            <li>
+                                <div class="scrap_yard_bin side_wall bg_secondary2"></div>
+                                <div class="scrap_yard_bin side_wall_highlight"></div>
+                                <div class="scrap_yard_bin main rm6" id="direct_reduced_iron_bin">
+                                    <span class="name"><script>pt('eafScrapType08');</script></span>
+                                    <span class="mass"><span class="value"></span>t</span>
+                                    <span class="volume"><span class="value"></span>&nbsp;m</sup></span>
+                                    <span class="form"><script>pt('eafScrapForm02');</script></span>
+                                    <span class="density">1.65t/m<sup>3</sup></span>
+                                    <div class="bin_image_wrapper">
+                                        <img class="image" src="images/fine_scrap_pile.png" id="direct_reduced_iron_image">
+                                    </div>
+                                </div>
+                                <div class="scrap_yard_bin floor bg_secondary2"></div>
+                                <div class="scrap_yard_bin floor_highlight"></div>
+                            </li>
+                            <li>
+                                <div class="scrap_yard_bin side_wall bg_secondary3"></div>
+                                <div class="scrap_yard_bin side_wall_highlight"></div>
+                                <div class="scrap_yard_bin main rm7" id="shredded_bin">
+                                    <span class="name"><script>pt('eafScrapType09');</script></span>
+                                    <span class="mass"><span class="value"></span>t</span>
+                                    <span class="volume"><span class="value"></span>&nbsp;m</sup></span>
+                                    <span class="form"><script>pt('eafScrapForm03');</script></span>
+                                    <span class="density">1.5t/m<sup>3</sup></span>
+                                    <div class="bin_image_wrapper">
+                                        <img class="image" src="images/very_fine_scrap_pile.png" id="shredded_image">
+                                    </div>
+                                </div>
+                                <div class="scrap_yard_bin floor bg_secondary3"></div>
+                                <div class="scrap_yard_bin floor_highlight"></div>
+                            </li>
+                            <li>
+                                <div class="scrap_yard_bin side_wall bg_secondary4"></div>
+                                <div class="scrap_yard_bin side_wall_highlight"></div>
+                                <div class="scrap_yard_bin main rm8" id="turnings_bin">
+                                    <span class="name"><script>pt('eafAdditive06');</script></span>
+                                    <span class="mass"><span class="value"></span>t</span>
+                                    <span class="volume"><span class="value"></span>&nbsp;m</sup></span>
+                                    <span class="form"><script>pt('eafScrapForm03');</script></span>
+                                    <span class="density">1t/m<sup>3</sup></span>
+                                    <div class="bin_image_wrapper">
+                                        <img class="image" src="images/very_fine_scrap_pile.png" id="turnings_image">
+                                    </div>
+                                </div>
+                                <div class="scrap_yard_bin floor bg_secondary4"></div>
+                                <div class="scrap_yard_bin floor_highlight"></div>
+                            </li>
+                            <li>
+                                <div class="scrap_yard_bin side_wall bg_secondary5"></div>
+                                <div class="scrap_yard_bin side_wall_highlight"></div>
+                                <div class="scrap_yard_bin main rm9" id="eaf_dust_bin">
+                                    <span class="name"><script>pt('eafAdditive05');</script></span>
+                                    <span class="mass"><span class="value"></span>t</span>
+                                    <span class="volume"><span class="value"></span>&nbsp;m</sup></span>
+                                    <span class="form"><script>pt('Powder');</script></span>
+                                    <span class="density">0.9t/m<sup>3</sup></span>
+                                    <div class="bin_image_wrapper">
+                                        <img class="image" src="images/very_fine_scrap_pile.png" id="eaf_dust_image">
+                                    </div>
+                                </div>
+                                <div class="scrap_yard_bin floor bg_secondary5"></div>
+                                <div class="scrap_yard_bin floor_highlight"></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row scrap_yard panel-border">
+                        <a href="#" class="info" data-info-key="help-basket-load"></a>
+                        <h5><script>pt('eaf_ScrapBaskets');</script></h5>
+                        <div class="small-push-4 medium-4 medium-push-0 large-3 large-push-3 columns scrap_yard_basket_wrapper">
+                            <div class="scrap_yard_basket main selected" id="scrap_yard_basket1">
+                                <span class="basket_number">#1</span>
+                                <div class="scrap_yard_basket basket_content selected"></div>
+                                <div class="scrap_yard_basket mask selected"></div>
+                            </div>
+                            <script>
+                                document.write('<div class="mass" title="'+gt('Mass')+'" data-tooltip>');
+                            </script>
+                            <span class="value">0</span>t
+                        </div>
+                        <script>
+                            document.write('<div class="volume" title="'+gt('c_Volume')+'" data-tooltip>');
+                        </script>
+                        <span class="value">0</span>m<sup>3</sup>
+                    </div>
+                    <script>
+                        document.write('<div class="volume_limit" title="'+gt('eaf_VolumeLimit')+'" data-tooltip>');
+                    </script>
+                    <span class="value">40</span>m<sup>3</sup>
+                    <div class="limit_line"></div>
+                </div>
+</div>
+<div class="small-push-4 medium-4 medium-push-0 large-3 large-push-3 columns scrap_yard_basket_wrapper">
+    <div class="scrap_yard_basket main enabled" id="scrap_yard_basket2">
+        <span class="basket_number">#2</span>
+        <div class="scrap_yard_basket basket_content enabled"></div>
+        <div class="scrap_yard_basket mask enabled"></div>
+    </div>
+    <script>
+        document.write('<div class="mass" title="'+gt('Mass')+'" data-tooltip>');
+    </script>
+    <span class="value">0</span>t
+</div>
+<script>
+    document.write('<div class="volume" title="'+gt('c_Volume')+'" data-tooltip>');
+</script>
+<span class="value">0</span>m<sup>3</sup>
+</div>
+<script>
+    document.write('<div class="volume_limit" title="'+gt('eaf_VolumeLimit')+'" data-tooltip>');
+</script>
+<span class="value">40</span>m<sup>3</sup>
+<div class="limit_line"></div>
+</div>
+</div>
+<div class="small-push-4 medium-4 medium-push-0 large-3 large-push-3 columns scrap_yard_basket_wrapper">
+    <div class="scrap_yard_basket main" id="scrap_yard_basket3">
+        <span class="basket_number">#3</span>
+        <div class="scrap_yard_basket basket_content"></div>
+        <div class="scrap_yard_basket mask"></div>
+    </div>
+    <script>
+        document.write('<div class="mass" title="'+gt('Mass')+'" data-tooltip>');
+    </script>
+    <span class="value">0</span>t
+</div>
+<script>
+    document.write('<div class="volume" title="'+gt('c_Volume')+'" data-tooltip>');
+</script>
+<span class="value">0</span>m<sup>3</sup>
+</div>
+<script>
+    document.write('<div class="volume_limit" title="'+gt('eaf_VolumeLimit')+'" data-tooltip>');
+</script>
+<span class="value">40</span>m<sup>3</sup>
+<div class="limit_line"></div>
+</div>
+</div>
+<div class="small-push-4 large-3 large-pull-9 columns totals">
+    <div>
+        <div><b><script>pt('eafTransferMass');</script>&nbsp;/t</b></div>
+        <div class="spnr">
+            <input type="number" id="transfer_mass" class="spinner" min="0" step="1" value="0">
+        </div>
+    </div>
+    <div><b><script>pt('eafTotalMass');</script>:</b>&nbsp;<span id="scrap_yard_total_mass">0</span>t</div>
+    <div><b><script>pt('eafTotalCost');</script>:</b>&nbsp;$&nbsp;<span id="scrap_yard_total_cost">0</span></div>
+</div>
+</div>
+</div>
+</dd>
+<dd class="step5">
+    <a href="#step5">
+        <span class="bullet"></span><span class="right"><script>pt('smStep');</script> 5</span>
+        <strong><script>pt('mechChTab9');</script></strong>
+    </a>
+    <div id="step5" class="content">
+        <div class="row show-for-small-only">
+            <div class="columns">
+                <dl class="user_selections_top">
+                    <dt><script>pt('ccUserLevel');</script></dt>
+                    <dd class="selected-user-level"><script>pt('UniversityStudent');</script></dd>
+                    <dt><script>pt('ccSteelGrade');</script></dt>
+                    <dd class="selected-steel-grade"><script>pt('ccConstructionSteel');</script></dd>
+                    <dt><script>pt('TemperatureRequired');</script></dt>
+                    <dd class="temperature-required">1630-1660&deg;C</dd>
+                    <dt><script>pt('MassRequired');</script></dt>
+                    <dd class="mass-required">80-110 <script>pt('tonnes');</script></dd>
+                    <dt><script>pt('eafMaxTime');</script></dt>
+                    <dd class="maximum-time">1h 20m</dd>
+                    <dt><script>pt('CO2EmissionsRequired');</script></dt>
+                    <dd class="maximum-emission">20000 Kg CO<sub>2</sub></dd>
+                    <dt><script>pt('SlagComposition');</script></dt>
+                    <dd><script>pt('basicity')</script>: 1.5-2.5</dd>
+                    <dd>%MgO: 8-12</dd>
+                    <dd>%FeO: 10-50</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="row show-for-small-only">
+            <div class="columns text-center">
+                <div class="tabber">
+                    <ul class="button-group vertical left-radius">
+                        <li><a class="hover button medium  summary_contents_0"><script>pt('smTotal');</script></a></li>
+                        <li><a class="button medium  summary_contents_1"><script>pt('c_Basket');</script>&nbsp;#1</a></li>
+                        <li><a class="button medium  summary_contents_2"><script>pt('c_Basket');</script>&nbsp;#2</a></li>
+                        <li><a class="button medium  summary_contents_3"><script>pt('c_Basket');</script>&nbsp;#3</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="medium-2 columns show-for-medium-up">
+                <div class="tabber">
+                    <ul class="button-group vertical left-radius">
+                        <li><a class="hover button medium  summary_contents_0"><script>pt('smTotal');</script></a></li>
+                        <li><a class="button medium  summary_contents_1"><script>pt('c_Basket');</script>&nbsp;#1</a></li>
+                        <li><a class="button medium  summary_contents_2"><script>pt('c_Basket');</script>&nbsp;#2</a></li>
+                        <li><a class="button medium  summary_contents_3"><script>pt('c_Basket');</script>&nbsp;#3</a></li>
+                    </ul>
+                </div>
+                <dl>
+                    <dt><script>pt('ccUserLevel');</script></dt>
+                    <dd class="selected-user-level"><script>pt('UniversityStudent');</script></dd>
+                    <dt><script>pt('ccSteelGrade');</script></dt>
+                    <dd class="selected-steel-grade"><script>pt('ccConstructionSteel');</script></dd>
+                    <dt><script>pt('TemperatureRequired');</script></dt>
+                    <dd class="temperature-required">1630-1660&deg;C</dd>
+                    <dt><script>pt('MassRequired');</script></dt>
+                    <dd class="mass-required">80-110 <script>pt('tonnes');</script></dd>
+                    <dt><script>pt('eafMaxTime');</script></dt>
+                    <dd class="maximum-time">1h 20m</dd>
+                    <dt><script>pt('CO2EmissionsRequired');</script></dt>
+                    <dd class="maximum-emission">20000 Kg CO<sub>2</sub></dd>
+                    <dt><script>pt('SlagComposition');</script></dt>
+                    <dd><script>pt('basicity')</script>: 1.5-2.5</dd>
+                    <dd>%MgO: 8-12</dd>
+                    <dd>%FeO: 10-50</dd>
+                </dl>
+                <div class="restart_simulator">
+                    <a href="javascript:location.reload();"><script>pt('StartOver');</script>&nbsp;<span class="fa fa-undo"></span></a>
+                </div>
+            </div>
+            <div class="medium-10 columns panel radius top-left-square no-margin no-bottom-padding">
+                <div class="row">
+                    <div class="large-7 columns">
+                        <table class="summary_materials">
+                            <thead>
+                            <tr>
+                                <th><script>pt('RawMaterial');</script></th>
+                                <th><script>pt('eafUnitCost');</script></th>
+                                <th><script>pt('Mass');</script></th>
+                                <th><script>pt('c_Volume');</script></th>
+                                <th><script>pt('usrCost');</script></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="eafScrapType01">
+                                <td><script>pt('eafScrapType01');</script></td>
+                                <td>$160/t</td>
+                                <td class="mass"><span class="value">0</span>t</td>
+                                <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                <td class="cost">$&nbsp;<span class="value">0</span></td>
+                            </tr>
+                            <tr class="eafScrapType02">
+                                <td><script>pt('eafScrapType02');</script></td>
+                                <td>$140/t</td>
+                                <td class="mass"><span class="value">0</span>t</td>
+                                <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                <td class="cost">$&nbsp;<span class="value">0</span></td>
+                            </tr>
+                            <tr class="eafScrapType03">
+                                <td><script>pt('eafScrapType03');</script></td>
+                                <td>$240/t</td>
+                                <td class="mass"><span class="value">0</span>t</td>
+                                <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                <td class="cost">$&nbsp;<span class="value">0</span></td>
+                            </tr>
+                            <tr class="eafScrapType04">
+                                <td><script>pt('eafScrapType04');</script></td>
+                                <td>$290/t</td>
+                                <td class="mass"><span class="value">0</span>t</td>
+                                <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                <td class="cost">$&nbsp;<span class="value">0</span></td>
+                            </tr>
+                            <tr class="eafScrapType06">
+                                <td><script>pt('eafScrapType06');</script></td>
+                                <td>$180/t</td>
+                                <td class="mass"><span class="value">0</span>t</td>
+                                <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                <td class="cost">$&nbsp;<span class="value">0</span></td>
+                            </tr>
+                            <tr class="eafScrapType07">
+                                <td><script>pt('eafScrapType07');</script></td>
+                                <td>$170/t</td>
+                                <td class="mass"><span class="value">0</span>t</td>
+                                <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                <td class="cost">$&nbsp;<span class="value">0</span></td>
+                            </tr>
+                            <tr class="eafScrapType08">
+                                <td><script>pt('eafScrapType08');</script></td>
+                                <td>$220/t</td>
+                                <td class="mass"><span class="value">0</span>t</td>
+                                <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                <td class="cost">$&nbsp;<span class="value">0</span></td>
+                            </tr>
+                            <tr class="eafScrapType09">
+                                <td><script>pt('eafScrapType09');</script></td>
+                                <td>$200/t</td>
+                                <td class="mass"><span class="value">0</span>t</td>
+                                <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                <td class="cost">$&nbsp;<span class="value">0</span></td>
+                            </tr>
+                            <tr class="eafAdditive06">
+                                <td><script>pt('eafAdditive06');</script></td>
+                                <td>$110/t</td>
+                                <td class="mass"><span class="value">0</span>t</td>
+                                <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                <td class="cost">$&nbsp;<span class="value">0</span></td>
+                            </tr>
+                            <tr class="eafAdditive05">
+                                <td><script>pt('eafAdditive05');</script></td>
+                                <td>$-120/t</td>
+                                <td class="mass"><span class="value">0</span>t</td>
+                                <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                <td class="cost">$&nbsp;<span class="value">0</span></td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="2"><strong><script>pt('smTotal');</script></strong></td>
+                                <td class="summary_total_mass"><span class="value">0</span>t</td>
+                                <td class="summary_total_volume"><span class="value">0</span>m<sup>3</sup> </td>
+                                <td class="summary_total_cost">$&nbsp;<span class="value">0</span></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><strong><script>pt('ccCostPerMetricTonne');</script></strong></td>
+                                <td class="summary_cost_per_tonne">$&nbsp;<span class="value">0</span>/t</td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="medium-8 end large-5 columns">
+                        <table width="100%" class="composition-table hide-for-small-only summary_composition">
+                            <thead>
+                            <tr>
+                                <th><script>pt('eaf_Element');</script></th>
+                                <th width="200"><script>pt('c_Result');</script></th>
+                                <th></th>
+                                <th></th>
+                                <th><script>pt('ss3dAlloyMin');</script></th>
+                                <th><script>pt('ss3dAlloyMax');</script></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>C</td>
+                                <td class="composition_c_summary result">0.000</td>
+                                <td class="composition_c_summary status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                <td class="composition_c_summary action"></td>
+                                <td class="composition_c_min show-for-medium-up">0.19</td>
+                                <td class="composition_c_max show-for-medium-up">0.24</td>
+                            </tr>
+                            <tr>
+                                <td>Si</td>
+                                <td class="composition_si_summary result">0.000</td>
+                                <td class="composition_si_summary status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                <td class="composition_si_summary action"></td>
+                                <td class="composition_si_min show-for-medium-up">0.15</td>
+                                <td class="composition_si_max show-for-medium-up">0.35</td>
+                            </tr>
+                            <tr>
+                                <td>Mn</td>
+                                <td class="composition_mn_summary result">0.000</td>
+                                <td class="composition_mn_summary status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                <td class="composition_mn_summary action"></td>
+                                <td class="composition_mn_min show-for-medium-up">0.95</td>
+                                <td class="composition_mn_max show-for-medium-up">1.25</td>
+                            </tr>
+                            <tr>
+                                <td>P</td>
+                                <td class="composition_p_summary result">0.000</td>
+                                <td class="composition_p_summary status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                <td class="composition_p_summary action"></td>
+                                <td class="composition_p_min show-for-medium-up">0</td>
+                                <td class="composition_p_max show-for-medium-up">0.035</td>
+                            </tr>
+                            <tr>
+                                <td>S</td>
+                                <td class="composition_s_summary result">0.000</td>
+                                <td class="composition_s_summary status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                <td class="composition_s_summary action"></td>
+                                <td class="composition_s_min show-for-medium-up">0</td>
+                                <td class="composition_s_max show-for-medium-up">0.04</td>
+                            </tr>
+                            <tr>
+                                <td>Cr</td>
+                                <td class="composition_cr_summary result">0.000</td>
+                                <td class="composition_cr_summary status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                <td class="composition_cr_summary action"></td>
+                                <td class="composition_cr_min show-for-medium-up">0.25</td>
+                                <td class="composition_cr_max show-for-medium-up">0.4</td>
+                            </tr>
+                            <tr>
+                                <td>Mo</td>
+                                <td class="composition_mo_summary result">0.000</td>
+                                <td class="composition_mo_summary status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                <td class="composition_mo_summary action"></td>
+                                <td class="composition_mo_min show-for-medium-up">0.05</td>
+                                <td class="composition_mo_max show-for-medium-up">0.1</td>
+                            </tr>
+                            <tr>
+                                <td>Ni</td>
+                                <td class="composition_ni_summary result">0.000</td>
+                                <td class="composition_ni_summary status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                <td class="composition_ni_summary action"></td>
+                                <td class="composition_ni_min show-for-medium-up">0.2</td>
+                                <td class="composition_ni_max show-for-medium-up">0.4</td>
+                            </tr>
+                            <tr>
+                                <td>Nb</td>
+                                <td class="composition_nb_summary result">0.000</td>
+                                <td class="composition_nb_summary status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                <td class="composition_nb_summary action"></td>
+                                <td class="composition_nb_min show-for-medium-up">0</td>
+                                <td class="composition_nb_max show-for-medium-up">0.01</td>
+                            </tr>
+                            <tr>
+                                <td>Cu</td>
+                                <td class="composition_cu_summary result">0.000</td>
+                                <td class="composition_cu_summary status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                <td class="composition_cu_summary action"></td>
+                                <td class="composition_cu_min show-for-medium-up">0</td>
+                                <td class="composition_cu_max show-for-medium-up">0.35</td>
+                            </tr>
+                            <tr>
+                                <td>Ti</td>
+                                <td class="composition_ti_summary result">0.000</td>
+                                <td class="composition_ti_summary status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                <td class="composition_ti_summary action"></td>
+                                <td class="composition_ti_min show-for-medium-up">&mdash;</td>
+                                <td class="composition_ti_max show-for-medium-up">&mdash;</td>
+                            </tr>
+                            <tr>
+                                <td>Al</td>
+                                <td class="composition_al_summary result">0</td>
+                                <td class="composition_al_summary status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                <td class="composition_al_summary action"></td>
+                                <td class="composition_al_min show-for-medium-up">&mdash;</td>
+                                <td class="composition_al_max show-for-medium-up">&mdash;</td>
+                            </tr>
+                            <tr>
+                                <td>V</td>
+                                <td class="composition_v_summary result">0.000</td>
+                                <td class="composition_v_summary status"><span class="fa fa-times-circle fa-2x"></span></td>
+                                <td class="composition_v_summary action"></td>
+                                <td class="composition_v_min show-for-medium-up">&mdash;</td>
+                                <td class="composition_v_max show-for-medium-up">&mdash;</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row start_simulation">
+            <div class="small-4 hide-for-medium-up columns restart_simulator">
+                <a href="#"><script>pt('Restart');</script>&nbsp;<span class="fa fa-undo"></span></a>
+            </div>
+            <div class="small-7 medium-5 large-4 small-push-1 medium-push-7 large-push-8 end columns" style="text-align: center;">
+                <!--<strong><span id="attempts" style="font-size: 14px;"></span></strong>-->
+                <button id="start_simulation" class="button small radius upper" data-goto-id="simulator"><script>pt('start_simulation');</script> <span class="fa fa-chevron-circle-right"></span></button>
+            </div>
+        </div>
+    </div>
+</dd>
+</dl>
+</section>
+
+<section id="simulator" class="view">
+    <div id="control-drawer" class="drawer drawer-right">
+        <a href="#" class="handle"><span class="fa fa-bars fa-lg"></span></a>
+        <div class="drawer-content">
+            <div class="row panel-border">
+                <div class="columns">
+                    <ul class="small-block-grid-4 text-center no-padding">
+                        <li>
+                            <h4>#1</h4>
+                            <script>
+                                document.write('<div class="gauge_wrapper" title="'+gt('eafRelativePower')+'" data-tooltip>');
+                            </script>
+                            <div class="graph" id="electrode1_power_graph"></div>
+                </div>
+                <div>
+                    <button id="electrode1_down" class="single_electrode_control down button small circle" disabled="true"><span class="fa fa-angle-down fa-3x fa-fw"></span></button>
+                    <button id="electrode1_up" class="single_electrode_control up button small circle" disabled="true"><span class="fa fa-angle-up fa-3x fa-fw"></span></button>
+                </div>
+                </li>
+                <li>
+                    <h4>#2</h4>
+                    <script>
+                        document.write('<div class="gauge_wrapper" title="'+gt('eafRelativePower')+'" data-tooltip>');
+                    </script>
+                    <div class="graph" id="electrode2_power_graph"></div>
+            </div>
+            <div>
+                <button id="electrode2_down" class="single_electrode_control down button small circle" disabled="true"><span class="fa fa-angle-down fa-3x fa-fw"></span></button>
+                <button id="electrode2_up" class="single_electrode_control up button small circle" disabled="true"><span class="fa fa-angle-up fa-3x fa-fw"></span></button>
+            </div>
+            </li>
+            <li>
+                <h4>#3</h4>
+                <script>
+                    document.write('<div class="gauge_wrapper" title="'+gt('eafRelativePower')+'" data-tooltip>');
+                </script>
+                <div class="graph" id="electrode3_power_graph"></div>
+        </div>
+        <div>
+            <button id="electrode3_down" class="single_electrode_control down button small circle" disabled="true"><span class="fa fa-angle-down fa-3x fa-fw"></span></button>
+            <button id="electrode3_up" class="single_electrode_control up button small circle" disabled="true"><span class="fa fa-angle-up fa-3x fa-fw"></span></button>
+        </div>
+        </li>
+        <li>
+            <h4 style="margin-left:-20px;"><script>pt('eafPowerSettings');</script></h4>
+            <select id="power_control" class="radius reduced-margin">
+                <option value="0">0</option>
+                <option value="1">75</option>
+                <option value="2">90</option>
+                <option value="3">105</option>
+                <option value="4">120</option>
+            </select>
+            <div id="power_switch_wrap" class="switch tiny round no-margin" disabled="true">
+                <input id="power_switch" class="power_switch" disabled="true" name="power_switch" type="checkbox">
+                <label for="power_switch"></label>
+            </div>
+            <div>
+                <button id="electrodes_down" class="electrodes_control button small circle" disabled="true"><span class="fa fa-angle-down fa-3x fa-fw"></span></button>
+                <button href="#" id="electrodes_up" class="electrodes_control button small circle" disabled="true"><span class="fa fa-angle-up fa-3x fa-fw"></button>
+            </div>
+        </li>
+        </ul>
+        <a href="#" class="info help-electrodes" data-info-key="help-electrodes"></a>
+        <a href="#" class="info" data-info-key="help-tap-setting"></a>
+    </div>
+    </div>
+    <div class="row">
+        <div class="small-3 columns simulation_rate">
+            <div class="panel-border">
+                <div class="text-center simulation_rate_control">
+                    <h4><script>pt('SimulationRate');</script></h4>
+                    <input id="simulation_rate_control" type="range" class="slider simulation-rate" min="1" max="32" value="1" data-sldr-vertical>
+                </div>
+                <a href="#" class="info help-simrate" data-info-key="help-simrate"></a>
+            </div>
+        </div>
+        <div class="small-9 columns">
+            <div class="row panel-border">
+                <div class="small-3 columns">
+                    <h4><script>pt('Roof');</script></h4>
+                    <div class="switch tiny round no-margin">
+                        <input id="roof_control" class="roof_control" name="roof_control" type="checkbox">
+                        <label for="roof_control"></label>
+                    </div>
+                </div>
+                <div class="small-9 columns text-center">
+                    <h4><script>pt('load_basket');</script></h4>
+                    <div>
+                        <ul class="button-group even-3 radius no-padding">
+                            <li><button id="basket1_load" class="crane_control button tiny" disabled="true">1</button></li>
+                            <li><button id="basket2_load" class="crane_control button tiny" disabled="true">2</button></li>
+                            <li><button id="basket3_load" class="crane_control button tiny" disabled="true">3</button></li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="#" class="info" data-info-key="help-crane"></a>
+            </div>
+            <div class="row panel-border">
+                <div class="columns">
+                    <div class="row inner">
+                        <ul class="small-block-grid-3 text-center no-padding">
+                            <li>
+                                <h4><script>pt('slag_door');</script></h4>
+                                <div class="switch_wrapper">
+                                    <div class="switch tiny round no-margin">
+                                        <input id="slag_door_control" class="slag_door_control" name="slag_door_control" type="checkbox">
+                                        <label for="slag_door_control"></label>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <h4><script>pt('Lance');</script></h4>
+                                <div class="switch_wrapper">
+                                    <div class="switch tiny round no-margin">
+                                        <input id="lance_control" class="lance_control" name="lance_control" type="checkbox">
+                                        <label for="lance_control"></label>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <h4><script>pt('flow');</script></h4>
+                                <div class="switch_wrapper">
+                                    <div class="switch tiny round no-margin">
+                                        <input id="flow_control" class="flow_control" name="flow_control" type="checkbox">
+                                        <label for="flow_control"></label>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row inner reduced-right-padding">
+                        <div class="small-2 columns">
+                            <h4><script>pt('Carbon');</script></h4>
+                        </div>
+                        <div class="small-10 columns">
+                            <div class="flow">
+                                <input type="number" id="carbon_flow" class="spinner flow_amount_control" min="0" max="150" step="10" value="0" disabled>
+                                <span>kg/min</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row inner reduced-right-padding">
+                        <div class="small-2 columns">
+                            <h4><script>pt('Oxygen');</script></h4>
+                        </div>
+                        <div class="small-10 columns">
+                            <div class="flow">
+                                <input type="number" id="oxygen_flow" class="spinner flow_amount_control" min="0" max="150" step="10" value="0" disabled>
+                                <span>Nm<sup>3</sup>/min</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="info" data-info-key="help-lance"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="columns">
+            <ul class="button-group even-3 radius no-padding">
+                <li><button class="take-sample button tiny"><script>pt('take_sample');</script></button></li>
+                <li><button class="make-additions button tiny" disabled><script>pt('eafMakeAdditions');</script></button></li>
+                <li><button class="tap_steel button tiny" disabled><script>pt('tap_steel');</script></button></li>
+            </ul>
+            <ul class="button-group even-2 radius no-padding">
+                <li><a href="#" class="button tiny" data-reveal-id="events_log"><script>pt('EventLog');</script></a></li>
+                <li><a href="#" class="open-analysis-results button tiny"><script>pt('ChemicalAnalysis');</script></a></li>
+            </ul>
+            <a href="#" class="info help-additions" data-info-key="help-additions"></a>
+        </div>
+    </div>
+    </div>
+    </div>
+    <div class="columns">
+        <div class="row simulator">
+            <div class="large-6 columns border-panel" id="plant_wrapper">
+                <ul class="small-block-grid-2 medium-block-grid-3">
+                    <li>
+                        <script>
+                            document.write('<div class="elapsed-time gauge" title="'+gt('elapsedTime')+'" data-tooltip><span class="hours">00</span>:<span class="minutes">00</span>:<span class="seconds">00</span></div>');
+                        </script>
+                    </li>
+                    <li>
+                        <script>
+                            document.write('<div class="liquid-steel-temperature gauge" title="'+gt('eaf_LiqSteelTemp')+'<br>'+gt('eaf_tempDisplaySolid')+'" data-tooltip><span class="value">--</span> &deg;C</div>');
+                        </script>
+                    </li>
+                    <li>
+                        <script>
+                            document.write('<div class="power gauge" title="'+gt('CO2 Eq')+'" data-tooltip><span class="value">0</span> <span style="font-size:0.75em">kg CO<sub>2</sub></span></div>');
+                        </script>
+                    </li>
+                </ul>
+                <div id="eaf_plant">
+                    <img id="base_image" src="images/base.png">
+                    <img id="ram" src="images/ram.png">
+                    <img id="ram1" src="images/ram1.png">
+                    <div id="electrode_broken_piece">
+                        <img src="images/electrode_broken_piece.png">
+                        <a href="#" class="info" data-info-key="help-broken-electrode"></a>
+                    </div>
+                    <div id="lance_system">
+                        <img id="lance_support" src="images/lance_support.png">
+                        <img id="o_lance" class="lance" src="images/o_lance.png">
+                        <img id="c_lance" class="lance" src="images/c_lance.png">
+                        <img id="lance_flow" src="images/lance_flow.b4e11ff2.gif">
+                    </div>
+                    <img src="images/crane_hook.png" id="crane">
+                    <div id="basket1" class="simulator_basket">
+                        <img src="images/basket.png" class="simulator_basket_image">
+                        <img src="images/basket_left_hatch.png" id="basket1_left_hatch" class="simulator_basket_left_hatch">
+                        <img src="images/basket_right_hatch.png" id="basket1_right_hatch" class="simulator_basket_right_hatch">
+                        <div id="basket1_content" class="simulator_basket_content">
+                            <img src="images/basket_scrap.png" id="basket1_scrap" class="simulator_basket_scrap">
+                        </div>
+                    </div>
+                    <div id="basket2" class="simulator_basket">
+                        <img src="images/basket.png" class="simulator_basket_image">
+                        <img src="images/basket_left_hatch.png" id="basket2_left_hatch" class="simulator_basket_left_hatch">
+                        <img src="images/basket_right_hatch.png" id="basket2_right_hatch" class="simulator_basket_right_hatch">
+                        <div id="basket2_content" class="simulator_basket_content">
+                            <img src="images/basket_scrap.png" id="basket2_scrap" class="simulator_basket_scrap">
+                        </div>
+                    </div>
+                    <div id="basket3" class="simulator_basket">
+                        <img src="images/basket.png" class="simulator_basket_image">
+                        <img src="images/basket_left_hatch.png" id="basket3_left_hatch" class="simulator_basket_left_hatch">
+                        <img src="images/basket_right_hatch.png" id="basket3_right_hatch" class="simulator_basket_right_hatch">
+                        <div id="basket3_content" class="simulator_basket_content">
+                            <img src="images/basket_scrap.png" id="basket3_scrap" class="simulator_basket_scrap">
+                        </div>
+                    </div>
+                    <img src="images/basket_handle.png" class="simulator_basket_handle" id="basket1_handle">
+                    <img src="images/basket_handle.png" class="simulator_basket_handle" id="basket2_handle">
+                    <img src="images/basket_handle.png" class="simulator_basket_handle" id="basket3_handle">
+                    <div id="ladle">
+                        <img src="images/ladle.png" id="ladle_image">
+                        <div id="ladle_content">
+                            <img src="images/teeming_steel.png" id="teeming_steel_image">
+                            <img src="images/ladle_steel.png" id="ladle_steel_image">
+                        </div>
+                    </div>
+                    <div id="eaf_furnace">
+                        <div id="roof">
+                            <img id="lid" src="images/lid.png">
+                            <img id="electrodes_arm" src="images/electrodes_arm.png">
+                            <div id="electrodes_container">
+                                <div class="electrode_container" id="electrode1">
+                                    <div class="electrode_mask" id="electrode1_mask">
+                                        <img id="electrode1_image" class="electrode_image" src="images/electrode.png">
+                                    </div>
+                                    <div id="electrode1_glow" class="electrode_glow"></div>
+                                </div>
+                                <div class="electrode_container" id="electrode2">
+                                    <div class="electrode_mask" id="electrode2_mask">
+                                        <img id="electrode2_image" class="electrode_image" src="images/electrode.png">
+                                    </div>
+                                    <div id="electrode2_glow" class="electrode_glow"></div>
+                                </div>
+                                <div class="electrode_container" id="electrode3">
+                                    <div class="electrode_mask" id="electrode3_mask">
+                                        <img id="electrode3_image" class="electrode_image" src="images/electrode.png">
+                                    </div>
+                                    <div id="electrode3_glow" class="electrode_glow"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <img id="eaf_image" src="images/eaf.png">
+                        <img src="images/material_addition.png" id="material_addition" class="initial">
+                        <div id="eaf_content">
+                            <img src="images/scrap_falling.png" id="scrap_falling" class="initial">
+                            <div id="scrap">
+                                <img src="images/scrap.png" id="scrap_image">
+                                <img src="images/heated_scrap.png" id="heated_scrap_image">
+                            </div>
+                            <div id="molten_steel">
+                                <img src="images/slag.png" id="slag_image">
+                                <img src="images/molten_steel.png" id="molten_steel_image">
+                            </div>
+                        </div>
+                        <img id="eaf_background" src="images/eaf_background.png">
+                        <div id="tap_hole">
+                            <img id="tap_hole_open" src="images/tap_hole_open.png">
+                        </div>
+                        <img id="slag_door" src="images/slag_door.png">
+                    </div>
+                </div>
+                <div class="objectives">
+                    <div class="temperature"><strong><script>pt("TemperatureRequired");</script>:</strong>&nbsp;<span class="value">1630-1660 &deg;C</span></div>
+                    <div class="time"><strong><script>pt("eafMaxTime");</script>:</strong>&nbsp;<span class="value">1h 20m</span></div>
+                    <div class="mass"><strong><script>pt("MassRequired");</script>:</strong>&nbsp;<span class="value">80-110 <script>pt('tonnes');</script></span></div>
+                    <div class="mass"><strong><script>pt("SlagComposition");</script>:</strong>&nbsp;<span class="value"><script>pt('basicity')</script>: 1.5-2.5</span></div>
+                    <div class="mass"><strong><span style="visibility: hidden;"><script>pt("SlagComposition");</script>:</span></strong>&nbsp;<span class="value">%MgO: 8-12</span></div>
+                    <div class="mass"><strong><span style="visibility: hidden;"><script>pt("SlagComposition");</script>:</span></strong>&nbsp;<span class="value">%FeO: 10-50</span></div>
+                </div>
+                <div class="wcp">
+                    <a href="#" class="info help-wcp" data-info-key="help-wcp"></a>
+                    <h4><script>pt('eafWPC');</script></h4>
+                    <div class="wcp_panel wcp1 green"></div>
+                    <div class="wcp_panel wcp2 green"></div>
+                    <div class="wcp_panel wcp3 green"></div>
+                </div>
+                <div class="TLiquidusPilot">
+                    <a href="#" class="info help-ptl" data-info-key="help-ptl"></a>
+                    <h4><script>pt('TliqAutopilot');</script></h4>
+                    <div class="pilot pilot_off"></div>
+                </div>
+            </div>
+            <div class="large-6 columns" id="graphs">
+                <div class="graphs">
+                    <div class="graph-wrapper panel-border">
+                        <!--div class="graphs_blur">
+                            <span>
+                                <script>pt("graph_not_available")</script>
+                            </span>
+                        </div-->
+                        <script>
+                            document.write('<div id="steel_composition_graph" class="graph" title="'+gt('eafSteelCompTime')+'" data-tooltip></div>');
+                        </script>
+                    </div>
+                    <div class="graph-wrapper panel-border">
+                        <script>
+                            document.write('<div id="slag_composition_graph" title="'+gt('eafSlagCompTime')+'" class="graph" data-tooltip></div>');
+                        </script>
+                    </div>
+                    <div class="graph-wrapper panel-border power_time">
+                        <script>
+                            document.write('<div id="power_time_graph" title="'+gt('eafPowerTime')+'" class="graph" data-tooltip></div>');
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="final_results" class="view">
+    <h3><script>pt('SummaryOfResults');</script></h3>
+    <div class="final_restart_simulator">
+        <div class="db_post_result yellow">
+            <span class="icon fa fa-spinner fa-spin"></span>
+            <span id="results_message" class="message"><script>pt('Saving_results')</script></span>
+        </div>
+        <a href="javascript:location.reload(true);"><script>pt('StartOver')</script>&nbsp;<span class="fa fa-undo"></span></a>
+    </div>
+    <dl class="accordion" data-accordion>
+        <dd class="settings-summary">
+            <a href="#settings_summary"><span class="bullet"></span> <strong><script>pt('settings_summary');</script></strong></a>
+            <div id="settings_summary" class="content">
+                <div class="row show-for-small-only">
+                    <div class="columns">
+                        <dl class="user_selections_top">
+                            <dt><script>pt('ccUserLevel');</script></dt>
+                            <dd class="selected-user-level"><script>pt('UniversityStudent');</script></dd>
+                            <dt><script>pt('ccSteelGrade');</script></dt>
+                            <dd class="selected-steel-grade"><script>pt('ccConstructionSteel');</script></dd>
+                            <dt><script>pt('TemperatureRequired');</script></dt>
+                            <dd class="temperature-required">1630-1660&deg;C</dd>
+                            <dt><script>pt('MassRequired');</script></dt>
+                            <dd class="mass-required">80-110 <script>pt('tonnes');</script></dd>
+                            <dt><script>pt('eafMaxTime');</script></dt>
+                            <dd class="maximum-time">1h 20m</dd>
+                            <dt><script>pt('CO2EmissionsRequired');</script></dt>
+                            <dd class="maximum-emission">20000 Kg CO<sub>2</sub></dd>
+                            <dt><script>pt('SlagComposition');</script></dt>
+                            <dd><script>pt('basicity')</script>: 1.5-2.5</dd>
+                            <dd>%MgO: 8-12</dd>
+                            <dd>%FeO: 10-50</dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="row show-for-small-only">
+                    <div class="columns text-center tabber">
+                        <ul class="button-group vertical left-radius">
+                            <li><a class="hover button medium  results_contents_0"><script>pt('smTotal');</script></a></li>
+                            <li><a class="button medium  results_contents_1"><script>pt('c_Basket');</script>&nbsp;#1</a></li>
+                            <li><a class="button medium  results_contents_2"><script>pt('c_Basket');</script>&nbsp;#2</a></li>
+                            <li><a class="button medium  results_contents_3"><script>pt('c_Basket');</script>&nbsp;#3</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="medium-3 columns show-for-medium-up">
+                        <div class="tabber">
+                            <ul class="button-group vertical left-radius">
+                                <li><a class="hover button medium  results_contents_0"><script>pt('smTotal');</script></a></li>
+                                <li><a class="button medium  results_contents_1"><script>pt('c_Basket');</script>&nbsp;#1</a></li>
+                                <li><a class="button medium  results_contents_2"><script>pt('c_Basket');</script>&nbsp;#2</a></li>
+                                <li><a class="button medium  results_contents_3"><script>pt('c_Basket');</script>&nbsp;#3</a></li>
+                            </ul>
+                        </div>
+                        <dl>
+                            <dt><script>pt('ccUserLevel');</script></dt>
+                            <dd class="selected-user-level"><script>pt('UniversityStudent');</script></dd>
+                            <dt><script>pt('ccSteelGrade');</script></dt>
+                            <dd class="selected-steel-grade"><script>pt('ccConstructionSteel');</script></dd>
+                            <dt><script>pt('TemperatureRequired');</script></dt>
+                            <dd class="temperature-required">1630-1660&deg;C</dd>
+                            <dt><script>pt('MassRequired');</script></dt>
+                            <dd class="mass-required">80-110 <script>pt('tonnes');</script></dd>
+                            <dt><script>pt('eafMaxTime');</script></dt>
+                            <dd class="maximum-time">1h 20m</dd>
+                            <dt><script>pt('CO2EmissionsRequired');</script></dt>
+                            <dd class="maximum-emission">20000 Kg CO<sub>2</sub></dd>
+                            <dt><script>pt('SlagComposition');</script></dt>
+                            <dd><script>pt('basicity')</script>: 1.5-2.5</dd>
+                            <dd>%MgO: 8-12</dd>
+                            <dd>%FeO: 10-50</dd>
+                        </dl>
+                    </div>
+                    <div class="medium-9 columns panel radius top-left-square no-margin no-bottom-padding">
+                        <div class="row">
+                            <div class="large-7 columns">
+                                <table class="results_materials">
+                                    <thead>
+                                    <tr>
+                                        <th><script>pt('RawMaterial');</script></th>
+                                        <th><script>pt('eafUnitCost');</script></th>
+                                        <th><script>pt('Mass');</script></th>
+                                        <th><script>pt('c_Volume');</script></th>
+                                        <th><script>pt('usrCost');</script></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="eafScrapType01">
+                                        <td><script>pt('eafScrapType01');</script></td>
+                                        <td>$160/t</td>
+                                        <td class="mass"><span class="value">0</span>t</td>
+                                        <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                        <td class="cost">$&nbsp;<span class="value">0</span></td>
+                                    </tr>
+                                    <tr class="eafScrapType02">
+                                        <td><script>pt('eafScrapType02');</script></td>
+                                        <td>$140/t</td>
+                                        <td class="mass"><span class="value">0</span>t</td>
+                                        <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                        <td class="cost">$&nbsp;<span class="value">0</span></td>
+                                    </tr>
+                                    <tr class="eafScrapType03">
+                                        <td><script>pt('eafScrapType03');</script></td>
+                                        <td>$240/t</td>
+                                        <td class="mass"><span class="value">0</span>t</td>
+                                        <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                        <td class="cost">$&nbsp;<span class="value">0</span></td>
+                                    </tr>
+                                    <tr class="eafScrapType04">
+                                        <td><script>pt('eafScrapType04');</script></td>
+                                        <td>$290/t</td>
+                                        <td class="mass"><span class="value">0</span>t</td>
+                                        <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                        <td class="cost">$&nbsp;<span class="value">0</span></td>
+                                    </tr>
+                                    <tr class="eafScrapType06">
+                                        <td><script>pt('eafScrapType06');</script></td>
+                                        <td>$180/t</td>
+                                        <td class="mass"><span class="value">0</span>t</td>
+                                        <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                        <td class="cost">$&nbsp;<span class="value">0</span></td>
+                                    </tr>
+                                    <tr class="eafScrapType07">
+                                        <td><script>pt('eafScrapType07');</script></td>
+                                        <td>$170/t</td>
+                                        <td class="mass"><span class="value">0</span>t</td>
+                                        <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                        <td class="cost">$&nbsp;<span class="value">0</span></td>
+                                    </tr>
+                                    <tr class="eafScrapType08">
+                                        <td><script>pt('eafScrapType08');</script></td>
+                                        <td>$220/t</td>
+                                        <td class="mass"><span class="value">0</span>t</td>
+                                        <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                        <td class="cost">$&nbsp;<span class="value">0</span></td>
+                                    </tr>
+                                    <tr class="eafScrapType09">
+                                        <td><script>pt('eafScrapType09');</script></td>
+                                        <td>$200/t</td>
+                                        <td class="mass"><span class="value">0</span>t</td>
+                                        <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                        <td class="cost">$&nbsp;<span class="value">0</span></td>
+                                    </tr>
+                                    <tr class="eafAdditive06">
+                                        <td><script>pt('eafAdditive06');</script></td>
+                                        <td>$110/t</td>
+                                        <td class="mass"><span class="value">0</span>t</td>
+                                        <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                        <td class="cost">$&nbsp;<span class="value">0</span></td>
+                                    </tr>
+                                    <tr class="eafAdditive05">
+                                        <td><script>pt('eafAdditive05');</script></td>
+                                        <td>$-120/t</td>
+                                        <td class="mass"><span class="value">0</span>t</td>
+                                        <td class="volume"><span class="value">0</span>m<sup>3</sup></td>
+                                        <td class="cost">$&nbsp;<span class="value">0</span></td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="2"><strong><script>pt('smTotal');</script></strong></td>
+                                        <td class="results_total_mass"><span class="value">0</span>t</td>
+                                        <td class="results_total_volume"><span class="value">0</span>m<sup>3</sup> </td>
+                                        <td class="results_total_cost">$&nbsp;<span class="value">0</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4"><strong><script>pt('ccCostPerMetricTonne');</script></strong></td>
+                                        <td class="results_cost_per_tonne">$&nbsp;<span class="value">0</span>/t</td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="medium-5 end columns hide-for-small-only">
+                                <table width="100%" class="composition-table results_composition">
+                                    <thead>
+                                    <tr>
+                                        <th><script>pt('eaf_Element');</script></th>
+                                        <th width="200"><script>pt('c_Result');</script></th>
+                                        <th class="show-for-medium-up"><script>pt('ss3dAlloyMin');</script></th>
+                                        <th class="show-for-medium-up"><script>pt('ss3dAlloyMax');</script></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>C</td>
+                                        <td class="composition_c_result result">0.000</td>
+                                        <td class="composition_c_min show-for-medium-up">0.19</td>
+                                        <td class="composition_c_max show-for-medium-up">0.24</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Si</td>
+                                        <td class="composition_si_result result">0.000</td>
+                                        <td class="composition_si_min show-for-medium-up">0.15</td>
+                                        <td class="composition_si_max show-for-medium-up">0.35</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mn</td>
+                                        <td class="composition_mn_result result">0.000</td>
+                                        <td class="composition_mn_min show-for-medium-up">0.95</td>
+                                        <td class="composition_mn_max show-for-medium-up">1.25</td>
+                                    </tr>
+                                    <tr>
+                                        <td>P</td>
+                                        <td class="composition_p_result result">0.000</td>
+                                        <td class="composition_p_min show-for-medium-up">0</td>
+                                        <td class="composition_p_max show-for-medium-up">0.035</td>
+                                    </tr>
+                                    <tr>
+                                        <td>S</td>
+                                        <td class="composition_s_result result">0.000</td>
+                                        <td class="composition_s_min show-for-medium-up">0</td>
+                                        <td class="composition_s_max show-for-medium-up">0.04</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cr</td>
+                                        <td class="composition_cr_result result">0.000</td>
+                                        <td class="composition_cr_min show-for-medium-up">0.25</td>
+                                        <td class="composition_cr_max show-for-medium-up">0.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mo</td>
+                                        <td class="composition_mo_result result">0.000</td>
+                                        <td class="composition_mo_min show-for-medium-up">0.05</td>
+                                        <td class="composition_mo_max show-for-medium-up">0.1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ni</td>
+                                        <td class="composition_ni_result result">0.000</td>
+                                        <td class="composition_ni_min show-for-medium-up">0.2</td>
+                                        <td class="composition_ni_max show-for-medium-up">0.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nb</td>
+                                        <td class="composition_nb_result result">0.000</td>
+                                        <td class="composition_nb_min show-for-medium-up">0</td>
+                                        <td class="composition_nb_max show-for-medium-up">0.01</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cu</td>
+                                        <td class="composition_cu_result result">0.000</td>
+                                        <td class="composition_cu_min show-for-medium-up">0</td>
+                                        <td class="composition_cu_max show-for-medium-up">0.35</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ti</td>
+                                        <td class="composition_ti_result result">0.000</td>
+                                        <td class="composition_ti_min show-for-medium-up">&mdash;</td>
+                                        <td class="composition_ti_max show-for-medium-up">&mdash;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Al</td>
+                                        <td class="composition_al_result result">0</td>
+                                        <td class="composition_al_min show-for-medium-up">&mdash;</td>
+                                        <td class="composition_al_max show-for-medium-up">&mdash;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>V</td>
+                                        <td class="composition_v_result result">0.000</td>
+                                        <td class="composition_v_min show-for-medium-up">&mdash;</td>
+                                        <td class="composition_v_max show-for-medium-up">&mdash;</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </dd>
+        <dd class="cost-breakdown active">
+            <a href="#cost_breakdown"><span class="bullet"></span> <strong><script>pt('eaf_CostBreakdown');</script></strong></a>
+            <div id="cost_breakdown" class="content active">
+                <div class="row">
+                    <div class="medium-10 medium-centered columns">
+                        <table width="100%">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th><script>pt('Target');</script></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><strong><script>pt('eaf_TotalTime');</script></strong></td>
+                                <td id="final_results_actual_time"></td>
+                                <td>
+                                    <span id="final_results_time_img" class="tip-right fa fa-2x fa-check-circle"></span>
+                                </td>
+                                <td id="final_results_target_time"></td>
+                            </tr>
+                            <tr>
+                                <td><strong><script>pt('eafTappingMass');</script></strong></td>
+                                <td id="final_results_actual_mass"></td>
+                                <td><span id="final_results_mass_img" class="fa fa-2x fa-check-circle"></span></td>
+                                <td id="final_results_target_mass"></td>
+                            </tr>
+                            <tr>
+                                <td><strong><script>pt('eaf_TapTemperature');</script></strong></td>
+                                <td id="final_results_actual_temperature"></td>
+                                <td><span id="final_results_temperature_img" class="fa fa-2x fa-check-circle"></span></td>
+                                <td id="final_results_target_temperature"></td>
+                            </tr>
+                            <tr>
+                                <td><strong><script>pt('eafLiqSteelComp');</script></strong></td>
+                                <td><a href="#" class="button tiny radius analysis" data-reveal-id="analysis_results"><span class="fa fa-2x fa-flask"></span></a></td>
+                                <td><span id="final_results_composition_img" class="fa fa-2x fa-check-circle"></span></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><strong><script>pt('eaf_FinSlagComp');</script></strong></td>
+                                <td><a href="javascript:void(0);" class="button tiny radius analysis" data-reveal-id="slag_composition"><span class="fa fa-2x fa-flask"></span></a></td>
+                                <td><span id="final_results_slag_img" class="fa fa-2x"></span></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><strong><script>pt('CO<sub>2</sub> emissions');</script></strong></td>
+                                <td id="final_results_CO2"></td>
+                                <td><span id="final_results_CO2_img" class="fa fa-2x fa-check-circle"></span></td>
+                                <td id="final_results_target_CO2"></td>
+                            </tr>
+                            <tr>
+                                <td><strong><script>pt('eaf_ElectricalEnergy');</script></strong></td>
+                                <td id="final_results_actual_energy"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><strong><script>pt('Power');</script></strong></td>
+                                <td id="final_results_power_cost"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><strong><script>pt('Scrap');</script></strong></td>
+                                <td id="final_results_scrap_cost"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><strong><script>pt('Additions');</script></strong></td>
+                                <td id="final_results_additions_cost"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><strong><script>pt('eafOtherConsumables');</script></strong></td>
+                                <td id="final_results_other_cost"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td><script>pt('eafTotalCost');</script></td>
+                                <td id="final_results_total_cost"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        <dd class="additional-info">
+            <a href="#additional_info" class="show-additional-info"><span class="bullet"></span> <strong><script>pt('additional_information');</script></strong></a>
+            <div id="additional_info" class="content">
+                <div class="row graphs">
+                    <div class="columns steel-results"></div>
+                </div>
+                <div class="row graphs">
+                    <div class="columns slag-results"></div>
+                </div>
+                <div class="row graphs">
+                    <div class="columns power-time-results"></div>
+                </div>
+                <div class="row">
+                    <div class="medium-8 medium-push-2 end columns">
+                        <dl>
+                            <dt><script>pt('ClickToViewAnalysis');</script>:</strong></dt>
+                            <dd>
+                                <ul class="button-group even-2 radius">
+                                    <li><a href="#" id="final_results_button" class="button small" data-reveal-id="analysis_results"><script>pt('eaf_FinSteelComp');</script></a></li>
+                                    <li><a href="#" id="final_results_button" class="button small" data-reveal-id="slag_composition"><script>pt('eaf_FinSlagComp');</script></a></li>
+                                </ul>
+                            </dd>
+                            <a href="#" class="button expand radius small" data-reveal-id="events_log"><script>pt('ssKeyboardShortcutsOptE');</script></a>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </dd>
+    </dl>
+</section>
+<div id="info-drawer" class="drawer drawer-left">
+    <a href="#" class="close"><span class="fa fa-times-circle fa-2x"></span></a>
+    <div class="drawer-content info-content"></div>
+</div>
+</div>
+<footer id="sim_footer">
+    <div class="row">
+        <div class="columns footer-bg"></div>
+    </div>
+</footer>
+
+<div id="popup" class="reveal-modal" data-reveal>
+    <h3 class="popup-title"></h3>
+    <p class="popup-body"></p>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="events_log" class="reveal-modal" data-reveal>
+    <h3 class="popup-title"><script>pt('EventLog');</script></h3>
+    <div id="events_log_body"></div>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="additions" class="reveal-modal" data-reveal>
+    <h3><script>pt('eafMakeAdditions');</script></h3>
+    <div class="reveal-body-scroll">
+        <table width="100%" class="additions_table">
+            <thead>
+            <tr>
+                <td><script>pt('RawMaterial');</script></td>
+                <td><script>pt('eafUnitCost');</script></td>
+                <td><script>pt('Mass');</script></td>
+                <td><script>pt('usrCost');</script></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 99.15%Al, 0.82%Fe, 0.03%Cu<br><b>'+gt('eafScrapForm')+':</b> '+gt('ss3AdditionTypePebbles')+'" data-tooltip>'+gt('ss3dAdditive11')+'</td>');
+                </script>
+                <td id="additions_al_pebbles_unit_cost">$&nbsp;<span class="value">1.40</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_al_pebbles_mass" class="spinner materials_additions rm18" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_al_pebbles_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 99.9%C, 0.011%S<br><b>'+gt('eafScrapForm')+':</b> '+gt('Powder')+'" data-tooltip>'+gt('Carbon')+'</td>');
+                </script>
+                <td id="additions_carbon_unit_cost">$&nbsp;<span class="value">0.28</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_carbon_mass" class="spinner materials_additions rm19" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_carbon_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 7.82%C, 0.23%Si, 0.021%P, 0.051%S, 70.11%Cr, 0.0092%Ti + Fe bal.<br><b>'+gt('eafScrapForm')+':</b> '+gt('ss3AdditionTypePebbles')+'" data-tooltip>'+gt('eafAdditive03')+'</td>');
+                </script>
+                <td id="additions_cr_carbure_unit_cost">$&nbsp;<span class="value">0.59</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_cr_carbure_mass" class="spinner materials_additions rm14" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_cr_carbure_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 8.12%C, 0.34%Si, 0.017%P, 0.024%S, 69.92%Cr + Fe bal.<br><b>'+gt('eafScrapForm')+':</b> '+gt('ss3AdditionTypePebbles')+'" data-tooltip>'+gt('eafAdditive04')+'</td>');
+                </script>
+                <td id="additions_cr_carbure_ls_unit_cost">$&nbsp;<span class="value">0.66</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_cr_carbure_ls_mass" class="spinner materials_additions rm15" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_cr_carbure_ls_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 76.5%Mn, 6.7%C, 1.0%Si, 0.03%S, 0.3%P + Fe bal.<br><b>'+gt('eafScrapForm')+':</b> '+gt('ss3AdditionTypePebbles')+'" data-tooltip>'+gt('ss3dAdditive2')+'</td>');
+                </script>
+                <td id="additions_hc_fe_mn_unit_cost">$&nbsp;<span class="value">0.35</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_hc_fe_mn_mass" class="spinner materials_additions rm27" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_hc_fe_mn_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 81.5%Mn, 0.85%C, 0.5%Si, 0.1%S, 0.25%P, + Fe bal.<br><b>'+gt('eafScrapForm')+':</b> '+gt('ss3AdditionTypePebbles')+'" data-tooltip>'+gt('ss3dAdditive3')+'</td>');
+                </script>
+                <td id="additions_lc_fe_mn_unit_cost">$&nbsp;<span class="value">0.60</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_lc_fe_mn_mass" class="spinner materials_additions rm28" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_lc_fe_mn_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 0.044%C, 0.14%Si, 0.044%P, 0.092%S, 62.02%Mo + Fe bal.<br><b>'+gt('eafScrapForm')+':</b> '+gt('ss3AdditionTypePebbles')+'" data-tooltip>'+gt('ss3dAdditive13')+'</td>');
+                </script>
+                <td id="additions_fe_mo_unit_cost">$&nbsp;<span class="value">16.80</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_fe_mo_mass" class="spinner materials_additions rm16" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_fe_mo_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 0.08%C, 60.3%Si, 0.014%P, 0.002%S, 1.23%Al, 0.05%Ti + Fe bal.<br><b>'+gt('eafScrapForm')+':</b> '+gt('ss3AdditionTypePebbles')+'" data-tooltip>'+gt('ss3dAdditive6')+'</td>');
+                </script>
+                <td id="additions_fe_si_75_unit_cost">$&nbsp;<span class="value">0.77</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_fe_si_75_mass" class="spinner materials_additions rm11" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_fe_si_75_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 0.08%C, 75.6%Si, 0.003%P, 0.024%Al, 0.014Ti + Fe bal.<br><b>'+gt('eafScrapForm')+':</b> '+gt('ss3AdditionTypePebbles')+'" data-tooltip>'+gt('ss3dAdditive7')+'</td>');
+                </script>
+                <td id="additions_fe_si_75_hp_unit_cost">$&nbsp;<span class="value">0.84</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_fe_si_75_hp_mass" class="spinner materials_additions rm10" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_fe_si_75_hp_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 0.25%C, 0.72%Si, 0.031%P, 0.081%S, 1.23%Al, 78.82%V + Fe bal.<br><b>'+gt('eafScrapForm')+':</b> '+gt('ss3AdditionTypePebbles')+'" data-tooltip>'+gt('ss3dAdditive15')+'</td>');
+                </script>
+                <td id="additions_fe_v_unit_cost">$&nbsp;<span class="value">8.40</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_fe_v_mass" class="spinner materials_additions rm17" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_fe_v_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 30%C, 70%Si<br><b>'+gt('eafScrapForm')+':</b> '+gt('ss3AdditionTypePebbles')+'" data-tooltip>'+gt('eafAdditive02')+'</td>');
+                </script>
+                <td id="additions_si_c_unit_cost">$&nbsp;<span class="value">0.61</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_si_c_mass" class="spinner materials_additions rm13" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_si_c_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 1.82%C, 25.33%Si, 0.014%P, 0.015%S, 38.23%Cr + Fe bal.<br><b>'+gt('eafScrapForm')+':</b> '+gt('ss3AdditionTypePebbles')+'" data-tooltip>'+gt('eafAdditive01')+'</td>');
+                </script>
+                <td id="additions_si_cr_unit_cost">$&nbsp;<span class="value">0.94</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_si_cr_mass" class="spinner materials_additions rm12" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_si_cr_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 38.5%MgO, 2%SiO<sup>2</sup>, 0.005%P, 0.15%S + CaO bal.<br><b>'+gt('eafScrapForm')+':</b> '+gt('Powder')+'" data-tooltip>'+gt('eafAdditive10')+'</td>');
+                </script>
+                <td id="additions_dolomite_unit_cost">$&nbsp;<span class="value">0.12</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_dolomite_mass" class="spinner materials_additions rm25" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_dolomite_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 20%CaO, 20%MgO, 20%SiO<sup>2</sup>, 0.001%P, 0.06%S + CaF<sup>2</sup> bal.<br><b>'+gt('eafScrapForm')+':</b> '+gt('Powder')+'" data-tooltip>'+gt('eafAdditive09')+'</td>');
+                </script>
+                <td id="additions_fluorspar_unit_cost">$&nbsp;<span class="value">0.18</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_fluorspar_mass" class="spinner materials_additions rm24" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_fluorspar_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b> 0.3%Al<sup>2</sup>O<sup>3</sup>, 0.5%CaO, 0.1%MgO, 0.001%P + FeO bal.<br><b>'+gt('eafScrapForm')+':</b> '+gt('Powder')+'" data-tooltip>'+gt('eafAdditive08')+'</td>');
+                </script>
+                <td id="additions_iron_oxide_unit_cost">$&nbsp;<span class="value">0.14</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_iron_oxide_mass" class="spinner materials_additions rm23" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_iron_oxide_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            <tr>
+                <script>
+                    document.write('<td title="<b>'+gt('CompositionCap')+':</b>  1.2%Al<sup>2</sup>O<sup>3</sup>, 1.8%MgO, 2.1%SiO<sup>2</sup>, 0.01%P, 0.01%S + CaO bal.<br><b>'+gt('eafScrapForm')+':</b> '+gt('Powder')+'" data-tooltip>'+gt('lime')+'</td>');
+                </script>
+                <td id="additions_lime_unit_cost">$&nbsp;<span class="value">0.12</span>/kg</td>
+                <td class="spnr-center">
+                    <input type="number" id="additions_lime_mass" class="spinner materials_additions rm26" min="0" max="10000" step="10" value="0">
+                </td>
+                <td id="additions_lime_cost">$
+                    <span class="value">0.00</span>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="2" class="text-right"><script>pt('smTotal');</script></td>
+                <td id="additions_total_mass"><span class="value">0</span>&nbsp;kg</td>
+                <td id="additions_total_cost">$&nbsp;<span class="value">0.00</span></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+    <ul class="button-group radius right">
+        <li><a class="clearform button small"><span class="fa fa-eraser fa-lg"></span> <script>pt('Clear');</script></a></li>
+        <li><button id="additions_order_button" class="button small"><script>pt('eafOrder');</script></button></li>
+    </ul>
+
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+<div id="analysis_results" class="reveal-modal" data-reveal>
+    <h1 id="analysis_results_title"><script>pt('eafLiqSteelComp');</script> / wt%</h1>
+
+    <div id="analysis_results_body">
+        <table width="100%" class="analysis_results_table">
+            <thead>
+            <tr class="analysis_results_table_title">
+                <th><script>pt('eaf_Element');</script></th>
+                <th><script>pt('ss3dAlloyCurrent');</script></th>
+                <th></th>
+                <th><script>pt('ss3dAlloyMin');</script></th>
+                <th><script>pt('ss3dAlloyMax');</script></th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot></tfoot>
+        </table>
+    </div>
+    <div class="text-center">
+        <p id="analysis_message"><script>pt('eafNeedLiquidSteel');</script></p>
+        <button id="analysis_results_button" class="take-sample"><script>pt('take_sample');</script></button>
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="slag_composition" class="reveal-modal" data-reveal>
+    <h1><script>pt('eaf_FinSlagComp');</script></h1>
+
+    <div id="slag_composition_body">
+        <table width="100%" id="slag_composition_table">
+            <thead>
+            <tr>
+                <th><script>pt('eaf_Element');</script></th>
+                <th><script>pt('ss3dAlloyCurrent');</script></th>
+                <th></th>
+                <th><script>pt('ss3dAlloyMin');</script></th>
+                <th><script>pt('ss3dAlloyMax');</script></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<script src="scripts/vendor/scripts.min.69be2d27.js"></script>
+
+<script src="scripts/main.min.0408eceb.js"></script>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-54610905-2', 'auto');
+    ga('set', 'page', '/simulators/eaf');
+    ga('send', 'pageview');
+</script>
+<script>
+    var select = document.getElementById('lang');
+    var flag = document.getElementById('flag_lang');
+    select.value = studentLanguage;
+    switch(studentLanguage){
+        case "en-GB":
+            flag.src = "images/english.png";
+            break;
+        case "zh-CHS":
+            flag.src = "images/chinese.png";
+            break;
+        case "es-ES":
+            flag.src = "images/spanish.png";
+            break;
+        case "ru-RU":
+            flag.src = "images/russian.png";
+            break;
+    }
+
+    if((getParameter("email")&&(getParameter("challengeId")))){
+        var link = $(".cross_sim_link"),
+            href = link.attr("href") + "?email=" + getParameter("email") + "&challengeId=" + getParameter("challengeId");
+        link.attr("href", href);
+        Challenge.checkStatus($("div.intro-buttons button"), $("span.intro_message"));
+    }
+    else{
+        $("span.intro_message").html(gt('missing_parameters'));
+    }
+
+    document.getElementById('target_steel_grade').value = 'gear';
+    $('#step2').find('.description').html(gt('ENG_desc'));
+    $('dd.selected-steel-grade').html(gt('ccEngineeringSteel'));
+
+
+    var sBrowser, sUsrAg = navigator.userAgent;
+
+    //The order matters here, and this may report false positives for unlisted browsers.
+
+    if (sUsrAg.indexOf("Firefox") > -1) {
+        sBrowser = "Mozilla Firefox";
+        //"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0"
+    } else if (sUsrAg.indexOf("Opera") > -1) {
+        sBrowser = "Opera";
+    } else if (sUsrAg.indexOf("Trident") > -1) {
+        sBrowser = "Microsoft Internet Explorer";
+        //"Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E; Zoom 3.6.0; wbx 1.0.0; rv:11.0) like Gecko"
+    } else if (sUsrAg.indexOf("Edge") > -1) {
+        sBrowser = "Microsoft Edge";
+        //"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299"
+    } else if (sUsrAg.indexOf("Chrome") > -1) {
+        sBrowser = "Google Chrome or Chromium";
+        //"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/66.0.3359.181 Chrome/66.0.3359.181 Safari/537.36"
+    } else if (sUsrAg.indexOf("Safari") > -1) {
+        sBrowser = "Apple Safari";
+        //"Mozilla/5.0 (iPhone; CPU iPhone OS 11_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.0 Mobile/15E148 Safari/604.1 980x1306"
+    } else {
+        sBrowser = "unknown";
+    }
+</script>
+</body>
+</html>
